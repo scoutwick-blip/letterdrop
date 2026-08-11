@@ -335,7 +335,132 @@
       if (action === 'delete') deleteBlock(id);
       if (action === 'duplicate') duplicateBlock(id);
       if (action === 'up') moveBy(id, -1);
-      if (action === '…2408 tokens truncated…
+      if (action === 'down') moveBy(id, 1);
+    }));
+    $$('.editable', canvas).forEach(editable => {
+      editable.addEventListener('focus', () => {
+        recordHistory();
+        selectBlock(editable.closest('.newsletter-block').dataset.id, false);
+      }, { once: true });
+      editable.addEventListener('input', () => {
+        const block = state.blocks.find(b => b.id === editable.closest('.newsletter-block').dataset.id);
+        block[editable.dataset.field] = editable.textContent.trim();
+        scheduleSave();
+      });
+      if (editable.tagName === 'A') editable.addEventListener('click', event => event.preventDefault());
+    });
+    $$('[data-image-upload]', canvas).forEach(frame => {
+      frame.addEventListener('click', event => {
+        if (event.target.tagName === 'INPUT') return;
+        frame.querySelector('input').click();
+      });
+      frame.querySelector('input').addEventListener('change', event => handleImage(event, frame.closest('.newsletter-block').dataset.id));
+    });
+    $$('[data-gallery-upload]', canvas).forEach(button => {
+      const blockElement = button.closest('.newsletter-block');
+      const input = blockElement.querySelector('input[type="file"]');
+      button.addEventListener('click', event => { event.stopPropagation(); input.click(); });
+      input.addEventListener('change', event => { if (event.target.files.length) addFilesToGallery(blockElement.dataset.id, event.target.files); });
+    });
+    $$('[data-gallery-collapse]', canvas).forEach(button => button.addEventListener('click', event => {
+      event.stopPropagation();
+      const blockId = button.closest('.newsletter-block').dataset.id;
+      mutate(() => { const block = state.blocks.find(item => item.id === blockId); block.collapsed = !block.collapsed; });
+    }));
+    $$('.gallery-empty', canvas).forEach(empty => empty.addEventListener('click', () => empty.closest('.newsletter-block').querySelector('[data-gallery-upload]').click()));
+    $$('[data-gallery-action]', canvas).forEach(button => button.addEventListener('click', event => {
+      event.stopPropagation();
+      updateGalleryImage(button.closest('.newsletter-block').dataset.id, Number(button.dataset.index), button.dataset.galleryAction);
+    }));
+    $$('.gallery-item', canvas).forEach(item => {
+      item.addEventListener('dragstart', event => {
+        event.stopPropagation();
+        draggedGalleryImage = { blockId: item.closest('.newsletter-block').dataset.id, imageId: item.dataset.imageId };
+        event.dataTransfer.effectAllowed = 'move';
+        setTimeout(() => item.classList.add('gallery-dragging'));
+      });
+      item.addEventListener('dragover', event => { event.preventDefault(); event.stopPropagation(); item.classList.add('gallery-drop-target'); });
+      item.addEventListener('dragleave', event => { event.stopPropagation(); item.classList.remove('gallery-drop-target'); });
+      item.addEventListener('drop', event => {
+        event.preventDefault(); event.stopPropagation(); item.classList.remove('gallery-drop-target');
+        if (draggedGalleryImage?.blockId === item.closest('.newsletter-block').dataset.id) reorderGalleryImage(draggedGalleryImage.blockId, draggedGalleryImage.imageId, item.dataset.imageId);
+      });
+      item.addEventListener('dragend', event => { event.stopPropagation(); draggedGalleryImage = null; render(); });
+    });
+  }
+
+  function selectBlock(id, rerender = true) {
+    const alreadySelected = selectedId === id;
+    selectedId = id;
+    if (rerender && !alreadySelected) render();
+    else renderSettings();
+  }
+  function addBlock(type, index = state.blocks.length) {
+    if (!blockDefaults[type]) return;
+    const block = blockDefaults[type]();
+    mutate(() => state.blocks.splice(index, 0, block));
+    selectedId = block.id;
+    render();
+    showToast(`${type === 'imageText' ? 'Image + text' : type} block added`);
+  }
+  function deleteBlock(id) { mutate(() => { state.blocks = state.blocks.filter(b => b.id !== id); selectedId = null; }); }
+  function duplicateBlock(id) {
+    mutate(() => {
+      const index = state.blocks.findIndex(b => b.id === id);
+      const copy = { ...JSON.parse(JSON.stringify(state.blocks[index])), id: uid() };
+      state.blocks.splice(index + 1, 0, copy); selectedId = copy.id;
+    });
+  }
+  function moveBy(id, delta) {
+    const oldIndex = state.blocks.findIndex(b => b.id === id);
+    const newIndex = Math.max(0, Math.min(state.blocks.length - 1, oldIndex + delta));
+    if (oldIndex === newIndex) return;
+    mutate(() => state.blocks.splice(newIndex, 0, state.blocks.splice(oldIndex, 1)[0]));
+  }
+  function moveBlockTo(sourceId, targetId) {
+    mutate(() => {
+      const from = state.blocks.findIndex(b => b.id === sourceId);
+      let to = state.blocks.findIndex(b => b.id === targetId);
+      const [block] = state.blocks.splice(from, 1);
+      if (from < to) to--;
+      state.blocks.splice(to, 0, block);
+    });
+  }
+
+  function renderSettings() {
+    const block = state.blocks.find(b => b.id === selectedId);
+    $('#global-settings').hidden = Boolean(block);
+    $('#block-settings').hidden = !block;
+    $('#settings-title').textContent = block ? `${labelType(block.type)} block` : 'Newsletter style';
+    $('#settings-subtitle').textContent = block ? 'Fine-tune this piece of your story.' : 'Set the look and feel for your whole story.';
+    if (!block) return;
+    let fields = '';
+    if (block.type === 'heading') fields += `<label class="field-label">Alignment<select data-setting="align"><option value="left">Left</option><option value="center">Center</option><option value="right">Right</option></select></label>`;
+    if (block.type === 'image' || block.type === 'imageText') fields += `<label class="field-label">Alternative text<input data-setting="alt" value="${escapeHtml(block.alt || '')}" placeholder="Describe the image"></label><label class="check-label"><input type="checkbox" data-setting="showFileName" ${block.showFileName ? 'checked' : ''}> Display image file name</label>`;
+    if (block.type === 'gallery') fields += `<label class="field-label">Art arrangement<select data-setting="layout"><option value="grid">Equal artwork grid</option><option value="featured">Featured artwork</option><option value="process">Process sequence</option><option value="comparison">Side-by-side comparison</option><option value="wall">Gallery wall</option><option value="list">Artwork with descriptions</option></select></label><label class="field-label">Photos per row<select data-setting="columns"><option value="1">1 large photo</option><option value="2">2 photos</option><option value="3">3 photos</option><option value="4">4 photos</option></select></label><label class="field-label">Photo shape<select data-setting="crop"><option value="square">Square</option><option value="landscape">Landscape</option><option value="natural">Natural proportions</option></select></label><label class="check-label"><input type="checkbox" data-setting="showFileName" ${block.showFileName ? 'checked' : ''}> Display image file names</label><label class="check-label"><input type="checkbox" data-setting="hidden" ${block.hidden ? 'checked' : ''}> Hide this grade when exporting</label><button class="settings-add-photos" data-settings-gallery-upload>+ Add more photos</button><button class="settings-add-photos" data-duplicate-grade>Duplicate this grade</button><button class="settings-add-photos" data-clear-grade>Clear this grade's photos</button>`;
+    if (block.type === 'imageText') fields += `<label class="field-label">Image position<select data-setting="imageSide"><option value="left">Left</option><option value="right">Right</option></select></label>`;
+    if (block.type === 'button') fields += `<label class="field-label">Destination URL<input data-setting="url" value="${escapeHtml(block.url || '')}" placeholder="https://..."></label>`;
+    $('#block-settings').innerHTML = `<section class="setting-section"><h3>Block settings</h3><div style="display:grid;gap:15px">${fields || '<p style="margin:0;color:var(--muted);font-size:11px">Edit this block directly on the canvas.</p>'}</div></section><section class="setting-section"><button class="danger-btn" data-delete-selected>Delete this block</button></section>`;
+    $$('[data-setting]', $('#block-settings')).forEach(input => {
+      if (input.type !== 'checkbox') input.value = block[input.dataset.setting] || input.value;
+      input.addEventListener('change', () => mutate(() => block[input.dataset.setting] = input.type === 'checkbox' ? input.checked : input.value));
+    });
+    $('[data-delete-selected]', $('#block-settings')).addEventListener('click', () => deleteBlock(block.id));
+    const addGalleryButton = $('[data-settings-gallery-upload]', $('#block-settings'));
+    if (addGalleryButton) addGalleryButton.addEventListener('click', () => $(`.newsletter-block[data-id="${block.id}"] [data-gallery-upload]`, canvas).click());
+    const duplicateGradeButton = $('[data-duplicate-grade]', $('#block-settings'));
+    if (duplicateGradeButton) duplicateGradeButton.addEventListener('click', () => duplicateBlock(block.id));
+    const clearGradeButton = $('[data-clear-grade]', $('#block-settings'));
+    if (clearGradeButton) clearGradeButton.addEventListener('click', () => {
+      if (block.images.length && !confirm(`Remove all ${block.images.length} photos from ${block.heading}?`)) return;
+      mutate(() => { block.images = []; });
+    });
+  }
+
+  function labelType(type) { return ({ imageText: 'Image + text', quote: 'Callout' })[type] || type[0].toUpperCase() + type.slice(1); }
+
+  function handleImage(event, id) {
+    const file = event.target.files[0];
     if (!file) return;
     if (file.size > 12 * 1024 * 1024) return showToast('Please choose an image smaller than 12 MB.');
     processImageFile(file).then(data => mutate(() => {
@@ -592,4 +717,3 @@
 
   init();
 })();
-
