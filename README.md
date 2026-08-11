@@ -22,6 +22,9 @@ A dependency-free, local-first drag-and-drop newsletter builder designed for Git
 - Art-focused featured, process, comparison, gallery-wall, grid, and descriptive-list arrangements
 - Collapsible, duplicable, hideable grade sections with project titles and descriptions
 - Pre-export privacy audit for visible filenames, possible personal names, and missing image descriptions
+- IndexedDB-backed custom templates with save, reuse, rename, delete, export, and import controls
+- Photo-safe template saving that removes artwork images by default, with an opt-in to preserve them
+- Art Show Invitation, Family Art Night, Supply Request, Creative Process, and Semester Recap prebuilts
 
 ## Run locally
 
@@ -47,4 +50,3 @@ The site will be available at `https://YOUR-USERNAME.github.io/REPOSITORY-NAME/`
 Projects are saved to IndexedDB in the current browser. Existing projects from the original localStorage release migrate automatically. Uploaded images are resized in the browser and stored inside the project. Export a `.newsletter.json` backup to move a project to another browser or device.
 
 GitHub Pages is static hosting, so this release has no accounts, cloud sync, subscriber database, or direct email delivery.
-

@@ -58,14 +58,24 @@
         <section id="templates-tab" class="tab-content">
           <div class="panel-heading">
             <p class="eyebrow">Quick start</p>
-            <h2>Choose a mood</h2>
-            <p>Templates replace your current canvas.</p>
+            <h2>Template library</h2>
+            <p>Start with your own layout or a ready-made design.</p>
           </div>
+          <div class="template-section-heading"><strong>My templates</strong><button id="save-template-btn">+ Save current</button></div>
+          <div id="custom-template-list" class="template-list custom-template-list"><p class="template-empty">No custom templates yet.</p></div>
+          <button id="import-template-btn" class="template-import-btn">Import a template file</button>
+          <input id="import-template-file" type="file" accept=".json,.letterdrop-template.json" hidden>
+          <div class="template-section-heading"><strong>Prebuilt templates</strong></div>
           <div class="template-list">
             <button class="template-card" data-template="editorial"><span class="template-art editorial-art">Aa</span><span><strong>Sunday Edit</strong><small>Warm editorial</small></span></button>
             <button class="template-card" data-template="classroom"><span class="template-art classroom-art">★</span><span><strong>Classroom Notes</strong><small>Bright and friendly</small></span></button>
             <button class="template-card" data-template="business"><span class="template-art business-art">N°</span><span><strong>Studio Dispatch</strong><small>Clean and modern</small></span></button>
             <button class="template-card" data-template="grades"><span class="template-art grades-art">PK–8</span><span><strong>Art Showcase</strong><small>PreK through Grade 8</small></span></button>
+            <button class="template-card" data-template="artShow"><span class="template-art art-show-art">SHOW</span><span><strong>Art Show Invitation</strong><small>Event details and featured work</small></span></button>
+            <button class="template-card" data-template="familyNight"><span class="template-art family-art">♥</span><span><strong>Family Art Night</strong><small>Welcome families to create</small></span></button>
+            <button class="template-card" data-template="supplies"><span class="template-art supplies-art">✂</span><span><strong>Supply Request</strong><small>A friendly classroom wish list</small></span></button>
+            <button class="template-card" data-template="process"><span class="template-art process-art">1→3</span><span><strong>Creative Process</strong><small>Sketch to finished artwork</small></span></button>
+            <button class="template-card" data-template="semester"><span class="template-art semester-art">½</span><span><strong>Semester Recap</strong><small>A full-term visual summary</small></span></button>
           </div>
         </section>
 
@@ -157,11 +167,24 @@
     </div>
   </div>
 
+  <div id="template-modal" class="modal" hidden>
+    <div class="modal-backdrop" data-close-template></div>
+    <div class="template-dialog" role="dialog" aria-modal="true" aria-labelledby="template-modal-heading">
+      <header><div><p class="eyebrow">My templates</p><h2 id="template-modal-heading">Save current design</h2></div><button class="close-btn" data-close-template aria-label="Close template dialog">×</button></header>
+      <div class="template-dialog-body">
+        <label class="field-label">Template name<input id="template-name" value="My art newsletter" maxlength="80"></label>
+        <label class="check-label"><input id="template-keep-images" type="checkbox"> Keep current photos in this template</label>
+        <p>Photos are removed by default to help prevent old student work from appearing in a new newsletter.</p>
+        <button id="confirm-save-template" class="primary-btn">Save template</button>
+      </div>
+    </div>
+  </div>
+
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <div id="import-progress" class="import-progress" role="status" aria-live="polite" hidden>
     <div><strong id="import-progress-label">Preparing photos…</strong><span id="import-progress-count"></span></div>
     <progress id="import-progress-bar" value="0" max="1"></progress>
   </div>
-  <script src="app-1.0.1.js"></script>
+  <script src="app-1.1.0.js"></script>
 </body>
 </html>

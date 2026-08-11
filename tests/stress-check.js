@@ -49,9 +49,12 @@ const checks = {
   privacyAudit: /function privacySummary/.test(app) && html.includes('privacy-audit'),
   printBreaks: /break-after:avoid/.test(app),
   filenamesPrivateByDefault: project.blocks.every(block => block.showFileName === false),
+  customTemplateStorage: /createObjectStore\('templates'/.test(app) && /saveCurrentTemplate/.test(app),
+  photoSafeTemplateDefault: /template-keep-images/.test(html) && /checked = false/.test(app),
+  customTemplatePortability: /exportCustomTemplate/.test(app) && /importCustomTemplate/.test(app),
+  artTeacherPrebuilts: ['artShow', 'familyNight', 'supplies', 'process', 'semester'].every(template => app.includes(`${template}: () =>`)),
   dragReorder: /reorderGalleryImage/.test(app)
 };
 
 console.log(JSON.stringify({ checks, serializedBytes: Buffer.byteLength(serialized) }, null, 2));
 if (Object.values(checks).some(value => !value)) process.exit(1);
-
