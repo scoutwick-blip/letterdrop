@@ -65,10 +65,11 @@
             <button class="template-card" data-template="editorial"><span class="template-art editorial-art">Aa</span><span><strong>Sunday Edit</strong><small>Warm editorial</small></span></button>
             <button class="template-card" data-template="classroom"><span class="template-art classroom-art">★</span><span><strong>Classroom Notes</strong><small>Bright and friendly</small></span></button>
             <button class="template-card" data-template="business"><span class="template-art business-art">N°</span><span><strong>Studio Dispatch</strong><small>Clean and modern</small></span></button>
+            <button class="template-card" data-template="grades"><span class="template-art grades-art">PK–8</span><span><strong>Art Showcase</strong><small>PreK through Grade 8</small></span></button>
           </div>
         </section>
 
-        <div class="local-note"><span aria-hidden="true">◉</span><p><strong>Private by default</strong><br>Your work stays in this browser.</p></div>
+        <div class="local-note"><span aria-hidden="true">◉</span><p><strong>Private by default</strong><br>Your work stays in this browser.<br><span id="storage-status">Checking storage…</span></p></div>
       </aside>
 
       <section class="canvas-area" aria-label="Newsletter canvas">
@@ -127,6 +128,7 @@
         <div class="project-actions">
           <button id="new-btn">New project</button>
           <button id="import-btn">Import project</button>
+          <button id="restore-btn">Restore backup</button>
           <input id="import-file" type="file" accept=".json,.newsletter.json" hidden>
         </div>
       </aside>
@@ -146,6 +148,7 @@
     <div class="export-dialog" role="dialog" aria-modal="true" aria-labelledby="export-heading">
       <header><div><p class="eyebrow">Ready to share</p><h2 id="export-heading">Take your story with you</h2></div><button class="close-btn" data-close-export aria-label="Close export options">×</button></header>
       <p>Choose the format that fits where your newsletter is going next.</p>
+      <div id="privacy-audit" class="privacy-audit"></div>
       <div class="export-grid">
         <button id="download-html"><span class="export-icon">〈/〉</span><strong>Web page</strong><small>A self-contained HTML file</small></button>
         <button id="print-pdf"><span class="export-icon">▤</span><strong>Print or PDF</strong><small>Use your browser's print dialog</small></button>
@@ -155,6 +158,10 @@
   </div>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="import-progress" class="import-progress" role="status" aria-live="polite" hidden>
+    <div><strong id="import-progress-label">Preparing photos…</strong><span id="import-progress-count"></span></div>
+    <progress id="import-progress-bar" value="0" max="1"></progress>
+  </div>
   <script src="app.js"></script>
 </body>
 </html>
