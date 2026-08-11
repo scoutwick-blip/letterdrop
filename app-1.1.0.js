@@ -25,10 +25,10 @@
       title: 'The Sunday Edit',
       theme: { accent: '#d7653b', ink: '#25312b', page: '#f3eee5', font: 'editorial', density: 'comfortable' },
       blocks: [
-        { id: uid(), type: 'heading', text: 'Slow mornings, good stories.', level: 1, align: 'left', hero: true, kicker: 'A WEEKLY NOTE · ISSUE 01', date: 'SUNDAY, AUGUST 11' },
+        { id: uid(), type: 'heading', text: 'Slow mornings, good stories.', level: 1, align: 'left', hero: true, kicker: 'A WEEKLY NOTE - ISSUE 01', date: 'SUNDAY, AUGUST 11' },
         { id: uid(), type: 'image', src: '', alt: '', caption: 'A quiet place for your lead photograph.' },
-        { id: uid(), type: 'paragraph', text: 'Welcome to this week’s edit—a collection of small observations, useful ideas, and moments worth carrying into the days ahead.' },
-        { id: uid(), type: 'quote', text: 'There is always something beautiful waiting to be noticed.', cite: 'This week’s reminder' },
+        { id: uid(), type: 'paragraph', text: "Welcome to this week's edit - a collection of small observations, useful ideas, and moments worth carrying into the days ahead." },
+        { id: uid(), type: 'quote', text: 'There is always something beautiful waiting to be noticed.', cite: "This week's reminder" },
         { id: uid(), type: 'button', label: 'Read the full story', url: 'https://example.com' }
       ]
     }),
@@ -36,7 +36,7 @@
       title: 'Classroom Notes',
       theme: { accent: '#16756a', ink: '#183d3a', page: '#eaf5f1', font: 'modern', density: 'comfortable' },
       blocks: [
-        { id: uid(), type: 'heading', text: 'Look what we learned!', level: 1, align: 'center', hero: true, kicker: 'ROOM 12 · FAMILY UPDATE', date: 'AUGUST NEWSLETTER' },
+        { id: uid(), type: 'heading', text: 'Look what we learned!', level: 1, align: 'center', hero: true, kicker: 'ROOM 12 - FAMILY UPDATE', date: 'AUGUST NEWSLETTER' },
         { id: uid(), type: 'imageText', src: '', alt: '', heading: 'Curious minds at work', text: 'Use this space for a classroom highlight, student project, or a peek at what comes next.', imageSide: 'left' },
         { id: uid(), type: 'heading', text: 'Dates to remember', level: 2, align: 'left' },
         { id: uid(), type: 'paragraph', text: 'Add field trips, special events, classroom celebrations, and friendly reminders for families.' },
@@ -47,7 +47,7 @@
       title: 'Studio Dispatch',
       theme: { accent: '#d6a645', ink: '#152631', page: '#f4f1e9', font: 'modern', density: 'airy' },
       blocks: [
-        { id: uid(), type: 'heading', text: 'Ideas made visible.', level: 1, align: 'left', hero: true, kicker: 'STUDIO DISPATCH · NO. 04', date: 'SUMMER EDITION' },
+        { id: uid(), type: 'heading', text: 'Ideas made visible.', level: 1, align: 'left', hero: true, kicker: 'STUDIO DISPATCH - NO. 04', date: 'SUMMER EDITION' },
         { id: uid(), type: 'paragraph', text: 'A considered update from our studio: recent work, lessons from the process, and what we are creating next.' },
         { id: uid(), type: 'divider' },
         { id: uid(), type: 'imageText', src: '', alt: '', heading: 'Behind the work', text: 'Give readers the story behind a project, product, or important milestone.', imageSide: 'right' },
@@ -58,18 +58,18 @@
       title: 'The Art Room Gallery',
       theme: { accent: '#9b5b36', ink: '#29352f', page: '#f5f0e4', font: 'editorial', density: 'comfortable' },
       blocks: [
-        { id: uid(), type: 'heading', text: 'Made with curious hands.', level: 1, align: 'left', hero: true, kicker: 'FROM THE ART ROOM · STUDENT GALLERY', date: 'OUR LATEST CREATIONS' },
-        { id: uid(), type: 'paragraph', text: 'Welcome to our art-room gallery—a look at the ideas, materials, and creative discoveries happening from PreK through Grade 8.' },
+        { id: uid(), type: 'heading', text: 'Made with curious hands.', level: 1, align: 'left', hero: true, kicker: 'FROM THE ART ROOM - STUDENT GALLERY', date: 'OUR LATEST CREATIONS' },
+        { id: uid(), type: 'paragraph', text: 'Welcome to our art-room gallery - a look at the ideas, materials, and creative discoveries happening from PreK through Grade 8.' },
         ...['PreK', 'Kindergarten', 'Grade 1', 'Grade 2', 'Grade 3', 'Grade 4', 'Grade 5', 'Grade 6', 'Grade 7', 'Grade 8'].map((heading, index) => ({ id: uid(), type: 'gallery', heading, projectTitle: 'Project title', description: 'Describe what students explored, which materials they used, or what inspired this work.', columns: 3, crop: 'square', layout: index === 0 ? 'wall' : 'grid', showFileName: false, hidden: false, collapsed: false, images: [] })),
         { id: uid(), type: 'heading', text: 'Coming up in the art room', level: 2, align: 'left' },
         { id: uid(), type: 'paragraph', text: 'Add upcoming exhibitions, supply reminders, volunteer opportunities, or a short note for families.' }
       ]
     }),
     artShow: () => ({
-      title: 'You’re Invited: Student Art Show',
+      title: "You're Invited: Student Art Show",
       theme: { accent: '#7c315f', ink: '#2e2430', page: '#f8efe9', font: 'editorial', density: 'airy' },
       blocks: [
-        { id: uid(), type: 'heading', text: 'Come see what we made.', level: 1, align: 'center', hero: true, kicker: 'PREK–8 STUDENT ART SHOW', date: 'DATE · TIME · LOCATION' },
+        { id: uid(), type: 'heading', text: 'Come see what we made.', level: 1, align: 'center', hero: true, kicker: 'PREK-8 STUDENT ART SHOW', date: 'DATE - TIME - LOCATION' },
         { id: uid(), type: 'paragraph', text: 'Families and friends are warmly invited to celebrate a year of imagination, experimentation, and student creativity.' },
         { id: uid(), type: 'image', src: '', alt: '', fileName: '', showFileName: false, caption: 'Add a featured artwork or event poster.' },
         { id: uid(), type: 'quote', text: 'Every child is an artist.', cite: 'A celebration of student voice' },
@@ -81,8 +81,8 @@
       theme: { accent: '#b84c5b', ink: '#3a2930', page: '#fff1e8', font: 'modern', density: 'comfortable' },
       blocks: [
         { id: uid(), type: 'heading', text: 'Create together.', level: 1, align: 'center', hero: true, kicker: 'FAMILY ART NIGHT', date: 'SAVE THE DATE' },
-        { id: uid(), type: 'paragraph', text: 'Join us for an evening of hands-on art making. No experience is needed—just bring your curiosity.' },
-        { id: uid(), type: 'gallery', heading: 'What we’ll make', projectTitle: 'Creative stations for every age', description: 'Add examples of the projects families can try.', columns: 3, crop: 'square', layout: 'wall', showFileName: false, hidden: false, collapsed: false, images: [] },
+        { id: uid(), type: 'paragraph', text: 'Join us for an evening of hands-on art making. No experience is needed - just bring your curiosity.' },
+        { id: uid(), type: 'gallery', heading: "What we'll make", projectTitle: 'Creative stations for every age', description: 'Add examples of the projects families can try.', columns: 3, crop: 'square', layout: 'wall', showFileName: false, hidden: false, collapsed: false, images: [] },
         { id: uid(), type: 'heading', text: 'What to know', level: 2, align: 'left' },
         { id: uid(), type: 'paragraph', text: 'Add the time, location, parking information, clothing recommendations, and any materials families should bring.' }
       ]
@@ -103,7 +103,7 @@
       title: 'From Idea to Artwork',
       theme: { accent: '#3f6f9f', ink: '#263746', page: '#edf4f8', font: 'editorial', density: 'comfortable' },
       blocks: [
-        { id: uid(), type: 'heading', text: 'The creative process.', level: 1, align: 'left', hero: true, kicker: 'INSIDE THE ART ROOM', date: 'SKETCH · EXPLORE · REFLECT' },
+        { id: uid(), type: 'heading', text: 'The creative process.', level: 1, align: 'left', hero: true, kicker: 'INSIDE THE ART ROOM', date: 'SKETCH - EXPLORE - REFLECT' },
         { id: uid(), type: 'paragraph', text: 'Art is more than a finished product. Use this newsletter to show the questions, experiments, revisions, and discoveries along the way.' },
         { id: uid(), type: 'gallery', heading: 'Project journey', projectTitle: 'From first sketch to final reflection', description: 'Add photos in order to tell the story of how this artwork developed.', columns: 4, crop: 'square', layout: 'process', showFileName: false, hidden: false, collapsed: false, images: [] },
         { id: uid(), type: 'quote', text: 'What surprised you while making this?', cite: 'Student reflection prompt' }
@@ -113,11 +113,11 @@
       title: 'Semester in the Art Room',
       theme: { accent: '#52755a', ink: '#29382c', page: '#eef4e9', font: 'editorial', density: 'comfortable' },
       blocks: [
-        { id: uid(), type: 'heading', text: 'A semester of making.', level: 1, align: 'left', hero: true, kicker: 'THE ART ROOM RECAP', date: 'FALL · WINTER · SPRING' },
+        { id: uid(), type: 'heading', text: 'A semester of making.', level: 1, align: 'left', hero: true, kicker: 'THE ART ROOM RECAP', date: 'FALL - WINTER - SPRING' },
         { id: uid(), type: 'paragraph', text: 'A visual reflection on the skills, materials, artists, and big ideas we explored together this semester.' },
-        ...['Early Artists · PreK–2', 'Growing Artists · Grades 3–5', 'Studio Artists · Grades 6–8'].map((heading, index) => ({ id: uid(), type: 'gallery', heading, projectTitle: 'Semester highlights', description: 'Add favorite projects, discoveries, and moments from this grade band.', columns: 3, crop: 'square', layout: index === 2 ? 'featured' : 'grid', showFileName: false, hidden: false, collapsed: false, images: [] })),
+        ...['Early Artists - PreK-2', 'Growing Artists - Grades 3-5', 'Studio Artists - Grades 6-8'].map((heading, index) => ({ id: uid(), type: 'gallery', heading, projectTitle: 'Semester highlights', description: 'Add favorite projects, discoveries, and moments from this grade band.', columns: 3, crop: 'square', layout: index === 2 ? 'featured' : 'grid', showFileName: false, hidden: false, collapsed: false, images: [] })),
         { id: uid(), type: 'heading', text: 'What comes next', level: 2, align: 'left' },
-        { id: uid(), type: 'paragraph', text: 'Preview next semester’s materials, themes, exhibitions, or creative challenges.' }
+        { id: uid(), type: 'paragraph', text: "Preview next semester's materials, themes, exhibitions, or creative challenges." }
       ]
     })
   };
@@ -245,7 +245,7 @@
     const templates = (await getCustomTemplates()).sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
     const list = $('#custom-template-list');
     if (!templates.length) { list.innerHTML = '<p class="template-empty">No custom templates yet.</p>'; return; }
-    list.innerHTML = templates.map(template => `<div class="custom-template-card" data-custom-template="${template.id}"><button data-use-custom><strong>${escapeHtml(template.name)}</strong><small>${template.project.blocks.length} blocks · ${template.includesImages ? 'includes photos' : 'photos removed'}</small></button><div class="custom-template-actions"><button data-export-custom title="Export template" aria-label="Export ${escapeHtml(template.name)}">↓</button><button data-rename-custom title="Rename template" aria-label="Rename ${escapeHtml(template.name)}">✎</button><button data-delete-custom title="Delete template" aria-label="Delete ${escapeHtml(template.name)}">×</button></div></div>`).join('');
+    list.innerHTML = templates.map(template => `<div class="custom-template-card" data-custom-template="${template.id}"><button data-use-custom><strong>${escapeHtml(template.name)}</strong><small>${template.project.blocks.length} blocks - ${template.includesImages ? 'includes photos' : 'photos removed'}</small></button><div class="custom-template-actions"><button data-export-custom title="Export template" aria-label="Export ${escapeHtml(template.name)}">EXP</button><button data-rename-custom title="Rename template" aria-label="Rename ${escapeHtml(template.name)}">EDIT</button><button data-delete-custom title="Delete template" aria-label="Delete ${escapeHtml(template.name)}">x</button></div></div>`).join('');
     $$('[data-custom-template]', list).forEach(card => {
       const template = templates.find(item => item.id === card.dataset.customTemplate);
       $('[data-use-custom]', card).addEventListener('click', () => applyCustomTemplate(template));
@@ -265,7 +265,7 @@
   }
 
   function applyCustomTemplate(template) {
-    if (state.blocks.length && !confirm(`Replace the current newsletter with “${template.name}”? You can undo this change.`)) return;
+    if (state.blocks.length && !confirm(`Replace the current newsletter with "${template.name}"? You can undo this change.`)) return;
     recordHistory(); state = freshProjectFromTemplate(template.project, template.name); selectedId = null; future = []; render(); scheduleSave(); showToast(`${template.name} applied`);
   }
 
@@ -283,7 +283,7 @@
   }
 
   async function deleteCustomTemplate(template) {
-    if (!confirm(`Delete “${template.name}” from My Templates?`)) return;
+    if (!confirm(`Delete "${template.name}" from My Templates?`)) return;
     await dbRequest('templates', 'readwrite', store => store.delete(template.id));
     await renderCustomTemplates(); showToast('Template deleted');
   }
@@ -297,332 +297,7 @@
         template.id = uid(); template.createdAt = new Date().toISOString(); template.updatedAt = template.createdAt;
         await dbRequest('templates', 'readwrite', store => store.put(template));
         await renderCustomTemplates(); showToast(`${template.name} imported`);
-      } catch { showToast('That file is not a valid Letterdrop template.'); }
-    };
-    reader.readAsText(file);
-  }
-
-  function snapshot() { return JSON.stringify(state); }
-  function restore(serialized) { state = JSON.parse(serialized); selectedId = null; render(); scheduleSave(); }
-  function recordHistory() {
-    history.push(snapshot());
-    if (history.length > MAX_HISTORY) history.shift();
-    future = [];
-    updateHistoryButtons();
-  }
-  function undo() {
-    if (!history.length) return;
-    future.push(snapshot());
-    restore(history.pop());
-    updateHistoryButtons();
-  }
-  function redo() {
-    if (!future.length) return;
-    history.push(snapshot());
-    restore(future.pop());
-    updateHistoryButtons();
-  }
-  function updateHistoryButtons() {
-    $('#undo-btn').disabled = !history.length;
-    $('#redo-btn').disabled = !future.length;
-  }
-
-  function scheduleSave() {
-    $('#save-status').textContent = 'Saving…';
-    clearTimeout(saveTimer);
-    saveTimer = setTimeout(async () => {
-      try {
-        state.updatedAt = new Date().toISOString();
-        await persistProject(state);
-        $('#save-status').textContent = 'Saved locally';
-      } catch {
-        $('#save-status').textContent = 'Save failed — export a backup';
-        showToast('The project could not be saved. Download a project backup.');
-      }
-    }, 350);
-  }
-
-  function mutate(action, rerender = true) {
-    recordHistory();
-    action();
-    if (rerender) render();
-    scheduleSave();
-  }
-
-  function escapeHtml(value = '') {
-    return String(value).replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[char]));
-  }
-
-  function safeUrl(value = '') {
-    try {
-      const url = new URL(value, window.location.href);
-      return ['http:', 'https:', 'mailto:', 'tel:'].includes(url.protocol) ? value : '#';
-    } catch { return '#'; }
-  }
-
-  function render() {
-    $('#project-title').value = state.title;
-    $('#accent-color').value = state.theme.accent;
-    $('#text-color').value = state.theme.ink;
-    $('#page-color').value = state.theme.page;
-    $('#font-select').value = state.theme.font;
-    $$('#density-control button').forEach(btn => btn.classList.toggle('active', btn.dataset.density === state.theme.density));
-    applyTheme(canvas);
-    canvas.innerHTML = state.blocks.map(renderBlock).join('');
-    wireCanvas();
-    $('#block-count').textContent = `${state.blocks.length} block${state.blocks.length === 1 ? '' : 's'}`;
-    renderSettings();
-  }
-
-  function applyTheme(target) {
-    target.style.setProperty('--newsletter-accent', state.theme.accent);
-    target.style.setProperty('--newsletter-ink', state.theme.ink);
-    target.style.setProperty('--newsletter-page', state.theme.page);
-    target.style.setProperty('--block-space', ({ compact: '19px', comfortable: '28px', airy: '39px' })[state.theme.density]);
-    target.classList.remove('font-editorial', 'font-modern', 'font-classic');
-    target.classList.add(`font-${state.theme.font}`);
-  }
-
-  function tools(block) {
-    return `<div class="block-tools" aria-label="Block actions">
-      <button class="drag-handle" draggable="true" title="Drag to move" aria-label="Drag to move">⠿</button>
-      <button data-action="up" title="Move up" aria-label="Move block up">↑</button>
-      <button data-action="down" title="Move down" aria-label="Move block down">↓</button>
-      <button data-action="duplicate" title="Duplicate" aria-label="Duplicate block">⧉</button>
-      <button data-action="delete" title="Delete" aria-label="Delete block">×</button>
-    </div>`;
-  }
-
-  function renderBlock(block) {
-    const selected = selectedId === block.id ? ' selected' : '';
-    const common = `class="newsletter-block${block.hero ? ' hero-block' : ''}${block.hidden ? ' grade-hidden' : ''}${block.collapsed ? ' grade-collapsed' : ''}${selected}" data-id="${block.id}" data-type="${block.type}"`;
-    let content = '';
-    if (block.type === 'heading') {
-      content = `${block.hero && block.kicker ? `<p class="hero-kicker editable" contenteditable="true" data-field="kicker">${escapeHtml(block.kicker)}</p>` : ''}
-        <h${block.level || 2} class="newsletter-heading editable" contenteditable="true" data-field="text" style="text-align:${block.align || 'left'}">${escapeHtml(block.text)}</h${block.level || 2}>
-        ${block.hero && block.date ? `<p class="hero-date editable" contenteditable="true" data-field="date">${escapeHtml(block.date)}</p>` : ''}`;
-    } else if (block.type === 'paragraph') {
-      content = `<p class="newsletter-paragraph editable" contenteditable="true" data-field="text">${escapeHtml(block.text)}</p>`;
-    } else if (block.type === 'image') {
-      content = `${imageFrame(block)}${renderFileName(block)}<p class="image-caption editable" contenteditable="true" data-field="caption">${escapeHtml(block.caption || '')}</p>`;
-    } else if (block.type === 'gallery') {
-      content = renderGallery(block);
-    } else if (block.type === 'imageText') {
-      const image = imageFrame(block);
-      const copy = `<div class="image-text-copy"><h2 class="editable" contenteditable="true" data-field="heading">${escapeHtml(block.heading)}</h2><p class="editable" contenteditable="true" data-field="text">${escapeHtml(block.text)}</p></div>`;
-      content = `<div class="image-text-layout">${block.imageSide === 'right' ? copy + image : image + copy}</div>${renderFileName(block)}`;
-    } else if (block.type === 'quote') {
-      content = `<div class="quote-block"><p class="quote-text editable" contenteditable="true" data-field="text">${escapeHtml(block.text)}</p><span class="quote-cite editable" contenteditable="true" data-field="cite">${escapeHtml(block.cite)}</span></div>`;
-    } else if (block.type === 'button') {
-      content = `<div class="button-wrap"><a class="newsletter-button editable" href="${escapeHtml(safeUrl(block.url))}" contenteditable="true" data-field="label">${escapeHtml(block.label)}</a></div>`;
-    } else if (block.type === 'divider') {
-      content = '<div class="divider-line" role="separator"></div>';
-    }
-    return `<section ${common}>${tools(block)}${content}</section>`;
-  }
-
-  function imageFrame(block) {
-    const body = block.src
-      ? `<img src="${escapeHtml(block.src)}" alt="${escapeHtml(block.alt)}">`
-      : `<div class="image-placeholder"><div><span>▧</span><small>Click to add a photo</small></div></div>`;
-    return `<div class="image-frame" data-image-upload title="Choose an image">${body}<input type="file" accept="image/jpeg,image/png,image/webp,image/gif" hidden></div>`;
-  }
-
-  function renderFileName(block) {
-    return block.showFileName && block.fileName ? `<p class="image-file-name">${escapeHtml(block.fileName)}</p>` : '';
-  }
-
-  function renderGallery(block) {
-    const items = block.images.length ? block.images.map((image, index) => `<figure class="gallery-item" data-image-id="${image.id}" draggable="true">
-      <img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt || '')}">
-      ${block.showFileName ? `<figcaption>${escapeHtml(image.fileName)}</figcaption>` : ''}
-      <div class="gallery-item-tools" aria-label="Photo actions">
-        <button data-gallery-action="left" data-index="${index}" aria-label="Move photo left">←</button>
-        <button data-gallery-action="right" data-index="${index}" aria-label="Move photo right">→</button>
-        <button data-gallery-action="remove" data-index="${index}" aria-label="Remove photo">×</button>
-      </div>
-    </figure>`).join('') : `<div class="gallery-empty"><span>▦</span><strong>Add a group of photos</strong><small>Choose several images at once; they will be sorted by filename.</small></div>`;
-    return `<div class="gallery-heading-row"><h2 class="gallery-heading editable" contenteditable="true" data-field="heading">${escapeHtml(block.heading || 'Photo group')}</h2><div class="grade-header-actions"><button data-gallery-collapse aria-label="${block.collapsed ? 'Expand' : 'Collapse'} ${escapeHtml(block.heading)}">${block.collapsed ? '＋' : '−'}</button><button class="gallery-add-btn" data-gallery-upload>+ Add photos</button></div><input type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple hidden></div><div class="gallery-body"><h3 class="gallery-project-title editable" contenteditable="true" data-field="projectTitle">${escapeHtml(block.projectTitle || 'Project title')}</h3><p class="gallery-description editable" contenteditable="true" data-field="description">${escapeHtml(block.description || '')}</p><div class="photo-gallery layout-${block.layout || 'grid'} crop-${block.crop || 'square'}" style="--gallery-columns:${block.columns || 3}">${items}</div></div>`;
-  }
-
-  function wireCanvas() {
-    $$('.newsletter-block', canvas).forEach(element => {
-      element.addEventListener('click', event => {
-        if (event.target.closest('.block-tools')) return;
-        selectBlock(element.dataset.id);
-      });
-      element.addEventListener('dragover', event => { event.preventDefault(); element.classList.add('drop-before'); });
-      element.addEventListener('dragleave', () => element.classList.remove('drop-before'));
-      element.addEventListener('drop', event => {
-        event.preventDefault();
-        element.classList.remove('drop-before');
-        const addType = event.dataTransfer.getData('application/x-letterdrop-block');
-        if (addType) return addBlock(addType, state.blocks.findIndex(b => b.id === element.dataset.id));
-        if (draggedId && draggedId !== element.dataset.id) moveBlockTo(draggedId, element.dataset.id);
-      });
-    });
-    $$('.drag-handle', canvas).forEach(handle => {
-      handle.addEventListener('dragstart', event => {
-        draggedId = handle.closest('.newsletter-block').dataset.id;
-        event.dataTransfer.effectAllowed = 'move';
-        setTimeout(() => handle.closest('.newsletter-block').classList.add('dragging'));
-      });
-      handle.addEventListener('dragend', () => { draggedId = null; render(); });
-    });
-    $$('[data-action]', canvas).forEach(button => button.addEventListener('click', event => {
-      event.stopPropagation();
-      const id = button.closest('.newsletter-block').dataset.id;
-      const action = button.dataset.action;
-      if (action === 'delete') deleteBlock(id);
-      if (action === 'duplicate') duplicateBlock(id);
-      if (action === 'up') moveBy(id, -1);
-      if (action === 'down') moveBy(id, 1);
-    }));
-    $$('.editable', canvas).forEach(editable => {
-      editable.addEventListener('focus', () => {
-        recordHistory();
-        selectBlock(editable.closest('.newsletter-block').dataset.id, false);
-      }, { once: true });
-      editable.addEventListener('input', () => {
-        const block = state.blocks.find(b => b.id === editable.closest('.newsletter-block').dataset.id);
-        block[editable.dataset.field] = editable.textContent.trim();
-        scheduleSave();
-      });
-      if (editable.tagName === 'A') editable.addEventListener('click', event => event.preventDefault());
-    });
-    $$('[data-image-upload]', canvas).forEach(frame => {
-      frame.addEventListener('click', event => {
-        if (event.target.tagName === 'INPUT') return;
-        frame.querySelector('input').click();
-      });
-      frame.querySelector('input').addEventListener('change', event => handleImage(event, frame.closest('.newsletter-block').dataset.id));
-    });
-    $$('[data-gallery-upload]', canvas).forEach(button => {
-      const blockElement = button.closest('.newsletter-block');
-      const input = blockElement.querySelector('input[type="file"]');
-      button.addEventListener('click', event => { event.stopPropagation(); input.click(); });
-      input.addEventListener('change', event => { if (event.target.files.length) addFilesToGallery(blockElement.dataset.id, event.target.files); });
-    });
-    $$('[data-gallery-collapse]', canvas).forEach(button => button.addEventListener('click', event => {
-      event.stopPropagation();
-      const blockId = button.closest('.newsletter-block').dataset.id;
-      mutate(() => { const block = state.blocks.find(item => item.id === blockId); block.collapsed = !block.collapsed; });
-    }));
-    $$('.gallery-empty', canvas).forEach(empty => empty.addEventListener('click', () => empty.closest('.newsletter-block').querySelector('[data-gallery-upload]').click()));
-    $$('[data-gallery-action]', canvas).forEach(button => button.addEventListener('click', event => {
-      event.stopPropagation();
-      updateGalleryImage(button.closest('.newsletter-block').dataset.id, Number(button.dataset.index), button.dataset.galleryAction);
-    }));
-    $$('.gallery-item', canvas).forEach(item => {
-      item.addEventListener('dragstart', event => {
-        event.stopPropagation();
-        draggedGalleryImage = { blockId: item.closest('.newsletter-block').dataset.id, imageId: item.dataset.imageId };
-        event.dataTransfer.effectAllowed = 'move';
-        setTimeout(() => item.classList.add('gallery-dragging'));
-      });
-      item.addEventListener('dragover', event => { event.preventDefault(); event.stopPropagation(); item.classList.add('gallery-drop-target'); });
-      item.addEventListener('dragleave', event => { event.stopPropagation(); item.classList.remove('gallery-drop-target'); });
-      item.addEventListener('drop', event => {
-        event.preventDefault(); event.stopPropagation(); item.classList.remove('gallery-drop-target');
-        if (draggedGalleryImage?.blockId === item.closest('.newsletter-block').dataset.id) reorderGalleryImage(draggedGalleryImage.blockId, draggedGalleryImage.imageId, item.dataset.imageId);
-      });
-      item.addEventListener('dragend', event => { event.stopPropagation(); draggedGalleryImage = null; render(); });
-    });
-  }
-
-  function selectBlock(id, rerender = true) {
-    const alreadySelected = selectedId === id;
-    selectedId = id;
-    if (rerender && !alreadySelected) render();
-    else renderSettings();
-  }
-  function addBlock(type, index = state.blocks.length) {
-    if (!blockDefaults[type]) return;
-    const block = blockDefaults[type]();
-    mutate(() => state.blocks.splice(index, 0, block));
-    selectedId = block.id;
-    render();
-    showToast(`${type === 'imageText' ? 'Image + text' : type} block added`);
-  }
-  function deleteBlock(id) { mutate(() => { state.blocks = state.blocks.filter(b => b.id !== id); selectedId = null; }); }
-  function duplicateBlock(id) {
-    mutate(() => {
-      const index = state.blocks.findIndex(b => b.id === id);
-      const copy = { ...JSON.parse(JSON.stringify(state.blocks[index])), id: uid() };
-      state.blocks.splice(index + 1, 0, copy); selectedId = copy.id;
-    });
-  }
-  function moveBy(id, delta) {
-    const oldIndex = state.blocks.findIndex(b => b.id === id);
-    const newIndex = Math.max(0, Math.min(state.blocks.length - 1, oldIndex + delta));
-    if (oldIndex === newIndex) return;
-    mutate(() => state.blocks.splice(newIndex, 0, state.blocks.splice(oldIndex, 1)[0]));
-  }
-  function moveBlockTo(sourceId, targetId) {
-    mutate(() => {
-      const from = state.blocks.findIndex(b => b.id === sourceId);
-      let to = state.blocks.findIndex(b => b.id === targetId);
-      const [block] = state.blocks.splice(from, 1);
-      if (from < to) to--;
-      state.blocks.splice(to, 0, block);
-    });
-  }
-
-  function renderSettings() {
-    const block = state.blocks.find(b => b.id === selectedId);
-    $('#global-settings').hidden = Boolean(block);
-    $('#block-settings').hidden = !block;
-    $('#settings-title').textContent = block ? `${labelType(block.type)} block` : 'Newsletter style';
-    $('#settings-subtitle').textContent = block ? 'Fine-tune this piece of your story.' : 'Set the look and feel for your whole story.';
-    if (!block) return;
-    let fields = '';
-    if (block.type === 'heading') fields += `<label class="field-label">Alignment<select data-setting="align"><option value="left">Left</option><option value="center">Center</option><option value="right">Right</option></select></label>`;
-    if (block.type === 'image' || block.type === 'imageText') fields += `<label class="field-label">Alternative text<input data-setting="alt" value="${escapeHtml(block.alt || '')}" placeholder="Describe the image"></label><label class="check-label"><input type="checkbox" data-setting="showFileName" ${block.showFileName ? 'checked' : ''}> Display image file name</label>`;
-    if (block.type === 'gallery') fields += `<label class="field-label">Art arrangement<select data-setting="layout"><option value="grid">Equal artwork grid</option><option value="featured">Featured artwork</option><option value="process">Process sequence</option><option value="comparison">Side-by-side comparison</option><option value="wall">Gallery wall</option><option value="list">Artwork with descriptions</option></select></label><label class="field-label">Photos per row<select data-setting="columns"><option value="1">1 large photo</option><option value="2">2 photos</option><option value="3">3 photos</option><option value="4">4 photos</option></select></label><label class="field-label">Photo shape<select data-setting="crop"><option value="square">Square</option><option value="landscape">Landscape</option><option value="natural">Natural proportions</option></select></label><label class="check-label"><input type="checkbox" data-setting="showFileName" ${block.showFileName ? 'checked' : ''}> Display image file names</label><label class="check-label"><input type="checkbox" data-setting="hidden" ${block.hidden ? 'checked' : ''}> Hide this grade when exporting</label><button class="settings-add-photos" data-settings-gallery-upload>+ Add more photos</button><button class="settings-add-photos" data-duplicate-grade>Duplicate this grade</button><button class="settings-add-photos" data-clear-grade>Clear this grade's photos</button>`;
-    if (block.type === 'imageText') fields += `<label class="field-label">Image position<select data-setting="imageSide"><option value="left">Left</option><option value="right">Right</option></select></label>`;
-    if (block.type === 'button') fields += `<label class="field-label">Destination URL<input data-setting="url" value="${escapeHtml(block.url || '')}" placeholder="https://..."></label>`;
-    $('#block-settings').innerHTML = `<section class="setting-section"><h3>Block settings</h3><div style="display:grid;gap:15px">${fields || '<p style="margin:0;color:var(--muted);font-size:11px">Edit this block directly on the canvas.</p>'}</div></section><section class="setting-section"><button class="danger-btn" data-delete-selected>Delete this block</button></section>`;
-    $$('[data-setting]', $('#block-settings')).forEach(input => {
-      if (input.type !== 'checkbox') input.value = block[input.dataset.setting] || input.value;
-      input.addEventListener('change', () => mutate(() => block[input.dataset.setting] = input.type === 'checkbox' ? input.checked : input.value));
-    });
-    $('[data-delete-selected]', $('#block-settings')).addEventListener('click', () => deleteBlock(block.id));
-    const addGalleryButton = $('[data-settings-gallery-upload]', $('#block-settings'));
-    if (addGalleryButton) addGalleryButton.addEventListener('click', () => $(`.newsletter-block[data-id="${block.id}"] [data-gallery-upload]`, canvas).click());
-    const duplicateGradeButton = $('[data-duplicate-grade]', $('#block-settings'));
-    if (duplicateGradeButton) duplicateGradeButton.addEventListener('click', () => duplicateBlock(block.id));
-    const clearGradeButton = $('[data-clear-grade]', $('#block-settings'));
-    if (clearGradeButton) clearGradeButton.addEventListener('click', () => {
-      if (block.images.length && !confirm(`Remove all ${block.images.length} photos from ${block.heading}?`)) return;
-      mutate(() => { block.images = []; });
-    });
-  }
-
-  function labelType(type) { return ({ imageText: 'Image + text', quote: 'Callout' })[type] || type[0].toUpperCase() + type.slice(1); }
-
-  function handleImage(event, id) {
-    const file = event.target.files[0];
-    if (!file) return;
-    if (file.size > 12 * 1024 * 1024) return showToast('Please choose an image smaller than 12 MB.');
-    processImageFile(file).then(data => mutate(() => {
-      const block = state.blocks.find(b => b.id === id);
-      block.src = data;
-      block.fileName = file.name;
-      if (!block.alt) block.alt = file.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
-    })).catch(() => showToast(`Could not read ${file.name}.`));
-  }
-
-  function processImageFile(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onerror = reject;
-      reader.onload = () => resizeImage(reader.result, file.type, resolve);
-      reader.readAsDataURL(file);
-    });
-  }
-
-  function showImportProgress(label, current, total) {
-    $('#import-progress').hidden = false;
+      } catch { showToast('That file is not a valid L…5232 tokens truncated…idden = false;
     $('#import-progress-label').textContent = label;
     $('#import-progress-count').textContent = `${current} / ${total}`;
     $('#import-progress-bar').max = Math.max(total, 1);
@@ -638,7 +313,7 @@
     const prepared = [];
     activeImports++;
     try {
-      showImportProgress('Optimizing photos…', 0, files.length);
+      showImportProgress('Optimizing photos...', 0, files.length);
       for (let index = 0; index < files.length; index++) {
         const file = files[index];
         try {
@@ -654,7 +329,7 @@
   }
 
   async function addFilesToGallery(blockId, fileList) {
-    showToast('Preparing photo group…');
+    showToast('Preparing photo group...');
     const prepared = await prepareImageFiles(fileList);
     if (!prepared.length) return showToast('No supported images were found.');
     mutate(() => state.blocks.find(block => block.id === blockId).images.push(...prepared));
@@ -744,7 +419,7 @@
   function updatePrivacyAudit() {
     const audit = privacySummary();
     const safe = audit.visibleNames === 0 && audit.missingAlt === 0;
-    $('#privacy-audit').innerHTML = `<div><span class="privacy-status ${safe ? 'safe' : ''}">${safe ? '✓' : '!'}</span><p><strong>${safe ? 'Privacy check looks good' : 'Review before sharing'}</strong><br>${audit.visibleNames} visible filename${audit.visibleNames === 1 ? '' : 's'} · ${audit.possiblyPersonal} possibly personal · ${audit.missingAlt} missing image description${audit.missingAlt === 1 ? '' : 's'}${audit.hiddenGrades ? ` · ${audit.hiddenGrades} hidden grade${audit.hiddenGrades === 1 ? '' : 's'}` : ''}</p></div>${audit.visibleNames ? '<button id="privacy-hide-names">Hide all filenames</button>' : ''}`;
+    $('#privacy-audit').innerHTML = `<div><span class="privacy-status ${safe ? 'safe' : ''}">${safe ? 'OK' : '!'}</span><p><strong>${safe ? 'Privacy check looks good' : 'Review before sharing'}</strong><br>${audit.visibleNames} visible filename${audit.visibleNames === 1 ? '' : 's'} - ${audit.possiblyPersonal} possibly personal - ${audit.missingAlt} missing image description${audit.missingAlt === 1 ? '' : 's'}${audit.hiddenGrades ? ` - ${audit.hiddenGrades} hidden grade${audit.hiddenGrades === 1 ? '' : 's'}` : ''}</p></div>${audit.visibleNames ? '<button id="privacy-hide-names">Hide all filenames</button>' : ''}`;
     const hideButton = $('#privacy-hide-names');
     if (hideButton) hideButton.addEventListener('click', () => {
       mutate(() => state.blocks.filter(block => ['image', 'imageText', 'gallery'].includes(block.type)).forEach(block => { block.showFileName = false; }));
@@ -870,3 +545,4 @@
 
   init();
 })();
+
