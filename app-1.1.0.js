@@ -25,10 +25,10 @@
       title: 'The Sunday Edit',
       theme: { accent: '#d7653b', ink: '#25312b', page: '#f3eee5', font: 'editorial', density: 'comfortable' },
       blocks: [
-        { id: uid(), type: 'heading', text: 'Slow mornings, good stories.', level: 1, align: 'left', hero: true, kicker: 'A WEEKLY NOTE · ISSUE 01', date: 'SUNDAY, AUGUST 11' },
+        { id: uid(), type: 'heading', text: 'Slow mornings, good stories.', level: 1, align: 'left', hero: true, kicker: 'A WEEKLY NOTE - ISSUE 01', date: 'SUNDAY, AUGUST 11' },
         { id: uid(), type: 'image', src: '', alt: '', caption: 'A quiet place for your lead photograph.' },
-        { id: uid(), type: 'paragraph', text: 'Welcome to this week’s edit—a collection of small observations, useful ideas, and moments worth carrying into the days ahead.' },
-        { id: uid(), type: 'quote', text: 'There is always something beautiful waiting to be noticed.', cite: 'This week’s reminder' },
+        { id: uid(), type: 'paragraph', text: "Welcome to this week's edit - a collection of small observations, useful ideas, and moments worth carrying into the days ahead." },
+        { id: uid(), type: 'quote', text: 'There is always something beautiful waiting to be noticed.', cite: "This week's reminder" },
         { id: uid(), type: 'button', label: 'Read the full story', url: 'https://example.com' }
       ]
     }),
@@ -36,7 +36,7 @@
       title: 'Classroom Notes',
       theme: { accent: '#16756a', ink: '#183d3a', page: '#eaf5f1', font: 'modern', density: 'comfortable' },
       blocks: [
-        { id: uid(), type: 'heading', text: 'Look what we learned!', level: 1, align: 'center', hero: true, kicker: 'ROOM 12 · FAMILY UPDATE', date: 'AUGUST NEWSLETTER' },
+        { id: uid(), type: 'heading', text: 'Look what we learned!', level: 1, align: 'center', hero: true, kicker: 'ROOM 12 - FAMILY UPDATE', date: 'AUGUST NEWSLETTER' },
         { id: uid(), type: 'imageText', src: '', alt: '', heading: 'Curious minds at work', text: 'Use this space for a classroom highlight, student project, or a peek at what comes next.', imageSide: 'left' },
         { id: uid(), type: 'heading', text: 'Dates to remember', level: 2, align: 'left' },
         { id: uid(), type: 'paragraph', text: 'Add field trips, special events, classroom celebrations, and friendly reminders for families.' },
@@ -47,7 +47,7 @@
       title: 'Studio Dispatch',
       theme: { accent: '#d6a645', ink: '#152631', page: '#f4f1e9', font: 'modern', density: 'airy' },
       blocks: [
-        { id: uid(), type: 'heading', text: 'Ideas made visible.', level: 1, align: 'left', hero: true, kicker: 'STUDIO DISPATCH · NO. 04', date: 'SUMMER EDITION' },
+        { id: uid(), type: 'heading', text: 'Ideas made visible.', level: 1, align: 'left', hero: true, kicker: 'STUDIO DISPATCH - NO. 04', date: 'SUMMER EDITION' },
         { id: uid(), type: 'paragraph', text: 'A considered update from our studio: recent work, lessons from the process, and what we are creating next.' },
         { id: uid(), type: 'divider' },
         { id: uid(), type: 'imageText', src: '', alt: '', heading: 'Behind the work', text: 'Give readers the story behind a project, product, or important milestone.', imageSide: 'right' },
@@ -58,18 +58,18 @@
       title: 'The Art Room Gallery',
       theme: { accent: '#9b5b36', ink: '#29352f', page: '#f5f0e4', font: 'editorial', density: 'comfortable' },
       blocks: [
-        { id: uid(), type: 'heading', text: 'Made with curious hands.', level: 1, align: 'left', hero: true, kicker: 'FROM THE ART ROOM · STUDENT GALLERY', date: 'OUR LATEST CREATIONS' },
-        { id: uid(), type: 'paragraph', text: 'Welcome to our art-room gallery—a look at the ideas, materials, and creative discoveries happening from PreK through Grade 8.' },
+        { id: uid(), type: 'heading', text: 'Made with curious hands.', level: 1, align: 'left', hero: true, kicker: 'FROM THE ART ROOM - STUDENT GALLERY', date: 'OUR LATEST CREATIONS' },
+        { id: uid(), type: 'paragraph', text: 'Welcome to our art-room gallery - a look at the ideas, materials, and creative discoveries happening from PreK through Grade 8.' },
         ...['PreK', 'Kindergarten', 'Grade 1', 'Grade 2', 'Grade 3', 'Grade 4', 'Grade 5', 'Grade 6', 'Grade 7', 'Grade 8'].map((heading, index) => ({ id: uid(), type: 'gallery', heading, projectTitle: 'Project title', description: 'Describe what students explored, which materials they used, or what inspired this work.', columns: 3, crop: 'square', layout: index === 0 ? 'wall' : 'grid', showFileName: false, hidden: false, collapsed: false, images: [] })),
         { id: uid(), type: 'heading', text: 'Coming up in the art room', level: 2, align: 'left' },
         { id: uid(), type: 'paragraph', text: 'Add upcoming exhibitions, supply reminders, volunteer opportunities, or a short note for families.' }
       ]
     }),
     artShow: () => ({
-      title: 'You’re Invited: Student Art Show',
+      title: "You're Invited: Student Art Show",
       theme: { accent: '#7c315f', ink: '#2e2430', page: '#f8efe9', font: 'editorial', density: 'airy' },
       blocks: [
-        { id: uid(), type: 'heading', text: 'Come see what we made.', level: 1, align: 'center', hero: true, kicker: 'PREK–8 STUDENT ART SHOW', date: 'DATE · TIME · LOCATION' },
+        { id: uid(), type: 'heading', text: 'Come see what we made.', level: 1, align: 'center', hero: true, kicker: 'PREK-8 STUDENT ART SHOW', date: 'DATE - TIME - LOCATION' },
         { id: uid(), type: 'paragraph', text: 'Families and friends are warmly invited to celebrate a year of imagination, experimentation, and student creativity.' },
         { id: uid(), type: 'image', src: '', alt: '', fileName: '', showFileName: false, caption: 'Add a featured artwork or event poster.' },
         { id: uid(), type: 'quote', text: 'Every child is an artist.', cite: 'A celebration of student voice' },
@@ -81,8 +81,8 @@
       theme: { accent: '#b84c5b', ink: '#3a2930', page: '#fff1e8', font: 'modern', density: 'comfortable' },
       blocks: [
         { id: uid(), type: 'heading', text: 'Create together.', level: 1, align: 'center', hero: true, kicker: 'FAMILY ART NIGHT', date: 'SAVE THE DATE' },
-        { id: uid(), type: 'paragraph', text: 'Join us for an evening of hands-on art making. No experience is needed—just bring your curiosity.' },
-        { id: uid(), type: 'gallery', heading: 'What we’ll make', projectTitle: 'Creative stations for every age', description: 'Add examples of the projects families can try.', columns: 3, crop: 'square', layout: 'wall', showFileName: false, hidden: false, collapsed: false, images: [] },
+        { id: uid(), type: 'paragraph', text: 'Join us for an evening of hands-on art making. No experience is needed - just bring your curiosity.' },
+        { id: uid(), type: 'gallery', heading: "What we'll make", projectTitle: 'Creative stations for every age', description: 'Add examples of the projects families can try.', columns: 3, crop: 'square', layout: 'wall', showFileName: false, hidden: false, collapsed: false, images: [] },
         { id: uid(), type: 'heading', text: 'What to know', level: 2, align: 'left' },
         { id: uid(), type: 'paragraph', text: 'Add the time, location, parking information, clothing recommendations, and any materials families should bring.' }
       ]
@@ -103,7 +103,7 @@
       title: 'From Idea to Artwork',
       theme: { accent: '#3f6f9f', ink: '#263746', page: '#edf4f8', font: 'editorial', density: 'comfortable' },
       blocks: [
-        { id: uid(), type: 'heading', text: 'The creative process.', level: 1, align: 'left', hero: true, kicker: 'INSIDE THE ART ROOM', date: 'SKETCH · EXPLORE · REFLECT' },
+        { id: uid(), type: 'heading', text: 'The creative process.', level: 1, align: 'left', hero: true, kicker: 'INSIDE THE ART ROOM', date: 'SKETCH - EXPLORE - REFLECT' },
         { id: uid(), type: 'paragraph', text: 'Art is more than a finished product. Use this newsletter to show the questions, experiments, revisions, and discoveries along the way.' },
         { id: uid(), type: 'gallery', heading: 'Project journey', projectTitle: 'From first sketch to final reflection', description: 'Add photos in order to tell the story of how this artwork developed.', columns: 4, crop: 'square', layout: 'process', showFileName: false, hidden: false, collapsed: false, images: [] },
         { id: uid(), type: 'quote', text: 'What surprised you while making this?', cite: 'Student reflection prompt' }
@@ -113,11 +113,11 @@
       title: 'Semester in the Art Room',
       theme: { accent: '#52755a', ink: '#29382c', page: '#eef4e9', font: 'editorial', density: 'comfortable' },
       blocks: [
-        { id: uid(), type: 'heading', text: 'A semester of making.', level: 1, align: 'left', hero: true, kicker: 'THE ART ROOM RECAP', date: 'FALL · WINTER · SPRING' },
+        { id: uid(), type: 'heading', text: 'A semester of making.', level: 1, align: 'left', hero: true, kicker: 'THE ART ROOM RECAP', date: 'FALL - WINTER - SPRING' },
         { id: uid(), type: 'paragraph', text: 'A visual reflection on the skills, materials, artists, and big ideas we explored together this semester.' },
-        ...['Early Artists · PreK–2', 'Growing Artists · Grades 3–5', 'Studio Artists · Grades 6–8'].map((heading, index) => ({ id: uid(), type: 'gallery', heading, projectTitle: 'Semester highlights', description: 'Add favorite projects, discoveries, and moments from this grade band.', columns: 3, crop: 'square', layout: index === 2 ? 'featured' : 'grid', showFileName: false, hidden: false, collapsed: false, images: [] })),
+        ...['Early Artists - PreK-2', 'Growing Artists - Grades 3-5', 'Studio Artists - Grades 6-8'].map((heading, index) => ({ id: uid(), type: 'gallery', heading, projectTitle: 'Semester highlights', description: 'Add favorite projects, discoveries, and moments from this grade band.', columns: 3, crop: 'square', layout: index === 2 ? 'featured' : 'grid', showFileName: false, hidden: false, collapsed: false, images: [] })),
         { id: uid(), type: 'heading', text: 'What comes next', level: 2, align: 'left' },
-        { id: uid(), type: 'paragraph', text: 'Preview next semester’s materials, themes, exhibitions, or creative challenges.' }
+        { id: uid(), type: 'paragraph', text: "Preview next semester's materials, themes, exhibitions, or creative challenges." }
       ]
     })
   };
@@ -245,7 +245,7 @@
     const templates = (await getCustomTemplates()).sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
     const list = $('#custom-template-list');
     if (!templates.length) { list.innerHTML = '<p class="template-empty">No custom templates yet.</p>'; return; }
-    list.innerHTML = templates.map(template => `<div class="custom-template-card" data-custom-template="${template.id}"><button data-use-custom><strong>${escapeHtml(template.name)}</strong><small>${template.project.blocks.length} blocks · ${template.includesImages ? 'includes photos' : 'photos removed'}</small></button><div class="custom-template-actions"><button data-export-custom title="Export template" aria-label="Export ${escapeHtml(template.name)}">↓</button><button data-rename-custom title="Rename template" aria-label="Rename ${escapeHtml(template.name)}">✎</button><button data-delete-custom title="Delete template" aria-label="Delete ${escapeHtml(template.name)}">×</button></div></div>`).join('');
+    list.innerHTML = templates.map(template => `<div class="custom-template-card" data-custom-template="${template.id}"><button data-use-custom><strong>${escapeHtml(template.name)}</strong><small>${template.project.blocks.length} blocks - ${template.includesImages ? 'includes photos' : 'photos removed'}</small></button><div class="custom-template-actions"><button data-export-custom title="Export template" aria-label="Export ${escapeHtml(template.name)}">EXP</button><button data-rename-custom title="Rename template" aria-label="Rename ${escapeHtml(template.name)}">EDIT</button><button data-delete-custom title="Delete template" aria-label="Delete ${escapeHtml(template.name)}">x</button></div></div>`).join('');
     $$('[data-custom-template]', list).forEach(card => {
       const template = templates.find(item => item.id === card.dataset.customTemplate);
       $('[data-use-custom]', card).addEventListener('click', () => applyCustomTemplate(template));
@@ -265,7 +265,7 @@
   }
 
   function applyCustomTemplate(template) {
-    if (state.blocks.length && !confirm(`Replace the current newsletter with “${template.name}”? You can undo this change.`)) return;
+    if (state.blocks.length && !confirm(`Replace the current newsletter with "${template.name}"? You can undo this change.`)) return;
     recordHistory(); state = freshProjectFromTemplate(template.project, template.name); selectedId = null; future = []; render(); scheduleSave(); showToast(`${template.name} applied`);
   }
 
@@ -283,7 +283,7 @@
   }
 
   async function deleteCustomTemplate(template) {
-    if (!confirm(`Delete “${template.name}” from My Templates?`)) return;
+    if (!confirm(`Delete "${template.name}" from My Templates?`)) return;
     await dbRequest('templates', 'readwrite', store => store.delete(template.id));
     await renderCustomTemplates(); showToast('Template deleted');
   }
@@ -328,7 +328,7 @@
   }
 
   function scheduleSave() {
-    $('#save-status').textContent = 'Saving…';
+    $('#save-status').textContent = 'Saving...';
     clearTimeout(saveTimer);
     saveTimer = setTimeout(async () => {
       try {
@@ -336,7 +336,7 @@
         await persistProject(state);
         $('#save-status').textContent = 'Saved locally';
       } catch {
-        $('#save-status').textContent = 'Save failed — export a backup';
+        $('#save-status').textContent = 'Save failed - export a backup';
         showToast('The project could not be saved. Download a project backup.');
       }
     }, 350);
@@ -385,11 +385,11 @@
 
   function tools(block) {
     return `<div class="block-tools" aria-label="Block actions">
-      <button class="drag-handle" draggable="true" title="Drag to move" aria-label="Drag to move">⠿</button>
-      <button data-action="up" title="Move up" aria-label="Move block up">↑</button>
-      <button data-action="down" title="Move down" aria-label="Move block down">↓</button>
-      <button data-action="duplicate" title="Duplicate" aria-label="Duplicate block">⧉</button>
-      <button data-action="delete" title="Delete" aria-label="Delete block">×</button>
+      <button class="drag-handle" draggable="true" title="Drag to move" aria-label="Drag to move">MOVE</button>
+      <button data-action="up" title="Move up" aria-label="Move block up">UP</button>
+      <button data-action="down" title="Move down" aria-label="Move block down">DN</button>
+      <button data-action="duplicate" title="Duplicate" aria-label="Duplicate block">COPY</button>
+      <button data-action="delete" title="Delete" aria-label="Delete block">x</button>
     </div>`;
   }
 
@@ -424,7 +424,7 @@
   function imageFrame(block) {
     const body = block.src
       ? `<img src="${escapeHtml(block.src)}" alt="${escapeHtml(block.alt)}">`
-      : `<div class="image-placeholder"><div><span>▧</span><small>Click to add a photo</small></div></div>`;
+      : `<div class="image-placeholder"><div><span class="placeholder-image-icon" aria-hidden="true"></span><small>Click to add a photo</small></div></div>`;
     return `<div class="image-frame" data-image-upload title="Choose an image">${body}<input type="file" accept="image/jpeg,image/png,image/webp,image/gif" hidden></div>`;
   }
 
@@ -437,12 +437,12 @@
       <img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt || '')}">
       ${block.showFileName ? `<figcaption>${escapeHtml(image.fileName)}</figcaption>` : ''}
       <div class="gallery-item-tools" aria-label="Photo actions">
-        <button data-gallery-action="left" data-index="${index}" aria-label="Move photo left">←</button>
-        <button data-gallery-action="right" data-index="${index}" aria-label="Move photo right">→</button>
-        <button data-gallery-action="remove" data-index="${index}" aria-label="Remove photo">×</button>
+        <button data-gallery-action="left" data-index="${index}" aria-label="Move photo left">LEFT</button>
+        <button data-gallery-action="right" data-index="${index}" aria-label="Move photo right">RIGHT</button>
+        <button data-gallery-action="remove" data-index="${index}" aria-label="Remove photo">x</button>
       </div>
-    </figure>`).join('') : `<div class="gallery-empty"><span>▦</span><strong>Add a group of photos</strong><small>Choose several images at once; they will be sorted by filename.</small></div>`;
-    return `<div class="gallery-heading-row"><h2 class="gallery-heading editable" contenteditable="true" data-field="heading">${escapeHtml(block.heading || 'Photo group')}</h2><div class="grade-header-actions"><button data-gallery-collapse aria-label="${block.collapsed ? 'Expand' : 'Collapse'} ${escapeHtml(block.heading)}">${block.collapsed ? '＋' : '−'}</button><button class="gallery-add-btn" data-gallery-upload>+ Add photos</button></div><input type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple hidden></div><div class="gallery-body"><h3 class="gallery-project-title editable" contenteditable="true" data-field="projectTitle">${escapeHtml(block.projectTitle || 'Project title')}</h3><p class="gallery-description editable" contenteditable="true" data-field="description">${escapeHtml(block.description || '')}</p><div class="photo-gallery layout-${block.layout || 'grid'} crop-${block.crop || 'square'}" style="--gallery-columns:${block.columns || 3}">${items}</div></div>`;
+    </figure>`).join('') : `<div class="gallery-empty"><span class="placeholder-gallery-icon" aria-hidden="true"></span><strong>Add a group of photos</strong><small>Choose several images at once; they will be sorted by filename.</small></div>`;
+    return `<div class="gallery-heading-row"><h2 class="gallery-heading editable" contenteditable="true" data-field="heading">${escapeHtml(block.heading || 'Photo group')}</h2><div class="grade-header-actions"><button data-gallery-collapse aria-label="${block.collapsed ? 'Expand' : 'Collapse'} ${escapeHtml(block.heading)}">${block.collapsed ? '+' : '-'}</button><button class="gallery-add-btn" data-gallery-upload>+ Add photos</button></div><input type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple hidden></div><div class="gallery-body"><h3 class="gallery-project-title editable" contenteditable="true" data-field="projectTitle">${escapeHtml(block.projectTitle || 'Project title')}</h3><p class="gallery-description editable" contenteditable="true" data-field="description">${escapeHtml(block.description || '')}</p><div class="photo-gallery layout-${block.layout || 'grid'} crop-${block.crop || 'square'}" style="--gallery-columns:${block.columns || 3}">${items}</div></div>`;
   }
 
   function wireCanvas() {
@@ -638,7 +638,7 @@
     const prepared = [];
     activeImports++;
     try {
-      showImportProgress('Optimizing photos…', 0, files.length);
+      showImportProgress('Optimizing photos...', 0, files.length);
       for (let index = 0; index < files.length; index++) {
         const file = files[index];
         try {
@@ -654,7 +654,7 @@
   }
 
   async function addFilesToGallery(blockId, fileList) {
-    showToast('Preparing photo group…');
+    showToast('Preparing photo group...');
     const prepared = await prepareImageFiles(fileList);
     if (!prepared.length) return showToast('No supported images were found.');
     mutate(() => state.blocks.find(block => block.id === blockId).images.push(...prepared));
@@ -744,7 +744,7 @@
   function updatePrivacyAudit() {
     const audit = privacySummary();
     const safe = audit.visibleNames === 0 && audit.missingAlt === 0;
-    $('#privacy-audit').innerHTML = `<div><span class="privacy-status ${safe ? 'safe' : ''}">${safe ? '✓' : '!'}</span><p><strong>${safe ? 'Privacy check looks good' : 'Review before sharing'}</strong><br>${audit.visibleNames} visible filename${audit.visibleNames === 1 ? '' : 's'} · ${audit.possiblyPersonal} possibly personal · ${audit.missingAlt} missing image description${audit.missingAlt === 1 ? '' : 's'}${audit.hiddenGrades ? ` · ${audit.hiddenGrades} hidden grade${audit.hiddenGrades === 1 ? '' : 's'}` : ''}</p></div>${audit.visibleNames ? '<button id="privacy-hide-names">Hide all filenames</button>' : ''}`;
+    $('#privacy-audit').innerHTML = `<div><span class="privacy-status ${safe ? 'safe' : ''}">${safe ? 'OK' : '!'}</span><p><strong>${safe ? 'Privacy check looks good' : 'Review before sharing'}</strong><br>${audit.visibleNames} visible filename${audit.visibleNames === 1 ? '' : 's'} - ${audit.possiblyPersonal} possibly personal - ${audit.missingAlt} missing image description${audit.missingAlt === 1 ? '' : 's'}${audit.hiddenGrades ? ` - ${audit.hiddenGrades} hidden grade${audit.hiddenGrades === 1 ? '' : 's'}` : ''}</p></div>${audit.visibleNames ? '<button id="privacy-hide-names">Hide all filenames</button>' : ''}`;
     const hideButton = $('#privacy-hide-names');
     if (hideButton) hideButton.addEventListener('click', () => {
       mutate(() => state.blocks.filter(block => ['image', 'imageText', 'gallery'].includes(block.type)).forEach(block => { block.showFileName = false; }));

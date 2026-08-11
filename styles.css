@@ -52,7 +52,27 @@ button:focus-visible, input:focus-visible, select:focus-visible, [contenteditabl
 .block-library { padding: 0 14px; display: grid; gap: 7px; }
 .library-block { display: flex; align-items: center; gap: 12px; width: 100%; padding: 9px; border: 1px solid transparent; border-radius: 11px; background: transparent; text-align: left; cursor: grab; }
 .library-block:hover { background: white; border-color: var(--line); box-shadow: 0 5px 15px rgba(0,0,0,.05); }
-.block-icon { display: grid; place-items: center; width: 38px; height: 38px; flex: 0 0 38px; border-radius: 9px; background: #efece5; color: var(--ink); font-family: Georgia,serif; font-size: 19px; }
+.block-icon { position: relative; display: block; width: 38px; height: 38px; flex: 0 0 38px; border-radius: 9px; background: #efece5; color: var(--ink); }
+.block-icon::before, .block-icon::after { content: ""; position: absolute; box-sizing: border-box; }
+.device-icon { display: block; box-sizing: border-box; border: 1.5px solid currentColor; border-radius: 2px; }
+.desktop-icon { width: 15px; height: 10px; border-bottom-width: 2px; }
+.desktop-icon::after { content: ""; display: block; width: 7px; height: 1.5px; margin: 11px auto 0; background: currentColor; }
+.mobile-icon { width: 8px; height: 14px; border-radius: 2px; }
+.privacy-dot { width: 9px; height: 9px; flex: 0 0 9px; margin-top: 3px; border: 2px solid #6d8a70; border-radius: 50%; box-shadow: inset 0 0 0 2px #eef2ea; background: #6d8a70; }
+.icon-heading::before { left: 10px; top: 9px; width: 18px; height: 20px; border-top: 3px solid currentColor; border-bottom: 3px solid currentColor; }
+.icon-heading::after { left: 17px; top: 9px; width: 3px; height: 20px; background: currentColor; }
+.icon-paragraph::before { left: 10px; top: 11px; width: 18px; height: 3px; border-radius: 3px; background: currentColor; box-shadow: 0 7px 0 currentColor, 0 14px 0 currentColor; }
+.icon-paragraph::after { right: 10px; bottom: 10px; width: 6px; height: 3px; border-radius: 3px; background: #efece5; }
+.icon-image::before { inset: 9px; border: 2px solid currentColor; border-radius: 3px; }
+.icon-image::after { left: 13px; bottom: 12px; width: 13px; height: 10px; border-left: 2px solid currentColor; border-top: 2px solid currentColor; transform: rotate(45deg); }
+.icon-gallery::before { left: 9px; top: 9px; width: 9px; height: 9px; border: 2px solid currentColor; border-radius: 2px; box-shadow: 12px 0 0 -2px #efece5, 12px 0 0 0 currentColor, 0 12px 0 -2px #efece5, 0 12px 0 0 currentColor, 12px 12px 0 -2px #efece5, 12px 12px 0 0 currentColor; }
+.icon-image-text::before { left: 8px; top: 9px; width: 11px; height: 20px; border: 2px solid currentColor; border-radius: 2px; }
+.icon-image-text::after { right: 8px; top: 11px; width: 8px; height: 2px; border-radius: 2px; background: currentColor; box-shadow: 0 6px 0 currentColor, 0 12px 0 currentColor; }
+.icon-callout::before { left: 10px; top: 10px; width: 18px; height: 14px; border: 2px solid currentColor; border-radius: 4px; }
+.icon-callout::after { left: 14px; top: 22px; width: 7px; height: 7px; border-left: 2px solid currentColor; transform: skewY(-38deg); background: #efece5; }
+.icon-button::before { left: 8px; top: 11px; width: 22px; height: 16px; border: 2px solid currentColor; border-radius: 8px; }
+.icon-button::after { right: 12px; top: 16px; width: 6px; height: 6px; border-top: 2px solid currentColor; border-right: 2px solid currentColor; transform: rotate(45deg); }
+.icon-divider::before { left: 8px; right: 8px; top: 18px; height: 2px; border-radius: 2px; background: currentColor; }
 .library-block strong { display: block; font-size: 12px; }
 .library-block small { display: block; color: var(--muted); font-size: 10px; margin-top: 2px; }
 .template-card strong { display: block; color: var(--ink); font-size: 13px; font-weight: 750; line-height: 1.2; letter-spacing: -.01em; }
@@ -89,7 +109,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, [contenteditabl
 .newsletter-block.grade-hidden::after { content:"Hidden from export"; position:absolute; left:8px; top:8px; padding:3px 6px; border-radius:4px; background:#5d625d; color:white; font:700 8px Inter,sans-serif; letter-spacing:.5px; text-transform:uppercase; }
 .block-tools { position: absolute; top: 8px; right: 8px; display: none; align-items: center; gap: 3px; padding: 3px; border: 1px solid var(--line); border-radius: 8px; background: white; box-shadow: 0 4px 12px rgba(0,0,0,.1); z-index: 5; }
 .newsletter-block:hover .block-tools, .newsletter-block.selected .block-tools { display: flex; }
-.block-tools button { width: 28px; height: 26px; border: 0; border-radius: 6px; background: transparent; cursor: pointer; color: #636762; }
+.block-tools button { min-width: 28px; height: 26px; padding: 0 6px; border: 0; border-radius: 6px; background: transparent; cursor: pointer; color: #636762; font-size: 8px; font-weight: 800; }
 .block-tools button:hover { background: #eeeae3; }
 .drag-handle { cursor: grab!important; }
 .editable { outline: none; }
@@ -100,7 +120,9 @@ button:focus-visible, input:focus-visible, select:focus-visible, [contenteditabl
 .image-frame { position: relative; min-height: 280px; overflow: hidden; background: #ded8cd; cursor: pointer; }
 .image-frame img { display: block; width: 100%; height: 100%; min-height: 280px; max-height: 480px; object-fit: cover; }
 .image-placeholder { min-height: 280px; display: grid; place-items: center; text-align: center; color: #827e75; background: linear-gradient(135deg,#ddd7cb,#eee8dc); }
-.image-placeholder span { font-size: 34px; display: block; }.image-placeholder small{font:11px Inter,sans-serif;text-transform:uppercase;letter-spacing:1px}
+.placeholder-image-icon { position:relative; display:block; width:38px; height:30px; margin:0 auto 9px; border:3px solid currentColor; border-radius:5px; }
+.placeholder-image-icon::before { content:""; position:absolute; left:8px; bottom:4px; width:17px; height:14px; border-left:3px solid currentColor; border-top:3px solid currentColor; transform:rotate(45deg); }
+.image-placeholder small{font:11px Inter,sans-serif;text-transform:uppercase;letter-spacing:1px}
 .image-caption { margin: 9px 0 0; font: italic 12px Georgia,serif; color: #6e706b; }
 .image-file-name { margin: 9px 0 0; font: 700 10px Inter,sans-serif; color: #626762; letter-spacing: .3px; overflow-wrap: anywhere; }
 .gallery-heading-row { display:flex; align-items:center; justify-content:space-between; gap:15px; margin-bottom:14px; }
@@ -123,10 +145,12 @@ button:focus-visible, input:focus-visible, select:focus-visible, [contenteditabl
 .gallery-item figcaption { margin-top:6px; font:700 9px Inter,sans-serif; color:#626762; overflow-wrap:anywhere; }
 .gallery-item-tools { position:absolute; top:5px; right:5px; display:none; gap:2px; padding:2px; border-radius:6px; background:rgba(255,255,255,.92); }
 .gallery-item:hover .gallery-item-tools { display:flex; }
-.gallery-item-tools button { width:24px; height:23px; border:0; border-radius:4px; background:transparent; cursor:pointer; }
+.gallery-item-tools button { min-width:24px; height:23px; padding:0 5px; border:0; border-radius:4px; background:transparent; cursor:pointer; font-size:7px; font-weight:800; }
 .gallery-item-tools button:hover { background:#ebe8e1; }
 .gallery-empty { grid-column:1/-1; min-height:190px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:7px; border:2px dashed #c9c4ba; color:#77786f; text-align:center; cursor:pointer; }
-.gallery-empty span { font-size:32px; }.gallery-empty strong{font-size:13px}.gallery-empty small{font-size:10px}
+.placeholder-gallery-icon { display:grid; grid-template-columns:repeat(2,12px); grid-template-rows:repeat(2,10px); gap:3px; width:27px; height:23px; margin-bottom:5px; }
+.placeholder-gallery-icon::before { content:""; width:12px; height:10px; border:2px solid currentColor; border-radius:2px; box-shadow:15px 0 0 -2px #eee8dc,15px 0 0 0 currentColor,0 13px 0 -2px #eee8dc,0 13px 0 0 currentColor,15px 13px 0 -2px #eee8dc,15px 13px 0 0 currentColor; }
+.gallery-empty strong{font-size:13px}.gallery-empty small{font-size:10px}
 .image-text-layout { display: grid; grid-template-columns: 1fr 1fr; align-items: stretch; }
 .image-text-layout .image-frame, .image-text-layout .image-placeholder, .image-text-layout img { min-height: 340px; }
 .image-text-copy { display: flex; flex-direction: column; justify-content: center; padding: 44px; background: white; }

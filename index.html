@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="A friendly, drag-and-drop newsletter builder that runs entirely in your browser.">
-  <title>Letterdrop â€” Newsletter Builder</title>
-  <link rel="stylesheet" href="styles.css?v=1.1.1">
+  <title>Letterdrop - Newsletter Builder</title>
+  <link rel="stylesheet" href="styles.css?v=1.1.2">
 </head>
 <body>
   <div id="app" class="app-shell">
@@ -19,14 +19,14 @@
         <span id="save-status" class="save-status" role="status">Saved locally</span>
       </div>
       <div class="top-actions">
-        <button id="undo-btn" class="icon-btn" title="Undo" aria-label="Undo" disabled>â†¶</button>
-        <button id="redo-btn" class="icon-btn" title="Redo" aria-label="Redo" disabled>â†·</button>
+        <button id="undo-btn" class="icon-btn" title="Undo" aria-label="Undo" disabled>&#8630;</button>
+        <button id="redo-btn" class="icon-btn" title="Redo" aria-label="Redo" disabled>&#8631;</button>
         <div class="device-switch" aria-label="Preview size">
-          <button class="device-btn active" data-device="desktop" aria-label="Desktop preview">â–±</button>
-          <button class="device-btn" data-device="mobile" aria-label="Mobile preview">â–¯</button>
+          <button class="device-btn active" data-device="desktop" aria-label="Desktop preview"><span class="device-icon desktop-icon" aria-hidden="true"></span></button>
+          <button class="device-btn" data-device="mobile" aria-label="Mobile preview"><span class="device-icon mobile-icon" aria-hidden="true"></span></button>
         </div>
         <button id="preview-btn" class="secondary-btn">Preview</button>
-        <button id="export-btn" class="primary-btn">Export <span aria-hidden="true">â†—</span></button>
+        <button id="export-btn" class="primary-btn">Export</button>
       </div>
     </header>
 
@@ -44,14 +44,14 @@
             <p>Drag a block onto the page or click to add it.</p>
           </div>
           <div class="block-library">
-            <button class="library-block" draggable="true" data-add="heading"><span class="block-icon heading-icon">T</span><span><strong>Heading</strong><small>Make a statement</small></span></button>
-            <button class="library-block" draggable="true" data-add="paragraph"><span class="block-icon">Â¶</span><span><strong>Paragraph</strong><small>Add your message</small></span></button>
-            <button class="library-block" draggable="true" data-add="image"><span class="block-icon">â–§</span><span><strong>Image</strong><small>Upload a photo</small></span></button>
-            <button class="library-block" draggable="true" data-add="gallery"><span class="block-icon">â–¦</span><span><strong>Photo group</strong><small>Arrange a class or grade</small></span></button>
-            <button class="library-block" draggable="true" data-add="imageText"><span class="block-icon">â—«</span><span><strong>Image + text</strong><small>Pair words and imagery</small></span></button>
-            <button class="library-block" draggable="true" data-add="quote"><span class="block-icon">â€œ</span><span><strong>Callout</strong><small>Highlight an idea</small></span></button>
-            <button class="library-block" draggable="true" data-add="button"><span class="block-icon">â†—</span><span><strong>Button</strong><small>Invite readers to act</small></span></button>
-            <button class="library-block" draggable="true" data-add="divider"><span class="block-icon">â€”</span><span><strong>Divider</strong><small>Create a pause</small></span></button>
+            <button class="library-block" draggable="true" data-add="heading"><span class="block-icon icon-heading" aria-hidden="true"></span><span><strong>Heading</strong><small>Make a statement</small></span></button>
+            <button class="library-block" draggable="true" data-add="paragraph"><span class="block-icon icon-paragraph" aria-hidden="true"></span><span><strong>Paragraph</strong><small>Add your message</small></span></button>
+            <button class="library-block" draggable="true" data-add="image"><span class="block-icon icon-image" aria-hidden="true"></span><span><strong>Image</strong><small>Upload a photo</small></span></button>
+            <button class="library-block" draggable="true" data-add="gallery"><span class="block-icon icon-gallery" aria-hidden="true"></span><span><strong>Photo group</strong><small>Arrange a class or grade</small></span></button>
+            <button class="library-block" draggable="true" data-add="imageText"><span class="block-icon icon-image-text" aria-hidden="true"></span><span><strong>Image + text</strong><small>Pair words and imagery</small></span></button>
+            <button class="library-block" draggable="true" data-add="quote"><span class="block-icon icon-callout" aria-hidden="true"></span><span><strong>Callout</strong><small>Highlight an idea</small></span></button>
+            <button class="library-block" draggable="true" data-add="button"><span class="block-icon icon-button" aria-hidden="true"></span><span><strong>Button</strong><small>Invite readers to act</small></span></button>
+            <button class="library-block" draggable="true" data-add="divider"><span class="block-icon icon-divider" aria-hidden="true"></span><span><strong>Divider</strong><small>Create a pause</small></span></button>
           </div>
         </section>
 
@@ -79,7 +79,7 @@
           </div>
         </section>
 
-        <div class="local-note"><span aria-hidden="true">â—‰</span><p><strong>Private by default</strong><br>Your work stays in this browser.<br><span id="storage-status">Checking storageâ€¦</span></p></div>
+        <div class="local-note"><span class="privacy-dot" aria-hidden="true"></span><p><strong>Private by default</strong><br>Your work stays in this browser.<br><span id="storage-status">Checking storage...</span></p></div>
       </aside>
 
       <section class="canvas-area" aria-label="Newsletter canvas">
@@ -148,7 +148,7 @@
   <div id="preview-modal" class="modal" hidden>
     <div class="modal-backdrop" data-close-modal></div>
     <div class="preview-dialog" role="dialog" aria-modal="true" aria-labelledby="preview-heading">
-      <header><div><p class="eyebrow">Reader view</p><h2 id="preview-heading">Newsletter preview</h2></div><button class="close-btn" data-close-modal aria-label="Close preview">Ã—</button></header>
+      <header><div><p class="eyebrow">Reader view</p><h2 id="preview-heading">Newsletter preview</h2></div><button class="close-btn" data-close-modal aria-label="Close preview">x</button></header>
       <div id="preview-content" class="preview-content"></div>
     </div>
   </div>
@@ -156,13 +156,13 @@
   <div id="export-modal" class="modal" hidden>
     <div class="modal-backdrop" data-close-export></div>
     <div class="export-dialog" role="dialog" aria-modal="true" aria-labelledby="export-heading">
-      <header><div><p class="eyebrow">Ready to share</p><h2 id="export-heading">Take your story with you</h2></div><button class="close-btn" data-close-export aria-label="Close export options">Ã—</button></header>
+      <header><div><p class="eyebrow">Ready to share</p><h2 id="export-heading">Take your story with you</h2></div><button class="close-btn" data-close-export aria-label="Close export options">x</button></header>
       <p>Choose the format that fits where your newsletter is going next.</p>
       <div id="privacy-audit" class="privacy-audit"></div>
       <div class="export-grid">
-        <button id="download-html"><span class="export-icon">ã€ˆ/ã€‰</span><strong>Web page</strong><small>A self-contained HTML file</small></button>
-        <button id="print-pdf"><span class="export-icon">â–¤</span><strong>Print or PDF</strong><small>Use your browser's print dialog</small></button>
-        <button id="download-project"><span class="export-icon">â†“</span><strong>Project file</strong><small>Keep an editable backup</small></button>
+        <button id="download-html"><span class="export-icon">HTML</span><strong>Web page</strong><small>A self-contained HTML file</small></button>
+        <button id="print-pdf"><span class="export-icon">PDF</span><strong>Print or PDF</strong><small>Use your browser's print dialog</small></button>
+        <button id="download-project"><span class="export-icon">SAVE</span><strong>Project file</strong><small>Keep an editable backup</small></button>
       </div>
     </div>
   </div>
@@ -170,7 +170,7 @@
   <div id="template-modal" class="modal" hidden>
     <div class="modal-backdrop" data-close-template></div>
     <div class="template-dialog" role="dialog" aria-modal="true" aria-labelledby="template-modal-heading">
-      <header><div><p class="eyebrow">My templates</p><h2 id="template-modal-heading">Save current design</h2></div><button class="close-btn" data-close-template aria-label="Close template dialog">Ã—</button></header>
+      <header><div><p class="eyebrow">My templates</p><h2 id="template-modal-heading">Save current design</h2></div><button class="close-btn" data-close-template aria-label="Close template dialog">x</button></header>
       <div class="template-dialog-body">
         <label class="field-label">Template name<input id="template-name" value="My art newsletter" maxlength="80"></label>
         <label class="check-label"><input id="template-keep-images" type="checkbox"> Keep current photos in this template</label>
@@ -182,10 +182,10 @@
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <div id="import-progress" class="import-progress" role="status" aria-live="polite" hidden>
-    <div><strong id="import-progress-label">Preparing photosâ€¦</strong><span id="import-progress-count"></span></div>
+    <div><strong id="import-progress-label">Preparing photos...</strong><span id="import-progress-count"></span></div>
     <progress id="import-progress-bar" value="0" max="1"></progress>
   </div>
-  <script src="app-1.1.0.js"></script>
+  <script src="app-1.1.0.js?v=1.1.2"></script>
 </body>
 </html>
 
