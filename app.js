@@ -2,6 +2,8 @@
   'use strict';
 
   const STORAGE_KEY = 'letterdrop-project-v1';
+  const DB_NAME = 'letterdrop';
+  const DB_VERSION = 1;
   const MAX_HISTORY = 50;
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -51,16 +53,34 @@
         { id: uid(), type: 'imageText', src: '', alt: '', heading: 'Behind the work', text: 'Give readers the story behind a project, product, or important milestone.', imageSide: 'right' },
         { id: uid(), type: 'button', label: 'Explore our work', url: 'https://example.com' }
       ]
+    }),
+    grades: () => ({
+      title: 'Our School Story',
+      theme: { accent: '#9b5b36', ink: '#29352f', page: '#f5f0e4', font: 'editorial', density: 'comfortable' },
+      blocks: [
+        { id: uid(), type: 'heading', text: 'Learning, growing, together.', level: 1, align: 'left', hero: true, kicker: 'SCHOOL COMMUNITY · PHOTO EDITION', date: 'THIS MONTH AT A GLANCE' },
+        { id: uid(), type: 'paragraph', text: 'A look at the projects, people, and moments that made this month memorable across every grade.' },
+        { id: uid(), type: 'gallery', heading: 'Kindergarten', columns: 3, crop: 'square', showFileName: false, images: [] },
+        { id: uid(), type: 'gallery', heading: 'Grade 1', columns: 3, crop: 'square', showFileName: false, images: [] },
+        { id: uid(), type: 'gallery', heading: 'Grade 2', columns: 3, crop: 'square', showFileName: false, images: [] },
+        { id: uid(), type: 'gallery', heading: 'Grade 3', columns: 3, crop: 'square', showFileName: false, images: [] },
+        { id: uid(), type: 'gallery', heading: 'Grade 4', columns: 3, crop: 'square', showFileName: false, images: [] },
+        { id: uid(), type: 'gallery', heading: 'Grade 5', columns: 3, crop: 'square', showFileName: false, images: [] }
+      ]
     })
   };
 
-  let state = loadProject() || createProject('editorial');
+  let state = createProject('editorial');
   let selectedId = null;
   let history = [];
   let future = [];
   let draggedId = null;
   let saveTimer = null;
   let toastTimer = null;
+  let dbPromise = null;
+  let activeImports = 0;
+  let saveCount = 0;
+  let draggedGalleryImage = null;
 
   const canvas = $('#newsletter-canvas');
 
@@ -69,11 +89,79 @@
     return { schemaVersion: 1, id: uid(), createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), ...data };
   }
 
-  function loadProject() {
+  function openDatabase() {
+    if (dbPromise) return dbPromise;
+    dbPromise = new Promise((resolve, reject) => {
+      const request = indexedDB.open(DB_NAME, DB_VERSION);
+      request.onupgradeneeded = () => {
+        const db = request.result;
+        if (!db.objectStoreNames.contains('projects')) db.createObjectStore('projects');
+        if (!db.objectStoreNames.contains('snapshots')) db.createObjectStore('snapshots', { keyPath: 'savedAt' });
+      };
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+    return dbPromise;
+  }
+
+  async function dbRequest(storeName, mode, action) {
+    const db = await openDatabase();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(storeName, mode);
+      const request = action(transaction.objectStore(storeName));
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+  }
+
+  async function loadProject() {
     try {
-      const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
-      return data?.schemaVersion === 1 && Array.isArray(data.blocks) ? data : null;
-    } catch { return null; }
+      const saved = await dbRequest('projects', 'readonly', store => store.get('current'));
+      if (saved?.schemaVersion === 1 && Array.isArray(saved.blocks)) return saved;
+      const legacy = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      if (legacy?.schemaVersion === 1 && Array.isArray(legacy.blocks)) {
+        await dbRequest('projects', 'readwrite', store => store.put(legacy, 'current'));
+        localStorage.removeItem(STORAGE_KEY);
+        showToast('Your existing project was upgraded to reliable storage.');
+        return legacy;
+      }
+    } catch (error) { console.warn('Could not load saved project', error); }
+    return null;
+  }
+
+  async function persistProject(project) {
+    await dbRequest('projects', 'readwrite', store => store.put(structuredClone(project), 'current'));
+    saveCount++;
+    if (saveCount % 10 === 0) await saveRecoverySnapshot(project);
+    updateStorageStatus();
+  }
+
+  async function saveRecoverySnapshot(project) {
+    const snapshot = { savedAt: Date.now(), project: structuredClone(project) };
+    await dbRequest('snapshots', 'readwrite', store => store.put(snapshot));
+    const snapshots = await dbRequest('snapshots', 'readonly', store => store.getAllKeys());
+    for (const key of snapshots.sort((a, b) => b - a).slice(5)) await dbRequest('snapshots', 'readwrite', store => store.delete(key));
+  }
+
+  async function restoreLatestSnapshot() {
+    const snapshots = await dbRequest('snapshots', 'readonly', store => store.getAll());
+    const latest = snapshots.sort((a, b) => b.savedAt - a.savedAt)[0];
+    if (!latest) return showToast('No recovery backup is available yet.');
+    const savedTime = new Date(latest.savedAt).toLocaleString();
+    if (!confirm(`Restore the recovery backup from ${savedTime}? Your current version will remain available through Undo.`)) return;
+    recordHistory();
+    state = latest.project;
+    selectedId = null;
+    render();
+    scheduleSave();
+    showToast('Recovery backup restored');
+  }
+
+  async function updateStorageStatus() {
+    if (!navigator.storage?.estimate) return;
+    const { usage = 0, quota = 0 } = await navigator.storage.estimate();
+    const used = usage / 1024 / 1024;
+    $('#storage-status').textContent = `${used < 1 ? used.toFixed(1) : Math.round(used)} MB used${quota ? ` of ${Math.round(quota / 1024 / 1024)} MB` : ''}`;
   }
 
   function snapshot() { return JSON.stringify(state); }
@@ -104,14 +192,14 @@
   function scheduleSave() {
     $('#save-status').textContent = 'Saving…';
     clearTimeout(saveTimer);
-    saveTimer = setTimeout(() => {
+    saveTimer = setTimeout(async () => {
       try {
         state.updatedAt = new Date().toISOString();
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        await persistProject(state);
         $('#save-status').textContent = 'Saved locally';
       } catch {
-        $('#save-status').textContent = 'Storage full — export a backup';
-        showToast('Browser storage is full. Download a project backup.');
+        $('#save-status').textContent = 'Save failed — export a backup';
+        showToast('The project could not be saved. Download a project backup.');
       }
     }, 350);
   }
@@ -207,7 +295,7 @@
   }
 
   function renderGallery(block) {
-    const items = block.images.length ? block.images.map((image, index) => `<figure class="gallery-item" data-image-id="${image.id}">
+    const items = block.images.length ? block.images.map((image, index) => `<figure class="gallery-item" data-image-id="${image.id}" draggable="true">
       <img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt || '')}">
       ${block.showFileName ? `<figcaption>${escapeHtml(image.fileName)}</figcaption>` : ''}
       <div class="gallery-item-tools" aria-label="Photo actions">
@@ -267,56 +355,7 @@
     $$('[data-image-upload]', canvas).forEach(frame => {
       frame.addEventListener('click', event => {
         if (event.target.tagName === 'INPUT') return;
-        frame.querySelector('input').click();
-      });
-      frame.querySelector('input').addEventListener('change', event => handleImage(event, frame.closest('.newsletter-block').dataset.id));
-    });
-    $$('[data-gallery-upload]', canvas).forEach(button => {
-      const blockElement = button.closest('.newsletter-block');
-      const input = blockElement.querySelector('input[type="file"]');
-      button.addEventListener('click', event => { event.stopPropagation(); input.click(); });
-      input.addEventListener('change', event => { if (event.target.files.length) addFilesToGallery(blockElement.dataset.id, event.target.files); });
-    });
-    $$('.gallery-empty', canvas).forEach(empty => empty.addEventListener('click', () => empty.closest('.newsletter-block').querySelector('[data-gallery-upload]').click()));
-    $$('[data-gallery-action]', canvas).forEach(button => button.addEventListener('click', event => {
-      event.stopPropagation();
-      updateGalleryImage(button.closest('.newsletter-block').dataset.id, Number(button.dataset.index), button.dataset.galleryAction);
-    }));
-  }
-
-  function selectBlock(id, rerender = true) {
-    const alreadySelected = selectedId === id;
-    selectedId = id;
-    if (rerender && !alreadySelected) render();
-    else renderSettings();
-  }
-  function addBlock(type, index = state.blocks.length) {
-    if (!blockDefaults[type]) return;
-    const block = blockDefaults[type]();
-    mutate(() => state.blocks.splice(index, 0, block));
-    selectedId = block.id;
-    render();
-    showToast(`${type === 'imageText' ? 'Image + text' : type} block added`);
-  }
-  function deleteBlock(id) { mutate(() => { state.blocks = state.blocks.filter(b => b.id !== id); selectedId = null; }); }
-  function duplicateBlock(id) {
-    mutate(() => {
-      const index = state.blocks.findIndex(b => b.id === id);
-      const copy = { ...JSON.parse(JSON.stringify(state.blocks[index])), id: uid() };
-      state.blocks.splice(index + 1, 0, copy); selectedId = copy.id;
-    });
-  }
-  function moveBy(id, delta) {
-    const oldIndex = state.blocks.findIndex(b => b.id === id);
-    const newIndex = Math.max(0, Math.min(state.blocks.length - 1, oldIndex + delta));
-    if (oldIndex === newIndex) return;
-    mutate(() => state.blocks.splice(newIndex, 0, state.blocks.splice(oldIndex, 1)[0]));
-  }
-  function moveBlockTo(sourceId, targetId) {
-    mutate(() => {
-      const from = state.blocks.findIndex(b => b.id === sourceId);
-      let to = state.blocks.findIndex(b => b.id === targetId);
-      const [block] = state.blocks.splice(from, 1);
+        frame.querySelector('input').clic…912 tokens truncated…splice(from, 1);
       if (from < to) to--;
       state.blocks.splice(to, 0, block);
     });
@@ -368,15 +407,34 @@
     });
   }
 
+  function showImportProgress(label, current, total) {
+    $('#import-progress').hidden = false;
+    $('#import-progress-label').textContent = label;
+    $('#import-progress-count').textContent = `${current} / ${total}`;
+    $('#import-progress-bar').max = Math.max(total, 1);
+    $('#import-progress-bar').value = current;
+  }
+
+  function hideImportProgress() { $('#import-progress').hidden = true; }
+
   async function prepareImageFiles(fileList) {
     const allowed = /^image\/(jpeg|png|webp|gif)$/;
     const files = [...fileList].filter(file => allowed.test(file.type) && file.size <= 12 * 1024 * 1024)
       .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }));
     const prepared = [];
-    for (const file of files) {
-      try {
-        prepared.push({ id: uid(), src: await processImageFile(file), fileName: file.name, alt: file.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ') });
-      } catch { /* Skip unreadable images. */ }
+    activeImports++;
+    try {
+      showImportProgress('Optimizing photos…', 0, files.length);
+      for (let index = 0; index < files.length; index++) {
+        const file = files[index];
+        try {
+          prepared.push({ id: uid(), src: await processImageFile(file), fileName: file.name, alt: file.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ') });
+        } catch { /* Skip unreadable images. */ }
+        showImportProgress(`Optimizing ${file.name}`, index + 1, files.length);
+      }
+    } finally {
+      activeImports--;
+      hideImportProgress();
     }
     return prepared;
   }
@@ -398,19 +456,21 @@
     });
   }
 
+  function reorderGalleryImage(blockId, sourceId, targetId) {
+    if (sourceId === targetId) return;
+    mutate(() => {
+      const images = state.blocks.find(block => block.id === blockId).images;
+      const from = images.findIndex(image => image.id === sourceId);
+      let to = images.findIndex(image => image.id === targetId);
+      const [image] = images.splice(from, 1);
+      if (from < to) to--;
+      images.splice(to, 0, image);
+    });
+  }
+
   async function addImageBatch(fileList, insertAt = state.blocks.length) {
-    const allowed = /^image\/(jpeg|png|webp|gif)$/;
-    const files = [...fileList].filter(file => allowed.test(file.type) && file.size <= 12 * 1024 * 1024)
-      .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }));
-    if (!files.length) return showToast('No supported images were found.');
-    showToast(`Preparing ${files.length} image${files.length === 1 ? '' : 's'}…`);
-    const prepared = [];
-    for (const file of files) {
-      try {
-        const src = await processImageFile(file);
-        prepared.push({ ...blockDefaults.image(), src, fileName: file.name, alt: file.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' '), caption: '' });
-      } catch { /* Skip unreadable files and continue the batch. */ }
-    }
+    const images = await prepareImageFiles(fileList);
+    const prepared = images.map(image => ({ ...blockDefaults.image(), ...image, caption: '' }));
     if (!prepared.length) return showToast('The selected images could not be read.');
     mutate(() => state.blocks.splice(insertAt, 0, ...prepared));
     selectedId = prepared[0].id;
@@ -535,6 +595,7 @@
     $$('[data-close-modal],[data-close-export]').forEach(el => el.addEventListener('click', closeModals));
     $('#download-html').addEventListener('click', downloadHtml); $('#download-project').addEventListener('click', downloadProject); $('#print-pdf').addEventListener('click', printNewsletter);
     $('#import-btn').addEventListener('click', () => $('#import-file').click());
+    $('#restore-btn').addEventListener('click', restoreLatestSnapshot);
     $('#import-file').addEventListener('change', event => { if (event.target.files[0]) importProject(event.target.files[0]); event.target.value = ''; });
     $('#new-btn').addEventListener('click', () => { if (confirm('Start a new newsletter? Download a project backup first if you want to keep this version.')) { recordHistory(); state = createProject('editorial'); selectedId = null; render(); scheduleSave(); } });
     document.addEventListener('keydown', event => {
@@ -542,10 +603,17 @@
       if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'z') { event.preventDefault(); event.shiftKey ? redo() : undo(); }
       if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'y') { event.preventDefault(); redo(); }
     });
+    window.addEventListener('beforeunload', event => { if (activeImports > 0) { event.preventDefault(); event.returnValue = ''; } });
   }
 
-  bindUI();
-  render();
-  scheduleSave();
+  async function init() {
+    state = await loadProject() || state;
+    bindUI();
+    render();
+    scheduleSave();
+    updateStorageStatus();
+  }
+
+  init();
 })();
 
