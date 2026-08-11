@@ -17,8 +17,11 @@ A dependency-free, local-first drag-and-drop newsletter builder designed for Git
 - Batch image drag-and-drop with natural filename sorting (`photo2` before `photo10`)
 - Optional per-image filename display
 - Multi-photo gallery blocks with editable grade/class headings, 1–4 column layouts, crop styles, and per-photo reordering
-- Drag-to-reorder gallery photos and a ready-made K–5 grade showcase template
+- Drag-to-reorder gallery photos and a ready-made PreK–8 Art Showcase template
 - Progress feedback and unload protection during large image imports
+- Art-focused featured, process, comparison, gallery-wall, grid, and descriptive-list arrangements
+- Collapsible, duplicable, hideable grade sections with project titles and descriptions
+- Pre-export privacy audit for visible filenames, possible personal names, and missing image descriptions
 
 ## Run locally
 
