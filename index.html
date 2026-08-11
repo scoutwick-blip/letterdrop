@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A friendly, drag-and-drop newsletter builder that runs entirely in your browser.">
+  <title>Letterdrop — Newsletter Builder</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app" class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Letterdrop home">
+        <span class="brand-mark" aria-hidden="true">L</span>
+        <span>Letterdrop</span>
+      </a>
+      <div class="project-meta">
+        <input id="project-title" class="project-title" value="The Sunday Edit" aria-label="Newsletter title">
+        <span id="save-status" class="save-status" role="status">Saved locally</span>
+      </div>
+      <div class="top-actions">
+        <button id="undo-btn" class="icon-btn" title="Undo" aria-label="Undo" disabled>↶</button>
+        <button id="redo-btn" class="icon-btn" title="Redo" aria-label="Redo" disabled>↷</button>
+        <div class="device-switch" aria-label="Preview size">
+          <button class="device-btn active" data-device="desktop" aria-label="Desktop preview">▱</button>
+          <button class="device-btn" data-device="mobile" aria-label="Mobile preview">▯</button>
+        </div>
+        <button id="preview-btn" class="secondary-btn">Preview</button>
+        <button id="export-btn" class="primary-btn">Export <span aria-hidden="true">↗</span></button>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <aside class="left-panel panel" aria-label="Content library">
+        <nav class="panel-tabs" aria-label="Library sections">
+          <button class="panel-tab active" data-tab="blocks">Add</button>
+          <button class="panel-tab" data-tab="templates">Templates</button>
+        </nav>
+
+        <section id="blocks-tab" class="tab-content active">
+          <div class="panel-heading">
+            <p class="eyebrow">Building blocks</p>
+            <h2>Tell your story</h2>
+            <p>Drag a block onto the page or click to add it.</p>
+          </div>
+          <div class="block-library">
+            <button class="library-block" draggable="true" data-add="heading"><span class="block-icon heading-icon">T</span><span><strong>Heading</strong><small>Make a statement</small></span></button>
+            <button class="library-block" draggable="true" data-add="paragraph"><span class="block-icon">¶</span><span><strong>Paragraph</strong><small>Add your message</small></span></button>
+            <button class="library-block" draggable="true" data-add="image"><span class="block-icon">▧</span><span><strong>Image</strong><small>Upload a photo</small></span></button>
+            <button class="library-block" draggable="true" data-add="gallery"><span class="block-icon">▦</span><span><strong>Photo group</strong><small>Arrange a class or grade</small></span></button>
+            <button class="library-block" draggable="true" data-add="imageText"><span class="block-icon">◫</span><span><strong>Image + text</strong><small>Pair words and imagery</small></span></button>
+            <button class="library-block" draggable="true" data-add="quote"><span class="block-icon">“</span><span><strong>Callout</strong><small>Highlight an idea</small></span></button>
+            <button class="library-block" draggable="true" data-add="button"><span class="block-icon">↗</span><span><strong>Button</strong><small>Invite readers to act</small></span></button>
+            <button class="library-block" draggable="true" data-add="divider"><span class="block-icon">—</span><span><strong>Divider</strong><small>Create a pause</small></span></button>
+          </div>
+        </section>
+
+        <section id="templates-tab" class="tab-content">
+          <div class="panel-heading">
+            <p class="eyebrow">Quick start</p>
+            <h2>Choose a mood</h2>
+            <p>Templates replace your current canvas.</p>
+          </div>
+          <div class="template-list">
+            <button class="template-card" data-template="editorial"><span class="template-art editorial-art">Aa</span><span><strong>Sunday Edit</strong><small>Warm editorial</small></span></button>
+            <button class="template-card" data-template="classroom"><span class="template-art classroom-art">★</span><span><strong>Classroom Notes</strong><small>Bright and friendly</small></span></button>
+            <button class="template-card" data-template="business"><span class="template-art business-art">N°</span><span><strong>Studio Dispatch</strong><small>Clean and modern</small></span></button>
+          </div>
+        </section>
+
+        <div class="local-note"><span aria-hidden="true">◉</span><p><strong>Private by default</strong><br>Your work stays in this browser.</p></div>
+      </aside>
+
+      <section class="canvas-area" aria-label="Newsletter canvas">
+        <div class="canvas-toolbar">
+          <span><span class="live-dot"></span> Editing</span>
+          <span id="block-count">0 blocks</span>
+        </div>
+        <div id="canvas-wrap" class="canvas-wrap">
+          <article id="newsletter-canvas" class="newsletter-canvas" aria-label="Newsletter editor"></article>
+        </div>
+        <button id="quick-add" class="quick-add" aria-label="Add paragraph block">+</button>
+      </section>
+
+      <aside class="right-panel panel" aria-label="Design settings">
+        <div class="panel-heading design-heading">
+          <p class="eyebrow">Design studio</p>
+          <h2 id="settings-title">Newsletter style</h2>
+          <p id="settings-subtitle">Set the look and feel for your whole story.</p>
+        </div>
+        <div id="global-settings">
+          <section class="setting-section">
+            <h3>Color story</h3>
+            <div class="color-row">
+              <label>Accent <input id="accent-color" type="color" value="#d7653b"></label>
+              <label>Ink <input id="text-color" type="color" value="#25312b"></label>
+              <label>Page <input id="page-color" type="color" value="#f3eee5"></label>
+            </div>
+          </section>
+          <section class="setting-section">
+            <h3>Typography</h3>
+            <label class="field-label">Heading personality
+              <select id="font-select">
+                <option value="editorial">Editorial serif</option>
+                <option value="modern">Modern sans</option>
+                <option value="classic">Classic book</option>
+              </select>
+            </label>
+          </section>
+          <section class="setting-section">
+            <h3>Page rhythm</h3>
+            <div class="segmented" id="density-control">
+              <button data-density="compact">Tight</button>
+              <button class="active" data-density="comfortable">Balanced</button>
+              <button data-density="airy">Airy</button>
+            </div>
+          </section>
+          <section class="setting-section">
+            <h3>Image file names</h3>
+            <div class="segmented" id="image-name-control" style="grid-template-columns:1fr 1fr">
+              <button data-image-names="hide">Hide all</button>
+              <button data-image-names="show">Show all</button>
+            </div>
+          </section>
+        </div>
+        <div id="block-settings" hidden></div>
+        <div class="project-actions">
+          <button id="new-btn">New project</button>
+          <button id="import-btn">Import project</button>
+          <input id="import-file" type="file" accept=".json,.newsletter.json" hidden>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <div id="preview-modal" class="modal" hidden>
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="preview-dialog" role="dialog" aria-modal="true" aria-labelledby="preview-heading">
+      <header><div><p class="eyebrow">Reader view</p><h2 id="preview-heading">Newsletter preview</h2></div><button class="close-btn" data-close-modal aria-label="Close preview">×</button></header>
+      <div id="preview-content" class="preview-content"></div>
+    </div>
+  </div>
+
+  <div id="export-modal" class="modal" hidden>
+    <div class="modal-backdrop" data-close-export></div>
+    <div class="export-dialog" role="dialog" aria-modal="true" aria-labelledby="export-heading">
+      <header><div><p class="eyebrow">Ready to share</p><h2 id="export-heading">Take your story with you</h2></div><button class="close-btn" data-close-export aria-label="Close export options">×</button></header>
+      <p>Choose the format that fits where your newsletter is going next.</p>
+      <div class="export-grid">
+        <button id="download-html"><span class="export-icon">〈/〉</span><strong>Web page</strong><small>A self-contained HTML file</small></button>
+        <button id="print-pdf"><span class="export-icon">▤</span><strong>Print or PDF</strong><small>Use your browser's print dialog</small></button>
+        <button id="download-project"><span class="export-icon">↓</span><strong>Project file</strong><small>Keep an editable backup</small></button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
+
