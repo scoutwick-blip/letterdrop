@@ -13,7 +13,7 @@
     heading: () => ({ id: uid(), type: 'heading', text: 'A heading worth pausing for', level: 2, align: 'left' }),
     paragraph: () => ({ id: uid(), type: 'paragraph', text: 'Share an update, a small story, or something your readers should know. Click this text to make it your own.' }),
     image: () => ({ id: uid(), type: 'image', src: '', alt: '', fileName: '', showFileName: false, caption: 'Add a thoughtful caption here.' }),
-    gallery: () => ({ id: uid(), type: 'gallery', heading: 'Grade 3', columns: 3, crop: 'square', showFileName: false, images: [] }),
+    gallery: () => ({ id: uid(), type: 'gallery', heading: 'Grade 3', projectTitle: 'Our latest art project', description: 'Add a short note about the materials, process, or artistic idea explored by this class.', columns: 3, crop: 'square', layout: 'grid', showFileName: false, hidden: false, collapsed: false, images: [] }),
     imageText: () => ({ id: uid(), type: 'imageText', src: '', alt: '', fileName: '', showFileName: false, heading: 'A story in two parts', text: 'Bring an image and a short statement together. This layout stacks neatly on smaller screens.', imageSide: 'left' }),
     quote: () => ({ id: uid(), type: 'quote', text: 'The best newsletters feel less like an announcement and more like a letter.', cite: 'A thoughtful editor' }),
     button: () => ({ id: uid(), type: 'button', label: 'Discover more', url: 'https://example.com' }),
@@ -55,17 +55,14 @@
       ]
     }),
     grades: () => ({
-      title: 'Our School Story',
+      title: 'The Art Room Gallery',
       theme: { accent: '#9b5b36', ink: '#29352f', page: '#f5f0e4', font: 'editorial', density: 'comfortable' },
       blocks: [
-        { id: uid(), type: 'heading', text: 'Learning, growing, together.', level: 1, align: 'left', hero: true, kicker: 'SCHOOL COMMUNITY · PHOTO EDITION', date: 'THIS MONTH AT A GLANCE' },
-        { id: uid(), type: 'paragraph', text: 'A look at the projects, people, and moments that made this month memorable across every grade.' },
-        { id: uid(), type: 'gallery', heading: 'Kindergarten', columns: 3, crop: 'square', showFileName: false, images: [] },
-        { id: uid(), type: 'gallery', heading: 'Grade 1', columns: 3, crop: 'square', showFileName: false, images: [] },
-        { id: uid(), type: 'gallery', heading: 'Grade 2', columns: 3, crop: 'square', showFileName: false, images: [] },
-        { id: uid(), type: 'gallery', heading: 'Grade 3', columns: 3, crop: 'square', showFileName: false, images: [] },
-        { id: uid(), type: 'gallery', heading: 'Grade 4', columns: 3, crop: 'square', showFileName: false, images: [] },
-        { id: uid(), type: 'gallery', heading: 'Grade 5', columns: 3, crop: 'square', showFileName: false, images: [] }
+        { id: uid(), type: 'heading', text: 'Made with curious hands.', level: 1, align: 'left', hero: true, kicker: 'FROM THE ART ROOM · STUDENT GALLERY', date: 'OUR LATEST CREATIONS' },
+        { id: uid(), type: 'paragraph', text: 'Welcome to our art-room gallery—a look at the ideas, materials, and creative discoveries happening from PreK through Grade 8.' },
+        ...['PreK', 'Kindergarten', 'Grade 1', 'Grade 2', 'Grade 3', 'Grade 4', 'Grade 5', 'Grade 6', 'Grade 7', 'Grade 8'].map((heading, index) => ({ id: uid(), type: 'gallery', heading, projectTitle: 'Project title', description: 'Describe what students explored, which materials they used, or what inspired this work.', columns: 3, crop: 'square', layout: index === 0 ? 'wall' : 'grid', showFileName: false, hidden: false, collapsed: false, images: [] })),
+        { id: uid(), type: 'heading', text: 'Coming up in the art room', level: 2, align: 'left' },
+        { id: uid(), type: 'paragraph', text: 'Add upcoming exhibitions, supply reminders, volunteer opportunities, or a short note for families.' }
       ]
     })
   };
@@ -257,7 +254,7 @@
 
   function renderBlock(block) {
     const selected = selectedId === block.id ? ' selected' : '';
-    const common = `class="newsletter-block${block.hero ? ' hero-block' : ''}${selected}" data-id="${block.id}" data-type="${block.type}"`;
+    const common = `class="newsletter-block${block.hero ? ' hero-block' : ''}${block.hidden ? ' grade-hidden' : ''}${block.collapsed ? ' grade-collapsed' : ''}${selected}" data-id="${block.id}" data-type="${block.type}"`;
     let content = '';
     if (block.type === 'heading') {
       content = `${block.hero && block.kicker ? `<p class="hero-kicker editable" contenteditable="true" data-field="kicker">${escapeHtml(block.kicker)}</p>` : ''}
@@ -304,7 +301,7 @@
         <button data-gallery-action="remove" data-index="${index}" aria-label="Remove photo">×</button>
       </div>
     </figure>`).join('') : `<div class="gallery-empty"><span>▦</span><strong>Add a group of photos</strong><small>Choose several images at once; they will be sorted by filename.</small></div>`;
-    return `<div class="gallery-heading-row"><h2 class="gallery-heading editable" contenteditable="true" data-field="heading">${escapeHtml(block.heading || 'Photo group')}</h2><button class="gallery-add-btn" data-gallery-upload>+ Add photos</button><input type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple hidden></div><div class="photo-gallery crop-${block.crop || 'square'}" style="--gallery-columns:${block.columns || 3}">${items}</div>`;
+    return `<div class="gallery-heading-row"><h2 class="gallery-heading editable" contenteditable="true" data-field="heading">${escapeHtml(block.heading || 'Photo group')}</h2><div class="grade-header-actions"><button data-gallery-collapse aria-label="${block.collapsed ? 'Expand' : 'Collapse'} ${escapeHtml(block.heading)}">${block.collapsed ? '＋' : '−'}</button><button class="gallery-add-btn" data-gallery-upload>+ Add photos</button></div><input type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple hidden></div><div class="gallery-body"><h3 class="gallery-project-title editable" contenteditable="true" data-field="projectTitle">${escapeHtml(block.projectTitle || 'Project title')}</h3><p class="gallery-description editable" contenteditable="true" data-field="description">${escapeHtml(block.description || '')}</p><div class="photo-gallery layout-${block.layout || 'grid'} crop-${block.crop || 'square'}" style="--gallery-columns:${block.columns || 3}">${items}</div></div>`;
   }
 
   function wireCanvas() {
@@ -338,56 +335,7 @@
       if (action === 'delete') deleteBlock(id);
       if (action === 'duplicate') duplicateBlock(id);
       if (action === 'up') moveBy(id, -1);
-      if (action === 'down') moveBy(id, 1);
-    }));
-    $$('.editable', canvas).forEach(editable => {
-      editable.addEventListener('focus', () => {
-        recordHistory();
-        selectBlock(editable.closest('.newsletter-block').dataset.id, false);
-      }, { once: true });
-      editable.addEventListener('input', () => {
-        const block = state.blocks.find(b => b.id === editable.closest('.newsletter-block').dataset.id);
-        block[editable.dataset.field] = editable.textContent.trim();
-        scheduleSave();
-      });
-      if (editable.tagName === 'A') editable.addEventListener('click', event => event.preventDefault());
-    });
-    $$('[data-image-upload]', canvas).forEach(frame => {
-      frame.addEventListener('click', event => {
-        if (event.target.tagName === 'INPUT') return;
-        frame.querySelector('input').clic…912 tokens truncated…splice(from, 1);
-      if (from < to) to--;
-      state.blocks.splice(to, 0, block);
-    });
-  }
-
-  function renderSettings() {
-    const block = state.blocks.find(b => b.id === selectedId);
-    $('#global-settings').hidden = Boolean(block);
-    $('#block-settings').hidden = !block;
-    $('#settings-title').textContent = block ? `${labelType(block.type)} block` : 'Newsletter style';
-    $('#settings-subtitle').textContent = block ? 'Fine-tune this piece of your story.' : 'Set the look and feel for your whole story.';
-    if (!block) return;
-    let fields = '';
-    if (block.type === 'heading') fields += `<label class="field-label">Alignment<select data-setting="align"><option value="left">Left</option><option value="center">Center</option><option value="right">Right</option></select></label>`;
-    if (block.type === 'image' || block.type === 'imageText') fields += `<label class="field-label">Alternative text<input data-setting="alt" value="${escapeHtml(block.alt || '')}" placeholder="Describe the image"></label><label class="check-label"><input type="checkbox" data-setting="showFileName" ${block.showFileName ? 'checked' : ''}> Display image file name</label>`;
-    if (block.type === 'gallery') fields += `<label class="field-label">Photos per row<select data-setting="columns"><option value="1">1 large photo</option><option value="2">2 photos</option><option value="3">3 photos</option><option value="4">4 photos</option></select></label><label class="field-label">Photo shape<select data-setting="crop"><option value="square">Square</option><option value="landscape">Landscape</option><option value="natural">Natural proportions</option></select></label><label class="check-label"><input type="checkbox" data-setting="showFileName" ${block.showFileName ? 'checked' : ''}> Display image file names</label><button class="settings-add-photos" data-settings-gallery-upload>+ Add more photos</button>`;
-    if (block.type === 'imageText') fields += `<label class="field-label">Image position<select data-setting="imageSide"><option value="left">Left</option><option value="right">Right</option></select></label>`;
-    if (block.type === 'button') fields += `<label class="field-label">Destination URL<input data-setting="url" value="${escapeHtml(block.url || '')}" placeholder="https://..."></label>`;
-    $('#block-settings').innerHTML = `<section class="setting-section"><h3>Block settings</h3><div style="display:grid;gap:15px">${fields || '<p style="margin:0;color:var(--muted);font-size:11px">Edit this block directly on the canvas.</p>'}</div></section><section class="setting-section"><button class="danger-btn" data-delete-selected>Delete this block</button></section>`;
-    $$('[data-setting]', $('#block-settings')).forEach(input => {
-      if (input.type !== 'checkbox') input.value = block[input.dataset.setting] || input.value;
-      input.addEventListener('change', () => mutate(() => block[input.dataset.setting] = input.type === 'checkbox' ? input.checked : input.value));
-    });
-    $('[data-delete-selected]', $('#block-settings')).addEventListener('click', () => deleteBlock(block.id));
-    const addGalleryButton = $('[data-settings-gallery-upload]', $('#block-settings'));
-    if (addGalleryButton) addGalleryButton.addEventListener('click', () => $(`.newsletter-block[data-id="${block.id}"] [data-gallery-upload]`, canvas).click());
-  }
-
-  function labelType(type) { return ({ imageText: 'Image + text', quote: 'Callout' })[type] || type[0].toUpperCase() + type.slice(1); }
-
-  function handleImage(event, id) {
-    const file = event.target.files[0];
+      if (action === '…2408 tokens truncated…
     if (!file) return;
     if (file.size > 12 * 1024 * 1024) return showToast('Please choose an image smaller than 12 MB.');
     processImageFile(file).then(data => mutate(() => {
@@ -503,15 +451,43 @@
     const clone = canvas.cloneNode(true);
     clone.removeAttribute('id');
     clone.classList.remove('mobile');
-    $$('.block-tools,.gallery-item-tools,.gallery-add-btn,input', clone).forEach(el => el.remove());
+    $$('.grade-hidden', clone).forEach(el => el.remove());
+    $$('.block-tools,.gallery-item-tools,.grade-header-actions,.gallery-add-btn,input', clone).forEach(el => el.remove());
     $$('.newsletter-block', clone).forEach(el => { el.classList.remove('selected', 'dragging', 'drop-before'); el.removeAttribute('data-id'); el.removeAttribute('data-type'); });
     $$('.editable', clone).forEach(el => { el.removeAttribute('contenteditable'); el.classList.remove('editable'); });
     $$('[data-image-upload]', clone).forEach(el => { el.removeAttribute('data-image-upload'); el.removeAttribute('title'); });
     return clone;
   }
 
+  function privacySummary() {
+    const imageBlocks = state.blocks.filter(block => block.type === 'image' || block.type === 'imageText');
+    const galleries = state.blocks.filter(block => block.type === 'gallery' && !block.hidden);
+    const allNames = [
+      ...imageBlocks.filter(block => block.showFileName && block.fileName).map(block => block.fileName),
+      ...galleries.flatMap(block => block.showFileName ? block.images.map(image => image.fileName) : [])
+    ];
+    const genericWords = /^(art|grade|photo|image|img|scan|dsc|project|untitled|student|work)([-_ ]|$)/i;
+    const possiblyPersonal = allNames.filter(name => {
+      const stem = name.replace(/\.[^.]+$/, '');
+      return !genericWords.test(stem) && /^[a-z]{2,}[-_ ][a-z]{2,}/i.test(stem);
+    });
+    const missingAlt = imageBlocks.filter(block => block.src && !block.alt).length + galleries.reduce((count, block) => count + block.images.filter(image => !image.alt).length, 0);
+    return { visibleNames: allNames.length, possiblyPersonal: possiblyPersonal.length, missingAlt, hiddenGrades: state.blocks.filter(block => block.type === 'gallery' && block.hidden).length };
+  }
+
+  function updatePrivacyAudit() {
+    const audit = privacySummary();
+    const safe = audit.visibleNames === 0 && audit.missingAlt === 0;
+    $('#privacy-audit').innerHTML = `<div><span class="privacy-status ${safe ? 'safe' : ''}">${safe ? '✓' : '!'}</span><p><strong>${safe ? 'Privacy check looks good' : 'Review before sharing'}</strong><br>${audit.visibleNames} visible filename${audit.visibleNames === 1 ? '' : 's'} · ${audit.possiblyPersonal} possibly personal · ${audit.missingAlt} missing image description${audit.missingAlt === 1 ? '' : 's'}${audit.hiddenGrades ? ` · ${audit.hiddenGrades} hidden grade${audit.hiddenGrades === 1 ? '' : 's'}` : ''}</p></div>${audit.visibleNames ? '<button id="privacy-hide-names">Hide all filenames</button>' : ''}`;
+    const hideButton = $('#privacy-hide-names');
+    if (hideButton) hideButton.addEventListener('click', () => {
+      mutate(() => state.blocks.filter(block => ['image', 'imageText', 'gallery'].includes(block.type)).forEach(block => { block.showFileName = false; }));
+      updatePrivacyAudit();
+    });
+  }
+
   function outputStyles() {
-    return `*{box-sizing:border-box}body{margin:0;background:#dedbd4;padding:40px 16px;color:${state.theme.ink}}.newsletter-canvas{--newsletter-accent:${state.theme.accent};--newsletter-ink:${state.theme.ink};--newsletter-page:${state.theme.page};--block-space:${({compact:'19px',comfortable:'28px',airy:'39px'})[state.theme.density]};width:min(100%,720px);margin:auto;background:var(--newsletter-page);color:var(--newsletter-ink);overflow:hidden}.newsletter-block{padding:var(--block-space) 54px}.hero-block{padding:72px 54px 52px}.hero-kicker{margin:0 0 18px;color:var(--newsletter-accent);font:800 10px Arial,sans-serif;letter-spacing:2px;text-transform:uppercase}.hero-date{margin:20px 0 0;font:11px Arial,sans-serif;color:#77766f}.newsletter-heading{margin:0;font:500 48px/1.05 Georgia,serif;letter-spacing:-1.8px}.newsletter-paragraph{margin:0;font:17px/1.75 Georgia,serif}.image-frame{min-height:280px;overflow:hidden;background:#ded8cd}.image-frame img{display:block;width:100%;min-height:280px;max-height:480px;object-fit:cover}.image-placeholder{min-height:280px;display:grid;place-items:center;text-align:center;color:#827e75;background:#ddd7cb}.image-caption{margin:9px 0 0;font:italic 12px Georgia,serif;color:#6e706b}.image-file-name{margin:9px 0 0;font:700 10px Arial,sans-serif;color:#626762;letter-spacing:.3px;overflow-wrap:anywhere}.image-text-layout{display:grid;grid-template-columns:1fr 1fr;align-items:stretch}.image-text-layout .image-frame,.image-text-layout img{min-height:340px}.image-text-copy{display:flex;flex-direction:column;justify-content:center;padding:44px;background:white}.image-text-copy h2{margin:0 0 14px;font:34px/1.1 Georgia,serif}.image-text-copy p{margin:0;font:16px/1.65 Georgia,serif}.gallery-heading{margin:0 0 18px;font:32px/1.1 Georgia,serif}.photo-gallery{display:grid;grid-template-columns:repeat(var(--gallery-columns),minmax(0,1fr));gap:12px}.gallery-item{margin:0;min-width:0}.gallery-item img{display:block;width:100%;aspect-ratio:1;object-fit:cover}.photo-gallery.crop-landscape img{aspect-ratio:4/3}.photo-gallery.crop-natural img{aspect-ratio:auto;object-fit:contain}.gallery-item figcaption{margin-top:6px;font:700 9px Arial,sans-serif;color:#626762;overflow-wrap:anywhere}.quote-block{border-left:4px solid var(--newsletter-accent);padding-left:28px}.quote-text{margin:0;font:italic 31px/1.25 Georgia,serif}.quote-cite{display:block;margin-top:14px;font:700 10px Arial,sans-serif;letter-spacing:1.2px;text-transform:uppercase}.button-wrap{text-align:center}.newsletter-button{display:inline-block;background:var(--newsletter-accent);color:white;padding:13px 22px;border-radius:4px;text-decoration:none;font:800 12px Arial,sans-serif}.divider-line{height:1px;background:rgba(37,49,43,.25)}.font-modern .newsletter-heading{font-family:Arial,sans-serif;font-weight:800}.font-modern .newsletter-paragraph{font-family:Arial,sans-serif}.font-classic .newsletter-heading,.font-classic .newsletter-paragraph{font-family:Palatino,serif}@media(max-width:600px){body{padding:0}.newsletter-block{padding-left:28px;padding-right:28px}.newsletter-heading{font-size:36px}.image-text-layout{grid-template-columns:1fr}.image-text-copy{padding:30px}.photo-gallery{grid-template-columns:repeat(min(var(--gallery-columns),2),minmax(0,1fr))}}@media print{body{padding:0;background:white}.newsletter-canvas{width:100%}.newsletter-block{break-inside:avoid}}`;
+    return `*{box-sizing:border-box}body{margin:0;background:#dedbd4;padding:40px 16px;color:${state.theme.ink}}.newsletter-canvas{--newsletter-accent:${state.theme.accent};--newsletter-ink:${state.theme.ink};--newsletter-page:${state.theme.page};--block-space:${({compact:'19px',comfortable:'28px',airy:'39px'})[state.theme.density]};width:min(100%,720px);margin:auto;background:var(--newsletter-page);color:var(--newsletter-ink);overflow:hidden}.newsletter-block{padding:var(--block-space) 54px}.hero-block{padding:72px 54px 52px}.hero-kicker{margin:0 0 18px;color:var(--newsletter-accent);font:800 10px Arial,sans-serif;letter-spacing:2px;text-transform:uppercase}.hero-date{margin:20px 0 0;font:11px Arial,sans-serif;color:#77766f}.newsletter-heading{margin:0;font:500 48px/1.05 Georgia,serif;letter-spacing:-1.8px}.newsletter-paragraph{margin:0;font:17px/1.75 Georgia,serif}.image-frame{min-height:280px;overflow:hidden;background:#ded8cd}.image-frame img{display:block;width:100%;min-height:280px;max-height:480px;object-fit:cover}.image-placeholder{min-height:280px;display:grid;place-items:center;text-align:center;color:#827e75;background:#ddd7cb}.image-caption{margin:9px 0 0;font:italic 12px Georgia,serif;color:#6e706b}.image-file-name{margin:9px 0 0;font:700 10px Arial,sans-serif;color:#626762;letter-spacing:.3px;overflow-wrap:anywhere}.image-text-layout{display:grid;grid-template-columns:1fr 1fr;align-items:stretch}.image-text-layout .image-frame,.image-text-layout img{min-height:340px}.image-text-copy{display:flex;flex-direction:column;justify-content:center;padding:44px;background:white}.image-text-copy h2{margin:0 0 14px;font:34px/1.1 Georgia,serif}.image-text-copy p{margin:0;font:16px/1.65 Georgia,serif}.gallery-heading{margin:0 0 10px;font:32px/1.1 Georgia,serif}.gallery-project-title{margin:0 0 5px;font:700 16px Arial,sans-serif;color:var(--newsletter-accent)}.gallery-description{margin:0 0 18px;font:14px/1.55 Georgia,serif;color:#5d625d}.photo-gallery{display:grid;grid-template-columns:repeat(var(--gallery-columns),minmax(0,1fr));gap:12px}.gallery-item{position:relative;margin:0;min-width:0}.gallery-item img{display:block;width:100%;aspect-ratio:1;object-fit:cover}.photo-gallery.crop-landscape img{aspect-ratio:4/3}.photo-gallery.crop-natural img{aspect-ratio:auto;object-fit:contain}.gallery-item figcaption{margin-top:6px;font:700 9px Arial,sans-serif;color:#626762;overflow-wrap:anywhere}.layout-featured .gallery-item:first-child{grid-column:span 2;grid-row:span 2}.layout-featured .gallery-item:first-child img{height:100%}.layout-process{counter-reset:step}.layout-process .gallery-item:before{counter-increment:step;content:counter(step);position:absolute;left:7px;top:7px;z-index:2;display:grid;place-items:center;width:25px;height:25px;border-radius:50%;background:var(--newsletter-accent);color:white;font:800 10px Arial,sans-serif}.layout-comparison{grid-template-columns:repeat(2,minmax(0,1fr))!important}.layout-wall{gap:17px}.layout-wall .gallery-item{padding:7px 7px 20px;background:#fff;box-shadow:0 5px 13px rgba(0,0,0,.13);transform:rotate(-1.2deg)}.layout-wall .gallery-item:nth-child(even){transform:rotate(1.4deg)}.layout-list{grid-template-columns:1fr!important}.layout-list .gallery-item{display:grid;grid-template-columns:minmax(150px,45%) 1fr;gap:16px;align-items:center}.quote-block{border-left:4px solid var(--newsletter-accent);padding-left:28px}.quote-text{margin:0;font:italic 31px/1.25 Georgia,serif}.quote-cite{display:block;margin-top:14px;font:700 10px Arial,sans-serif;letter-spacing:1.2px;text-transform:uppercase}.button-wrap{text-align:center}.newsletter-button{display:inline-block;background:var(--newsletter-accent);color:white;padding:13px 22px;border-radius:4px;text-decoration:none;font:800 12px Arial,sans-serif}.divider-line{height:1px;background:rgba(37,49,43,.25)}.font-modern .newsletter-heading{font-family:Arial,sans-serif;font-weight:800}.font-modern .newsletter-paragraph{font-family:Arial,sans-serif}.font-classic .newsletter-heading,.font-classic .newsletter-paragraph{font-family:Palatino,serif}@media(max-width:600px){body{padding:0}.newsletter-block{padding-left:28px;padding-right:28px}.newsletter-heading{font-size:36px}.image-text-layout{grid-template-columns:1fr}.image-text-copy{padding:30px}.photo-gallery{grid-template-columns:repeat(min(var(--gallery-columns),2),minmax(0,1fr))}}@media print{body{padding:0;background:white}.newsletter-canvas{width:100%}.newsletter-block{break-inside:avoid}.newsletter-block[data-type="gallery"]{break-inside:auto}.gallery-heading-row,.gallery-project-title{break-after:avoid}.gallery-item{break-inside:avoid}}`;
   }
 
   function downloadHtml() {
@@ -591,7 +567,7 @@
     $$('.device-btn').forEach(btn => btn.addEventListener('click', () => { $$('.device-btn').forEach(x => x.classList.toggle('active', x === btn)); canvas.classList.toggle('mobile', btn.dataset.device === 'mobile'); }));
     $('#quick-add').addEventListener('click', () => addBlock('paragraph'));
     $('#preview-btn').addEventListener('click', () => { const clone = cloneForOutput(); $('#preview-content').replaceChildren(clone); openModal('#preview-modal'); });
-    $('#export-btn').addEventListener('click', () => openModal('#export-modal'));
+    $('#export-btn').addEventListener('click', () => { updatePrivacyAudit(); openModal('#export-modal'); });
     $$('[data-close-modal],[data-close-export]').forEach(el => el.addEventListener('click', closeModals));
     $('#download-html').addEventListener('click', downloadHtml); $('#download-project').addEventListener('click', downloadProject); $('#print-pdf').addEventListener('click', printNewsletter);
     $('#import-btn').addEventListener('click', () => $('#import-file').click());
