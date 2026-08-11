@@ -62,6 +62,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, [contenteditabl
 .template-card:hover { border-color: var(--accent); }
 .template-art { height: 60px; display: grid; place-items: center; border-radius: 7px; font: italic 25px Georgia,serif; }
 .editorial-art { background: #f0e2cf; color: #b45131; }.classroom-art{background:#d9ede7;color:#176f63}.business-art{background:#182a37;color:white}
+.grades-art{background:#f2df9d;color:#654d00;font:800 17px Inter,sans-serif}
 
 .canvas-area { position: relative; overflow: hidden; background-color: #e9e7e1; background-image: radial-gradient(#cecbc4 0.7px, transparent 0.7px); background-size: 14px 14px; }
 .canvas-toolbar { position: absolute; top: 12px; left: 22px; right: 22px; z-index: 3; display: flex; justify-content: space-between; color: #70746f; font-size: 10px; text-transform: uppercase; letter-spacing: .8px; font-weight: 700; }
@@ -98,6 +99,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, [contenteditabl
 .settings-add-photos { width:100%; padding:10px; }
 .photo-gallery { display:grid; grid-template-columns:repeat(var(--gallery-columns),minmax(0,1fr)); gap:12px; }
 .gallery-item { position:relative; margin:0; min-width:0; }
+.gallery-item[draggable="true"] { cursor:grab; }.gallery-item.gallery-dragging{opacity:.35}.gallery-item.gallery-drop-target{outline:3px solid var(--newsletter-accent);outline-offset:2px}
 .gallery-item img { display:block; width:100%; aspect-ratio:1; object-fit:cover; background:#ddd8ce; }
 .photo-gallery.crop-landscape .gallery-item img { aspect-ratio:4/3; }
 .photo-gallery.crop-natural .gallery-item img { aspect-ratio:auto; object-fit:contain; }
@@ -150,6 +152,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, [contenteditabl
 .preview-content{padding:40px;display:flex;justify-content:center;background:#dedbd4}.preview-content .newsletter-canvas{margin:0}.preview-content .block-tools{display:none!important}.preview-content .newsletter-block{box-shadow:none!important}
 .export-dialog{width:min(100%,650px);padding-bottom:25px}.export-dialog>p{margin:20px 24px;color:var(--muted);font-size:13px}.export-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:0 24px}.export-grid button{display:flex;flex-direction:column;align-items:flex-start;gap:5px;padding:20px;border:1px solid var(--line);border-radius:12px;background:white;text-align:left;cursor:pointer}.export-grid button:hover{border-color:var(--accent);transform:translateY(-2px)}.export-grid small{color:var(--muted);font-size:10px;line-height:1.4}.export-icon{font-size:23px;color:var(--accent);margin-bottom:12px}
 .toast{position:fixed;left:50%;bottom:24px;z-index:200;transform:translate(-50%,20px);padding:11px 16px;border-radius:9px;background:#26322c;color:white;font-size:12px;opacity:0;pointer-events:none;transition:.2s}.toast.show{opacity:1;transform:translate(-50%,0)}
+.import-progress{position:fixed;right:24px;bottom:24px;z-index:210;width:310px;padding:15px;border:1px solid var(--line);border-radius:12px;background:white;box-shadow:0 14px 40px rgba(0,0,0,.2)}.import-progress[hidden]{display:none}.import-progress>div{display:flex;justify-content:space-between;gap:12px;margin-bottom:10px;font-size:11px}.import-progress span{color:var(--muted)}.import-progress progress{display:block;width:100%;height:8px;accent-color:var(--accent)}
 
 @media (max-width:1250px){.workspace{grid-template-columns:240px minmax(500px,1fr)260px}.topbar{grid-template-columns:240px 1fr auto}.canvas-wrap{padding-left:35px;padding-right:35px}.newsletter-block{padding-left:42px;padding-right:42px}}
 @media print{body{min-width:0;height:auto;overflow:visible;background:white}.app-shell,.modal{display:none!important}#print-root{display:block!important}.newsletter-canvas{box-shadow:none;width:100%;min-height:0}.newsletter-block{break-inside:avoid}}
