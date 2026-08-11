@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="A friendly, drag-and-drop newsletter builder that runs entirely in your browser.">
-  <title>Letterdrop — Newsletter Builder</title>
-  <link rel="stylesheet" href="styles.css?v=1.0.0">
+  <title>Letterdrop â€” Newsletter Builder</title>
+  <link rel="stylesheet" href="styles.css?v=1.1.1">
 </head>
 <body>
   <div id="app" class="app-shell">
@@ -19,14 +19,14 @@
         <span id="save-status" class="save-status" role="status">Saved locally</span>
       </div>
       <div class="top-actions">
-        <button id="undo-btn" class="icon-btn" title="Undo" aria-label="Undo" disabled>↶</button>
-        <button id="redo-btn" class="icon-btn" title="Redo" aria-label="Redo" disabled>↷</button>
+        <button id="undo-btn" class="icon-btn" title="Undo" aria-label="Undo" disabled>â†¶</button>
+        <button id="redo-btn" class="icon-btn" title="Redo" aria-label="Redo" disabled>â†·</button>
         <div class="device-switch" aria-label="Preview size">
-          <button class="device-btn active" data-device="desktop" aria-label="Desktop preview">▱</button>
-          <button class="device-btn" data-device="mobile" aria-label="Mobile preview">▯</button>
+          <button class="device-btn active" data-device="desktop" aria-label="Desktop preview">â–±</button>
+          <button class="device-btn" data-device="mobile" aria-label="Mobile preview">â–¯</button>
         </div>
         <button id="preview-btn" class="secondary-btn">Preview</button>
-        <button id="export-btn" class="primary-btn">Export <span aria-hidden="true">↗</span></button>
+        <button id="export-btn" class="primary-btn">Export <span aria-hidden="true">â†—</span></button>
       </div>
     </header>
 
@@ -45,13 +45,13 @@
           </div>
           <div class="block-library">
             <button class="library-block" draggable="true" data-add="heading"><span class="block-icon heading-icon">T</span><span><strong>Heading</strong><small>Make a statement</small></span></button>
-            <button class="library-block" draggable="true" data-add="paragraph"><span class="block-icon">¶</span><span><strong>Paragraph</strong><small>Add your message</small></span></button>
-            <button class="library-block" draggable="true" data-add="image"><span class="block-icon">▧</span><span><strong>Image</strong><small>Upload a photo</small></span></button>
-            <button class="library-block" draggable="true" data-add="gallery"><span class="block-icon">▦</span><span><strong>Photo group</strong><small>Arrange a class or grade</small></span></button>
-            <button class="library-block" draggable="true" data-add="imageText"><span class="block-icon">◫</span><span><strong>Image + text</strong><small>Pair words and imagery</small></span></button>
-            <button class="library-block" draggable="true" data-add="quote"><span class="block-icon">“</span><span><strong>Callout</strong><small>Highlight an idea</small></span></button>
-            <button class="library-block" draggable="true" data-add="button"><span class="block-icon">↗</span><span><strong>Button</strong><small>Invite readers to act</small></span></button>
-            <button class="library-block" draggable="true" data-add="divider"><span class="block-icon">—</span><span><strong>Divider</strong><small>Create a pause</small></span></button>
+            <button class="library-block" draggable="true" data-add="paragraph"><span class="block-icon">Â¶</span><span><strong>Paragraph</strong><small>Add your message</small></span></button>
+            <button class="library-block" draggable="true" data-add="image"><span class="block-icon">â–§</span><span><strong>Image</strong><small>Upload a photo</small></span></button>
+            <button class="library-block" draggable="true" data-add="gallery"><span class="block-icon">â–¦</span><span><strong>Photo group</strong><small>Arrange a class or grade</small></span></button>
+            <button class="library-block" draggable="true" data-add="imageText"><span class="block-icon">â—«</span><span><strong>Image + text</strong><small>Pair words and imagery</small></span></button>
+            <button class="library-block" draggable="true" data-add="quote"><span class="block-icon">â€œ</span><span><strong>Callout</strong><small>Highlight an idea</small></span></button>
+            <button class="library-block" draggable="true" data-add="button"><span class="block-icon">â†—</span><span><strong>Button</strong><small>Invite readers to act</small></span></button>
+            <button class="library-block" draggable="true" data-add="divider"><span class="block-icon">â€”</span><span><strong>Divider</strong><small>Create a pause</small></span></button>
           </div>
         </section>
 
@@ -67,19 +67,19 @@
           <input id="import-template-file" type="file" accept=".json,.letterdrop-template.json" hidden>
           <div class="template-section-heading"><strong>Prebuilt templates</strong></div>
           <div class="template-list">
-            <button class="template-card" data-template="editorial"><span class="template-art editorial-art">Aa</span><span><strong>Sunday Edit</strong><small>Warm editorial</small></span></button>
-            <button class="template-card" data-template="classroom"><span class="template-art classroom-art">★</span><span><strong>Classroom Notes</strong><small>Bright and friendly</small></span></button>
-            <button class="template-card" data-template="business"><span class="template-art business-art">N°</span><span><strong>Studio Dispatch</strong><small>Clean and modern</small></span></button>
-            <button class="template-card" data-template="grades"><span class="template-art grades-art">PK–8</span><span><strong>Art Showcase</strong><small>PreK through Grade 8</small></span></button>
-            <button class="template-card" data-template="artShow"><span class="template-art art-show-art">SHOW</span><span><strong>Art Show Invitation</strong><small>Event details and featured work</small></span></button>
-            <button class="template-card" data-template="familyNight"><span class="template-art family-art">♥</span><span><strong>Family Art Night</strong><small>Welcome families to create</small></span></button>
-            <button class="template-card" data-template="supplies"><span class="template-art supplies-art">✂</span><span><strong>Supply Request</strong><small>A friendly classroom wish list</small></span></button>
-            <button class="template-card" data-template="process"><span class="template-art process-art">1→3</span><span><strong>Creative Process</strong><small>Sketch to finished artwork</small></span></button>
-            <button class="template-card" data-template="semester"><span class="template-art semester-art">½</span><span><strong>Semester Recap</strong><small>A full-term visual summary</small></span></button>
+            <button class="template-card" data-template="editorial"><span class="template-art editorial-art" aria-hidden="true"></span><span><strong>Sunday Edit</strong><small>Warm editorial</small></span></button>
+            <button class="template-card" data-template="classroom"><span class="template-art classroom-art" aria-hidden="true"></span><span><strong>Classroom Notes</strong><small>Bright and friendly</small></span></button>
+            <button class="template-card" data-template="business"><span class="template-art business-art" aria-hidden="true"></span><span><strong>Studio Dispatch</strong><small>Clean and modern</small></span></button>
+            <button class="template-card" data-template="grades"><span class="template-art grades-art" aria-hidden="true"></span><span><strong>Art Showcase</strong><small>PreK through Grade 8</small></span></button>
+            <button class="template-card" data-template="artShow"><span class="template-art art-show-art" aria-hidden="true"></span><span><strong>Art Show Invitation</strong><small>Event details and featured work</small></span></button>
+            <button class="template-card" data-template="familyNight"><span class="template-art family-art" aria-hidden="true"></span><span><strong>Family Art Night</strong><small>Welcome families to create</small></span></button>
+            <button class="template-card" data-template="supplies"><span class="template-art supplies-art" aria-hidden="true"></span><span><strong>Supply Request</strong><small>A friendly classroom wish list</small></span></button>
+            <button class="template-card" data-template="process"><span class="template-art process-art" aria-hidden="true"></span><span><strong>Creative Process</strong><small>Sketch to finished artwork</small></span></button>
+            <button class="template-card" data-template="semester"><span class="template-art semester-art" aria-hidden="true"></span><span><strong>Semester Recap</strong><small>A full-term visual summary</small></span></button>
           </div>
         </section>
 
-        <div class="local-note"><span aria-hidden="true">◉</span><p><strong>Private by default</strong><br>Your work stays in this browser.<br><span id="storage-status">Checking storage…</span></p></div>
+        <div class="local-note"><span aria-hidden="true">â—‰</span><p><strong>Private by default</strong><br>Your work stays in this browser.<br><span id="storage-status">Checking storageâ€¦</span></p></div>
       </aside>
 
       <section class="canvas-area" aria-label="Newsletter canvas">
@@ -148,7 +148,7 @@
   <div id="preview-modal" class="modal" hidden>
     <div class="modal-backdrop" data-close-modal></div>
     <div class="preview-dialog" role="dialog" aria-modal="true" aria-labelledby="preview-heading">
-      <header><div><p class="eyebrow">Reader view</p><h2 id="preview-heading">Newsletter preview</h2></div><button class="close-btn" data-close-modal aria-label="Close preview">×</button></header>
+      <header><div><p class="eyebrow">Reader view</p><h2 id="preview-heading">Newsletter preview</h2></div><button class="close-btn" data-close-modal aria-label="Close preview">Ã—</button></header>
       <div id="preview-content" class="preview-content"></div>
     </div>
   </div>
@@ -156,13 +156,13 @@
   <div id="export-modal" class="modal" hidden>
     <div class="modal-backdrop" data-close-export></div>
     <div class="export-dialog" role="dialog" aria-modal="true" aria-labelledby="export-heading">
-      <header><div><p class="eyebrow">Ready to share</p><h2 id="export-heading">Take your story with you</h2></div><button class="close-btn" data-close-export aria-label="Close export options">×</button></header>
+      <header><div><p class="eyebrow">Ready to share</p><h2 id="export-heading">Take your story with you</h2></div><button class="close-btn" data-close-export aria-label="Close export options">Ã—</button></header>
       <p>Choose the format that fits where your newsletter is going next.</p>
       <div id="privacy-audit" class="privacy-audit"></div>
       <div class="export-grid">
-        <button id="download-html"><span class="export-icon">〈/〉</span><strong>Web page</strong><small>A self-contained HTML file</small></button>
-        <button id="print-pdf"><span class="export-icon">▤</span><strong>Print or PDF</strong><small>Use your browser's print dialog</small></button>
-        <button id="download-project"><span class="export-icon">↓</span><strong>Project file</strong><small>Keep an editable backup</small></button>
+        <button id="download-html"><span class="export-icon">ã€ˆ/ã€‰</span><strong>Web page</strong><small>A self-contained HTML file</small></button>
+        <button id="print-pdf"><span class="export-icon">â–¤</span><strong>Print or PDF</strong><small>Use your browser's print dialog</small></button>
+        <button id="download-project"><span class="export-icon">â†“</span><strong>Project file</strong><small>Keep an editable backup</small></button>
       </div>
     </div>
   </div>
@@ -170,7 +170,7 @@
   <div id="template-modal" class="modal" hidden>
     <div class="modal-backdrop" data-close-template></div>
     <div class="template-dialog" role="dialog" aria-modal="true" aria-labelledby="template-modal-heading">
-      <header><div><p class="eyebrow">My templates</p><h2 id="template-modal-heading">Save current design</h2></div><button class="close-btn" data-close-template aria-label="Close template dialog">×</button></header>
+      <header><div><p class="eyebrow">My templates</p><h2 id="template-modal-heading">Save current design</h2></div><button class="close-btn" data-close-template aria-label="Close template dialog">Ã—</button></header>
       <div class="template-dialog-body">
         <label class="field-label">Template name<input id="template-name" value="My art newsletter" maxlength="80"></label>
         <label class="check-label"><input id="template-keep-images" type="checkbox"> Keep current photos in this template</label>
@@ -182,9 +182,10 @@
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <div id="import-progress" class="import-progress" role="status" aria-live="polite" hidden>
-    <div><strong id="import-progress-label">Preparing photos…</strong><span id="import-progress-count"></span></div>
+    <div><strong id="import-progress-label">Preparing photosâ€¦</strong><span id="import-progress-count"></span></div>
     <progress id="import-progress-bar" value="0" max="1"></progress>
   </div>
   <script src="app-1.1.0.js"></script>
 </body>
 </html>
+
