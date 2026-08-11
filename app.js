@@ -3,7 +3,7 @@
 
   const STORAGE_KEY = 'letterdrop-project-v1';
   const DB_NAME = 'letterdrop';
-  const DB_VERSION = 1;
+  const DB_VERSION = 2;
   const MAX_HISTORY = 50;
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -64,6 +64,61 @@
         { id: uid(), type: 'heading', text: 'Coming up in the art room', level: 2, align: 'left' },
         { id: uid(), type: 'paragraph', text: 'Add upcoming exhibitions, supply reminders, volunteer opportunities, or a short note for families.' }
       ]
+    }),
+    artShow: () => ({
+      title: 'You’re Invited: Student Art Show',
+      theme: { accent: '#7c315f', ink: '#2e2430', page: '#f8efe9', font: 'editorial', density: 'airy' },
+      blocks: [
+        { id: uid(), type: 'heading', text: 'Come see what we made.', level: 1, align: 'center', hero: true, kicker: 'PREK–8 STUDENT ART SHOW', date: 'DATE · TIME · LOCATION' },
+        { id: uid(), type: 'paragraph', text: 'Families and friends are warmly invited to celebrate a year of imagination, experimentation, and student creativity.' },
+        { id: uid(), type: 'image', src: '', alt: '', fileName: '', showFileName: false, caption: 'Add a featured artwork or event poster.' },
+        { id: uid(), type: 'quote', text: 'Every child is an artist.', cite: 'A celebration of student voice' },
+        { id: uid(), type: 'button', label: 'View event details', url: 'https://example.com' }
+      ]
+    }),
+    familyNight: () => ({
+      title: 'Family Art Night',
+      theme: { accent: '#b84c5b', ink: '#3a2930', page: '#fff1e8', font: 'modern', density: 'comfortable' },
+      blocks: [
+        { id: uid(), type: 'heading', text: 'Create together.', level: 1, align: 'center', hero: true, kicker: 'FAMILY ART NIGHT', date: 'SAVE THE DATE' },
+        { id: uid(), type: 'paragraph', text: 'Join us for an evening of hands-on art making. No experience is needed—just bring your curiosity.' },
+        { id: uid(), type: 'gallery', heading: 'What we’ll make', projectTitle: 'Creative stations for every age', description: 'Add examples of the projects families can try.', columns: 3, crop: 'square', layout: 'wall', showFileName: false, hidden: false, collapsed: false, images: [] },
+        { id: uid(), type: 'heading', text: 'What to know', level: 2, align: 'left' },
+        { id: uid(), type: 'paragraph', text: 'Add the time, location, parking information, clothing recommendations, and any materials families should bring.' }
+      ]
+    }),
+    supplies: () => ({
+      title: 'Art Room Supply Request',
+      theme: { accent: '#b28316', ink: '#3b3524', page: '#fff8dc', font: 'modern', density: 'comfortable' },
+      blocks: [
+        { id: uid(), type: 'heading', text: 'Help stock our creativity.', level: 1, align: 'left', hero: true, kicker: 'ART ROOM WISH LIST', date: 'THANK YOU, FAMILIES' },
+        { id: uid(), type: 'paragraph', text: 'Our artists use a wonderful variety of everyday and specialty materials. Donations are always optional and deeply appreciated.' },
+        { id: uid(), type: 'quote', text: 'Most needed: clean recyclables, drawing paper, glue sticks, and washable markers.', cite: 'Current classroom needs' },
+        { id: uid(), type: 'heading', text: 'How to contribute', level: 2, align: 'left' },
+        { id: uid(), type: 'paragraph', text: 'Add drop-off instructions, requested quantities, links, and any items the art room cannot accept.' },
+        { id: uid(), type: 'button', label: 'View the complete wish list', url: 'https://example.com' }
+      ]
+    }),
+    process: () => ({
+      title: 'From Idea to Artwork',
+      theme: { accent: '#3f6f9f', ink: '#263746', page: '#edf4f8', font: 'editorial', density: 'comfortable' },
+      blocks: [
+        { id: uid(), type: 'heading', text: 'The creative process.', level: 1, align: 'left', hero: true, kicker: 'INSIDE THE ART ROOM', date: 'SKETCH · EXPLORE · REFLECT' },
+        { id: uid(), type: 'paragraph', text: 'Art is more than a finished product. Use this newsletter to show the questions, experiments, revisions, and discoveries along the way.' },
+        { id: uid(), type: 'gallery', heading: 'Project journey', projectTitle: 'From first sketch to final reflection', description: 'Add photos in order to tell the story of how this artwork developed.', columns: 4, crop: 'square', layout: 'process', showFileName: false, hidden: false, collapsed: false, images: [] },
+        { id: uid(), type: 'quote', text: 'What surprised you while making this?', cite: 'Student reflection prompt' }
+      ]
+    }),
+    semester: () => ({
+      title: 'Semester in the Art Room',
+      theme: { accent: '#52755a', ink: '#29382c', page: '#eef4e9', font: 'editorial', density: 'comfortable' },
+      blocks: [
+        { id: uid(), type: 'heading', text: 'A semester of making.', level: 1, align: 'left', hero: true, kicker: 'THE ART ROOM RECAP', date: 'FALL · WINTER · SPRING' },
+        { id: uid(), type: 'paragraph', text: 'A visual reflection on the skills, materials, artists, and big ideas we explored together this semester.' },
+        ...['Early Artists · PreK–2', 'Growing Artists · Grades 3–5', 'Studio Artists · Grades 6–8'].map((heading, index) => ({ id: uid(), type: 'gallery', heading, projectTitle: 'Semester highlights', description: 'Add favorite projects, discoveries, and moments from this grade band.', columns: 3, crop: 'square', layout: index === 2 ? 'featured' : 'grid', showFileName: false, hidden: false, collapsed: false, images: [] })),
+        { id: uid(), type: 'heading', text: 'What comes next', level: 2, align: 'left' },
+        { id: uid(), type: 'paragraph', text: 'Preview next semester’s materials, themes, exhibitions, or creative challenges.' }
+      ]
     })
   };
 
@@ -94,6 +149,7 @@
         const db = request.result;
         if (!db.objectStoreNames.contains('projects')) db.createObjectStore('projects');
         if (!db.objectStoreNames.contains('snapshots')) db.createObjectStore('snapshots', { keyPath: 'savedAt' });
+        if (!db.objectStoreNames.contains('templates')) db.createObjectStore('templates', { keyPath: 'id' });
       };
       request.onsuccess = () => resolve(request.result);
       request.onerror = () => reject(request.error);
@@ -159,6 +215,91 @@
     const { usage = 0, quota = 0 } = await navigator.storage.estimate();
     const used = usage / 1024 / 1024;
     $('#storage-status').textContent = `${used < 1 ? used.toFixed(1) : Math.round(used)} MB used${quota ? ` of ${Math.round(quota / 1024 / 1024)} MB` : ''}`;
+  }
+
+  function projectForTemplate(keepImages) {
+    const project = structuredClone(state);
+    project.id = uid();
+    project.createdAt = new Date().toISOString();
+    project.updatedAt = project.createdAt;
+    if (!keepImages) project.blocks.forEach(block => {
+      if (block.type === 'image' || block.type === 'imageText') { block.src = ''; block.fileName = ''; block.alt = ''; }
+      if (block.type === 'gallery') block.images = [];
+    });
+    return project;
+  }
+
+  function freshProjectFromTemplate(project, title) {
+    const copy = structuredClone(project);
+    copy.id = uid(); copy.title = title || copy.title; copy.createdAt = new Date().toISOString(); copy.updatedAt = copy.createdAt;
+    copy.blocks.forEach(block => {
+      block.id = uid();
+      if (block.images) block.images.forEach(image => { image.id = uid(); });
+    });
+    return copy;
+  }
+
+  async function getCustomTemplates() { return dbRequest('templates', 'readonly', store => store.getAll()); }
+
+  async function renderCustomTemplates() {
+    const templates = (await getCustomTemplates()).sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+    const list = $('#custom-template-list');
+    if (!templates.length) { list.innerHTML = '<p class="template-empty">No custom templates yet.</p>'; return; }
+    list.innerHTML = templates.map(template => `<div class="custom-template-card" data-custom-template="${template.id}"><button data-use-custom><strong>${escapeHtml(template.name)}</strong><small>${template.project.blocks.length} blocks · ${template.includesImages ? 'includes photos' : 'photos removed'}</small></button><div class="custom-template-actions"><button data-export-custom title="Export template" aria-label="Export ${escapeHtml(template.name)}">↓</button><button data-rename-custom title="Rename template" aria-label="Rename ${escapeHtml(template.name)}">✎</button><button data-delete-custom title="Delete template" aria-label="Delete ${escapeHtml(template.name)}">×</button></div></div>`).join('');
+    $$('[data-custom-template]', list).forEach(card => {
+      const template = templates.find(item => item.id === card.dataset.customTemplate);
+      $('[data-use-custom]', card).addEventListener('click', () => applyCustomTemplate(template));
+      $('[data-export-custom]', card).addEventListener('click', () => exportCustomTemplate(template));
+      $('[data-rename-custom]', card).addEventListener('click', () => renameCustomTemplate(template));
+      $('[data-delete-custom]', card).addEventListener('click', () => deleteCustomTemplate(template));
+    });
+  }
+
+  async function saveCurrentTemplate() {
+    const name = $('#template-name').value.trim();
+    if (!name) return showToast('Give this template a name.');
+    const includesImages = $('#template-keep-images').checked;
+    const template = { kind: 'letterdrop-template', version: 1, id: uid(), name, includesImages, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), project: projectForTemplate(includesImages) };
+    await dbRequest('templates', 'readwrite', store => store.put(template));
+    closeModals(); await renderCustomTemplates(); showToast(`${name} saved to My Templates`);
+  }
+
+  function applyCustomTemplate(template) {
+    if (state.blocks.length && !confirm(`Replace the current newsletter with “${template.name}”? You can undo this change.`)) return;
+    recordHistory(); state = freshProjectFromTemplate(template.project, template.name); selectedId = null; future = []; render(); scheduleSave(); showToast(`${template.name} applied`);
+  }
+
+  function exportCustomTemplate(template) {
+    downloadBlob(JSON.stringify(template, null, 2), `${slug(template.name)}.letterdrop-template.json`, 'application/json');
+    showToast('Template file downloaded');
+  }
+
+  async function renameCustomTemplate(template) {
+    const name = prompt('Rename this template:', template.name)?.trim();
+    if (!name || name === template.name) return;
+    template.name = name; template.updatedAt = new Date().toISOString();
+    await dbRequest('templates', 'readwrite', store => store.put(template));
+    await renderCustomTemplates();
+  }
+
+  async function deleteCustomTemplate(template) {
+    if (!confirm(`Delete “${template.name}” from My Templates?`)) return;
+    await dbRequest('templates', 'readwrite', store => store.delete(template.id));
+    await renderCustomTemplates(); showToast('Template deleted');
+  }
+
+  function importCustomTemplate(file) {
+    const reader = new FileReader();
+    reader.onload = async () => {
+      try {
+        const template = JSON.parse(reader.result);
+        if (template.kind !== 'letterdrop-template' || !template.project?.blocks || !template.name) throw new Error();
+        template.id = uid(); template.createdAt = new Date().toISOString(); template.updatedAt = template.createdAt;
+        await dbRequest('templates', 'readwrite', store => store.put(template));
+        await renderCustomTemplates(); showToast(`${template.name} imported`);
+      } catch { showToast('That file is not a valid Letterdrop template.'); }
+    };
+    reader.readAsText(file);
   }
 
   function snapshot() { return JSON.stringify(state); }
@@ -676,8 +817,19 @@
     $$('.panel-tab').forEach(tab => tab.addEventListener('click', () => {
       $$('.panel-tab').forEach(x => x.classList.toggle('active', x === tab));
       $$('.tab-content').forEach(x => x.classList.toggle('active', x.id === `${tab.dataset.tab}-tab`));
+      if (tab.dataset.tab === 'templates') renderCustomTemplates();
     }));
     $$('.template-card').forEach(card => card.addEventListener('click', () => switchTemplate(card.dataset.template)));
+    $('#save-template-btn').addEventListener('click', () => {
+      $('#template-name').value = `${state.title} template`;
+      $('#template-keep-images').checked = false;
+      openModal('#template-modal');
+      setTimeout(() => $('#template-name').select());
+    });
+    $('#confirm-save-template').addEventListener('click', saveCurrentTemplate);
+    $$('[data-close-template]').forEach(element => element.addEventListener('click', closeModals));
+    $('#import-template-btn').addEventListener('click', () => $('#import-template-file').click());
+    $('#import-template-file').addEventListener('change', event => { if (event.target.files[0]) importCustomTemplate(event.target.files[0]); event.target.value = ''; });
     $('#project-title').addEventListener('change', event => mutate(() => state.title = event.target.value.trim() || 'Untitled newsletter'));
     $('#accent-color').addEventListener('input', event => { state.theme.accent = event.target.value; applyTheme(canvas); scheduleSave(); });
     $('#text-color').addEventListener('input', event => { state.theme.ink = event.target.value; applyTheme(canvas); scheduleSave(); });
@@ -711,6 +863,7 @@
     state = await loadProject() || state;
     bindUI();
     render();
+    renderCustomTemplates();
     scheduleSave();
     updateStorageStatus();
   }
