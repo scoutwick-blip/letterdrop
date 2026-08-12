@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="A friendly, drag-and-drop newsletter builder that runs entirely in your browser.">
   <title>Letterdrop - Newsletter Builder</title>
-  <link rel="stylesheet" href="styles.css?v=1.1.2">
+  <link rel="stylesheet" href="styles.css?v=1.1.3">
 </head>
 <body>
   <div id="app" class="app-shell">
@@ -90,7 +90,17 @@
         <div id="canvas-wrap" class="canvas-wrap">
           <article id="newsletter-canvas" class="newsletter-canvas" aria-label="Newsletter editor"></article>
         </div>
-        <button id="quick-add" class="quick-add" aria-label="Add paragraph block">+</button>
+        <div id="quick-add-menu" class="quick-add-menu" role="menu" aria-label="Choose a block" hidden>
+          <button role="menuitem" data-quick-add="heading"><span class="block-icon icon-heading" aria-hidden="true"></span><span><strong>Heading</strong><small>Make a statement</small></span></button>
+          <button role="menuitem" data-quick-add="paragraph"><span class="block-icon icon-paragraph" aria-hidden="true"></span><span><strong>Paragraph</strong><small>Add your message</small></span></button>
+          <button role="menuitem" data-quick-add="image"><span class="block-icon icon-image" aria-hidden="true"></span><span><strong>Image</strong><small>Upload a photo</small></span></button>
+          <button role="menuitem" data-quick-add="gallery"><span class="block-icon icon-gallery" aria-hidden="true"></span><span><strong>Photo group</strong><small>Arrange a class or grade</small></span></button>
+          <button role="menuitem" data-quick-add="imageText"><span class="block-icon icon-image-text" aria-hidden="true"></span><span><strong>Image + text</strong><small>Pair words and imagery</small></span></button>
+          <button role="menuitem" data-quick-add="quote"><span class="block-icon icon-callout" aria-hidden="true"></span><span><strong>Callout</strong><small>Highlight an idea</small></span></button>
+          <button role="menuitem" data-quick-add="button"><span class="block-icon icon-button" aria-hidden="true"></span><span><strong>Button</strong><small>Invite readers to act</small></span></button>
+          <button role="menuitem" data-quick-add="divider"><span class="block-icon icon-divider" aria-hidden="true"></span><span><strong>Divider</strong><small>Create a pause</small></span></button>
+        </div>
+        <button id="quick-add" class="quick-add" aria-label="Add a block" aria-haspopup="menu" aria-expanded="false">+</button>
       </section>
 
       <aside class="right-panel panel" aria-label="Design settings">
@@ -185,7 +195,7 @@
     <div><strong id="import-progress-label">Preparing photos...</strong><span id="import-progress-count"></span></div>
     <progress id="import-progress-bar" value="0" max="1"></progress>
   </div>
-  <script src="app-1.1.0.js?v=1.1.2"></script>
+  <script src="app-1.1.0.js?v=1.1.3"></script>
 </body>
 </html>
 
