@@ -442,7 +442,7 @@
   }
 
   function renderFileName(block) {
-    return block.showFileName && block.fileName ? `<p class="image-file-name">${escapeHtml(displayFileName(block.fileName))}</p>` : '';
+    return block.showFileName && block.fileName ? `<p class="image-file-name photo-name-edit" contenteditable="true" data-photo-name>${escapeHtml(block.displayName || displayFileName(block.fileName))}</p>` : '';
   }
 
   function displayFileName(fileName = '') { return String(fileName).replace(/\.[^.]+$/, ''); }
@@ -450,7 +450,7 @@
   function renderGallery(block) {
     const items = block.images.length ? block.images.map((image, index) => `<figure class="gallery-item" data-image-id="${image.id}" draggable="true">
       <img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt || '')}">
-      ${block.showFileName ? `<figcaption>${escapeHtml(displayFileName(image.fileName))}</figcaption>` : ''}
+      ${block.showFileName ? `<figcaption class="photo-name-edit" contenteditable="true" data-photo-name data-image-id="${image.id}">${escapeHtml(image.displayName || displayFileName(image.fileName))}</figcaption>` : ''}
       <div class="gallery-item-tools" aria-label="Photo actions">
         <button data-gallery-action="left" data-index="${index}" aria-label="Move photo left">LEFT</button>
         <button data-gallery-action="right" data-index="${index}" aria-label="Move photo right">RIGHT</button>
@@ -504,6 +504,18 @@
         scheduleSave();
       });
       if (editable.tagName === 'A') editable.addEventListener('click', event => event.preventDefault());
+    });
+    $$('.photo-name-edit', canvas).forEach(editable => {
+      editable.addEventListener('focus', () => recordHistory(), { once: true });
+      editable.addEventListener('click', event => event.stopPropagation());
+      editable.addEventListener('input', () => {
+        const block = state.blocks.find(item => item.id === editable.closest('.newsletter-block').dataset.id);
+        if (editable.dataset.imageId) {
+          const image = block.images.find(item => item.id === editable.dataset.imageId);
+          if (image) image.displayName = editable.textContent.trim();
+        } else block.displayName = editable.textContent.trim();
+        scheduleSave();
+      });
     });
     $$('[data-image-upload]', canvas).forEach(frame => {
       frame.addEventListener('click', event => {
@@ -607,9 +619,9 @@
     let fields = `<label class="field-label">Block spacing<select data-setting="spacing"><option value="balanced">Balanced</option><option value="compact">Compact</option><option value="airy">Airy</option></select></label>`;
     if (block.type === 'heading') fields += `<label class="field-label">Main heading<textarea data-setting="text">${escapeHtml(block.text || '')}</textarea></label>${typographyControls(block, { size: block.hero ? 48 : 40, lineHeight: 1.05, letterSpacing: -1.8 })}<div class="settings-subgroup"><h4>Small heading and date</h4><label class="field-label">Small heading above<input data-setting="kicker" value="${escapeHtml(block.kicker || '')}" placeholder="Optional eyebrow or section label"></label><label class="field-label">Date or note below<input data-setting="date" value="${escapeHtml(block.date || '')}" placeholder="Optional date or supporting line"></label><label class="field-label">Small-text font<select data-setting="smallFontFamily"><option value="modern">Modern sans</option><option value="editorial">Editorial serif</option><option value="classic">Classic book</option><option value="friendly">Friendly rounded</option><option value="typewriter">Typewriter</option></select></label><label class="field-label">Small-text alignment<select data-setting="kickerAlign"><option value="left">Left</option><option value="center">Center</option><option value="right">Right</option></select></label><div class="setting-pair"><label class="field-label">Header size<input type="number" data-setting="kickerSize" min="8" max="36" value="${boundedNumber(block.kickerSize, 10, 8, 36)}"></label><label class="field-label">Date size<input type="number" data-setting="dateSize" min="8" max="36" value="${boundedNumber(block.dateSize, 11, 8, 36)}"></label></div><label class="field-label">Small-text color<input type="color" data-setting="kickerColor" value="${/^#[0-9a-f]{6}$/i.test(block.kickerColor || '') ? block.kickerColor : state.theme.accent}"></label></div>`;
     if (block.type === 'paragraph') fields += `<label class="field-label">Paragraph text<textarea data-setting="text">${escapeHtml(block.text || '')}</textarea></label>${typographyControls(block, { size: 17, lineHeight: 1.75, letterSpacing: 0 })}`;
-    if (block.type === 'image' || block.type === 'imageText') fields += `<label class="field-label">Alternative text<input data-setting="alt" value="${escapeHtml(block.alt || '')}" placeholder="Describe the image"></label><label class="field-label">Image fit<select data-setting="fit"><option value="cover">Fill the frame</option><option value="contain">Show the whole image</option></select></label><label class="check-label"><input type="checkbox" data-setting="showFileName" ${block.showFileName ? 'checked' : ''}> Display image file name</label>`;
+    if (block.type === 'image' || block.type === 'imageText') fields += `<label class="field-label">Alternative text<input data-setting="alt" value="${escapeHtml(block.alt || '')}" placeholder="Describe the image"></label><label class="field-label">Displayed photo name<input data-setting="displayName" value="${escapeHtml(block.displayName || displayFileName(block.fileName || ''))}" placeholder="Add a visible photo name"></label><label class="field-label">Image fit<select data-setting="fit"><option value="cover">Fill the frame</option><option value="contain">Show the whole image</option></select></label><label class="check-label"><input type="checkbox" data-setting="showFileName" ${block.showFileName ? 'checked' : ''}> Display image file name</label>`;
     if (block.type === 'image') fields += `<label class="field-label">Caption<textarea data-setting="caption">${escapeHtml(block.caption || '')}</textarea></label>${typographyControls(block, { size: 12, lineHeight: 1.4, letterSpacing: 0 })}`;
-    if (block.type === 'gallery') fields += `<label class="field-label">Grade or group heading<input data-setting="heading" value="${escapeHtml(block.heading || '')}"></label><label class="field-label">Project title<input data-setting="projectTitle" value="${escapeHtml(block.projectTitle || '')}"></label><label class="field-label">Description<textarea data-setting="description">${escapeHtml(block.description || '')}</textarea></label><label class="field-label">Art arrangement<select data-setting="layout"><option value="grid">Equal artwork grid</option><option value="featured">Featured artwork</option><option value="process">Process sequence</option><option value="comparison">Side-by-side comparison</option><option value="wall">Gallery wall</option><option value="list">Artwork with descriptions</option></select></label><label class="field-label">Photos per row<select data-setting="columns"><option value="1">1 large photo</option><option value="2">2 photos</option><option value="3">3 photos</option><option value="4">4 photos</option></select></label><label class="field-label">Photo shape<select data-setting="crop"><option value="square">Square</option><option value="landscape">Landscape</option><option value="natural">Natural proportions</option></select></label><label class="check-label"><input type="checkbox" data-setting="showFileName" ${block.showFileName ? 'checked' : ''}> Display image file names</label><label class="check-label"><input type="checkbox" data-setting="hidden" ${block.hidden ? 'checked' : ''}> Hide this grade when exporting</label><button class="settings-add-photos" data-settings-gallery-upload>+ Add more photos</button><button class="settings-add-photos" data-duplicate-grade>Duplicate this grade</button><button class="settings-add-photos" data-clear-grade>Clear this grade's photos</button>`;
+    if (block.type === 'gallery') fields += `<label class="field-label">Grade or group heading<input data-setting="heading" value="${escapeHtml(block.heading || '')}"></label><label class="field-label">Project title<input data-setting="projectTitle" value="${escapeHtml(block.projectTitle || '')}"></label><label class="field-label">Description<textarea data-setting="description">${escapeHtml(block.description || '')}</textarea></label><label class="field-label">Art arrangement<select data-setting="layout"><option value="grid">Equal artwork grid</option><option value="featured">Featured artwork</option><option value="process">Process sequence</option><option value="comparison">Side-by-side comparison</option><option value="wall">Gallery wall</option><option value="list">Artwork with descriptions</option></select></label><label class="field-label">Photos per row<select data-setting="columns"><option value="1">1 large photo</option><option value="2">2 photos</option><option value="3">3 photos</option><option value="4">4 photos</option></select></label><label class="field-label">Photo shape<select data-setting="crop"><option value="square">Square</option><option value="landscape">Landscape</option><option value="natural">Natural proportions</option></select></label><label class="check-label"><input type="checkbox" data-setting="showFileName" ${block.showFileName ? 'checked' : ''}> Display image file names</label>${block.images.length ? `<div class="settings-subgroup photo-name-settings"><h4>Displayed photo names</h4>${block.images.map(image => `<label class="field-label"><span title="${escapeHtml(image.fileName)}">${escapeHtml(displayFileName(image.fileName))}</span><input data-gallery-name-id="${image.id}" value="${escapeHtml(image.displayName || displayFileName(image.fileName))}"></label>`).join('')}</div>` : ''}<label class="check-label"><input type="checkbox" data-setting="hidden" ${block.hidden ? 'checked' : ''}> Hide this grade when exporting</label><button class="settings-add-photos" data-settings-gallery-upload>+ Add more photos</button><button class="settings-add-photos" data-duplicate-grade>Duplicate this grade</button><button class="settings-add-photos" data-clear-grade>Clear this grade's photos</button>`;
     if (block.type === 'imageText') fields += `<label class="field-label">Feature heading<input data-setting="heading" value="${escapeHtml(block.heading || '')}"></label><label class="field-label">Feature text<textarea data-setting="text">${escapeHtml(block.text || '')}</textarea></label><label class="field-label">Image position<select data-setting="imageSide"><option value="left">Left</option><option value="right">Right</option></select></label><label class="field-label">Text alignment<select data-setting="textAlign"><option value="left">Left</option><option value="center">Center</option><option value="right">Right</option></select></label>${typographyControls(block, { size: 16, lineHeight: 1.65, letterSpacing: 0 }, false)}`;
     if (block.type === 'quote') fields += `<label class="field-label">Callout text<textarea data-setting="text">${escapeHtml(block.text || '')}</textarea></label><label class="field-label">Attribution<input data-setting="cite" value="${escapeHtml(block.cite || '')}"></label>${typographyControls(block, { size: 31, lineHeight: 1.25, letterSpacing: 0 })}`;
     if (block.type === 'button') fields += `<label class="field-label">Button label<input data-setting="label" value="${escapeHtml(block.label || '')}"></label><label class="field-label">Destination URL<input data-setting="url" value="${escapeHtml(block.url || '')}" placeholder="https://..."></label><label class="field-label">Button style<select data-setting="buttonStyle"><option value="filled">Filled</option><option value="outline">Outline</option></select></label>${typographyControls(block, { size: 12, lineHeight: 1.2, letterSpacing: .5 })}`;
@@ -629,6 +641,10 @@
         settingTimer = setTimeout(commitSetting, 180);
       });
     });
+    $$('[data-gallery-name-id]', $('#block-settings')).forEach(input => input.addEventListener('change', () => {
+      const image = block.images.find(item => item.id === input.dataset.galleryNameId);
+      if (image && image.displayName !== input.value.trim()) mutate(() => { image.displayName = input.value.trim(); });
+    }));
     $('[data-delete-selected]', $('#block-settings')).addEventListener('click', () => deleteBlock(block.id));
     const addGalleryButton = $('[data-settings-gallery-upload]', $('#block-settings'));
     if (addGalleryButton) addGalleryButton.addEventListener('click', () => $(`.newsletter-block[data-id="${block.id}"] [data-gallery-upload]`, canvas).click());
@@ -763,7 +779,7 @@
     $$('.grade-hidden', clone).forEach(el => el.remove());
     $$('.block-tools,.gallery-item-tools,.grade-header-actions,.gallery-add-btn,input', clone).forEach(el => el.remove());
     $$('.newsletter-block', clone).forEach(el => { el.classList.remove('selected', 'dragging', 'drop-before'); el.removeAttribute('data-id'); el.removeAttribute('data-type'); });
-    $$('.editable', clone).forEach(el => { el.removeAttribute('contenteditable'); el.classList.remove('editable'); });
+    $$('.editable,.photo-name-edit', clone).forEach(el => { el.removeAttribute('contenteditable'); el.classList.remove('editable', 'photo-name-edit'); el.removeAttribute('data-photo-name'); el.removeAttribute('data-image-id'); });
     $$('[data-image-upload]', clone).forEach(el => { el.removeAttribute('data-image-upload'); el.removeAttribute('title'); });
     return clone;
   }
