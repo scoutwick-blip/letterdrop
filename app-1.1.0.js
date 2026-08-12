@@ -615,7 +615,17 @@
     $('#block-settings').innerHTML = `<section class="setting-section"><h3>Block settings</h3><div style="display:grid;gap:15px">${fields || '<p style="margin:0;color:var(--muted);font-size:11px">Edit this block directly on the canvas.</p>'}</div></section><section class="setting-section"><button class="danger-btn" data-delete-selected>Delete this block</button></section>`;
     $$('[data-setting]', $('#block-settings')).forEach(input => {
       if (input.type !== 'checkbox') input.value = block[input.dataset.setting] || input.value;
-      input.addEventListener('change', () => mutate(() => block[input.dataset.setting] = input.type === 'checkbox' ? input.checked : input.value));
+      let settingTimer = null;
+      const commitSetting = () => {
+        const value = input.type === 'checkbox' ? input.checked : input.value;
+        if (String(block[input.dataset.setting] ?? '') === String(value)) return;
+        mutate(() => block[input.dataset.setting] = value);
+      };
+      input.addEventListener('change', commitSetting);
+      if (input.type === 'number' || input.type === 'color') input.addEventListener('input', () => {
+        clearTimeout(settingTimer);
+        settingTimer = setTimeout(commitSetting, 180);
+      });
     });
     $('[data-delete-selected]', $('#block-settings')).addEventListener('click', () => deleteBlock(block.id));
     const addGalleryButton = $('[data-settings-gallery-upload]', $('#block-settings'));
