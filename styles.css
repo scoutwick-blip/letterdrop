@@ -189,6 +189,9 @@ button:focus-visible, input:focus-visible, select:focus-visible, [contenteditabl
 .field-label { color:var(--muted); font-size:10px; }
 .field-label select, .field-label input, .field-label textarea { display:block; width:100%; margin-top:7px; border:1px solid var(--line); border-radius:8px; padding:10px; background:white; color:var(--ink); }
 .field-label textarea { min-height:80px; resize:vertical; }
+.setting-pair { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.settings-subgroup { display:grid; gap:12px; margin-top:3px; padding:14px; border:1px solid var(--line); border-radius:10px; background:#f8f6f1; }
+.settings-subgroup h4 { margin:0; color:var(--ink); font-size:10px; text-transform:uppercase; letter-spacing:.8px; }
 .check-label { display:flex; align-items:center; gap:9px; color:var(--ink); font-size:11px; cursor:pointer; }.check-label input{width:16px;height:16px;accent-color:var(--accent)}
 .segmented { display:grid; grid-template-columns:repeat(3,1fr); padding:3px; border-radius:9px; background:#eae7e0; }
 .segmented button { border:0; border-radius:7px; padding:8px 3px; background:transparent; font-size:9px; cursor:pointer; }.segmented button.active{background:white;box-shadow:0 1px 4px rgba(0,0,0,.1)}
