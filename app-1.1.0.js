@@ -536,6 +536,12 @@
     if (rerender && !alreadySelected) render();
     else renderSettings();
   }
+  function deselectBlock() {
+    if (!selectedId) return renderSettings();
+    selectedId = null;
+    $('.newsletter-block.selected', canvas)?.classList.remove('selected');
+    renderSettings();
+  }
   function addBlock(type, index = state.blocks.length) {
     if (!blockDefaults[type]) return;
     const block = blockDefaults[type]();
@@ -814,6 +820,9 @@
         if (type) addBlock(type);
       }
     });
+    $('#canvas-wrap').addEventListener('click', event => {
+      if (!event.target.closest('.newsletter-block')) deselectBlock();
+    });
     $$('.panel-tab').forEach(tab => tab.addEventListener('click', () => {
       $$('.panel-tab').forEach(x => x.classList.toggle('active', x === tab));
       $$('.tab-content').forEach(x => x.classList.toggle('active', x.id === `${tab.dataset.tab}-tab`));
@@ -842,7 +851,20 @@
     })));
     $('#undo-btn').addEventListener('click', undo); $('#redo-btn').addEventListener('click', redo);
     $$('.device-btn').forEach(btn => btn.addEventListener('click', () => { $$('.device-btn').forEach(x => x.classList.toggle('active', x === btn)); canvas.classList.toggle('mobile', btn.dataset.device === 'mobile'); }));
-    $('#quick-add').addEventListener('click', () => addBlock('paragraph'));
+    const quickAdd = $('#quick-add');
+    const quickAddMenu = $('#quick-add-menu');
+    const closeQuickAdd = () => { quickAddMenu.hidden = true; quickAdd.setAttribute('aria-expanded', 'false'); };
+    quickAdd.addEventListener('click', event => {
+      event.stopPropagation();
+      quickAddMenu.hidden = !quickAddMenu.hidden;
+      quickAdd.setAttribute('aria-expanded', String(!quickAddMenu.hidden));
+      if (!quickAddMenu.hidden) $('[data-quick-add]', quickAddMenu)?.focus();
+    });
+    $$('[data-quick-add]', quickAddMenu).forEach(button => button.addEventListener('click', () => {
+      addBlock(button.dataset.quickAdd);
+      closeQuickAdd();
+    }));
+    document.addEventListener('click', event => { if (!quickAddMenu.hidden && !event.target.closest('#quick-add-menu')) closeQuickAdd(); });
     $('#preview-btn').addEventListener('click', () => { const clone = cloneForOutput(); $('#preview-content').replaceChildren(clone); openModal('#preview-modal'); });
     $('#export-btn').addEventListener('click', () => { updatePrivacyAudit(); openModal('#export-modal'); });
     $$('[data-close-modal],[data-close-export]').forEach(el => el.addEventListener('click', closeModals));
@@ -852,7 +874,7 @@
     $('#import-file').addEventListener('change', event => { if (event.target.files[0]) importProject(event.target.files[0]); event.target.value = ''; });
     $('#new-btn').addEventListener('click', () => { if (confirm('Start a new newsletter? Download a project backup first if you want to keep this version.')) { recordHistory(); state = createProject('editorial'); selectedId = null; render(); scheduleSave(); } });
     document.addEventListener('keydown', event => {
-      if (event.key === 'Escape') closeModals();
+      if (event.key === 'Escape') { closeModals(); closeQuickAdd(); }
       if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'z') { event.preventDefault(); event.shiftKey ? redo() : undo(); }
       if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'y') { event.preventDefault(); redo(); }
     });
