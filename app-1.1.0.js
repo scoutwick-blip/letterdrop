@@ -777,8 +777,18 @@
     clone.removeAttribute('id');
     clone.classList.remove('mobile');
     $$('.grade-hidden', clone).forEach(el => el.remove());
-    $$('.block-tools,.gallery-item-tools,.grade-header-actions,.gallery-add-btn,input', clone).forEach(el => el.remove());
-    $$('.newsletter-block', clone).forEach(el => { el.classList.remove('selected', 'dragging', 'drop-before'); el.removeAttribute('data-id'); el.removeAttribute('data-type'); });
+    $$('.block-tools,.gallery-item-tools,.grade-header-actions,.gallery-add-btn,input,button', clone).forEach(el => el.remove());
+    $$('.newsletter-block', clone).forEach(el => {
+      const type = el.dataset.type;
+      if (type === 'image' && el.querySelector('.image-placeholder')) return el.remove();
+      if (type === 'gallery' && el.querySelector('.gallery-empty')) return el.remove();
+      if (type === 'imageText' && el.querySelector('.image-placeholder')) {
+        el.querySelector('.image-frame')?.remove();
+        el.querySelector('.image-text-layout')?.classList.add('output-text-only');
+      }
+      el.classList.add(`output-type-${type}`);
+      el.classList.remove('selected', 'dragging', 'drop-before'); el.removeAttribute('data-id'); el.removeAttribute('data-type');
+    });
     $$('.editable,.photo-name-edit', clone).forEach(el => { el.removeAttribute('contenteditable'); el.classList.remove('editable', 'photo-name-edit'); el.removeAttribute('data-photo-name'); el.removeAttribute('data-image-id'); });
     $$('[data-image-upload]', clone).forEach(el => { el.removeAttribute('data-image-upload'); el.removeAttribute('title'); });
     return clone;
@@ -820,13 +830,31 @@
     downloadBlob(html, `${slug(state.title)}.html`, 'text/html');
     showToast('Web page downloaded');
   }
-  function buildEmailContent() {
+  function compressImageForEmail(src, maxDimension, quality) {
+    return new Promise(resolve => {
+      if (!src?.startsWith('data:image/')) return resolve(src);
+      const image = new Image();
+      image.onload = () => {
+        const ratio = Math.min(1, maxDimension / Math.max(image.width, image.height));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.max(1, Math.round(image.width * ratio)); canvas.height = Math.max(1, Math.round(image.height * ratio));
+        canvas.getContext('2d').drawImage(image, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+      image.onerror = () => resolve(src);
+      image.src = src;
+    });
+  }
+  async function buildEmailContent() {
     const stage = document.createElement('div');
     stage.style.cssText = 'position:fixed;left:-10000px;top:0;width:720px;background:white;z-index:-1';
     const clone = cloneForOutput();
     stage.append(clone);
     document.body.append(stage);
-    const properties = ['display','width','max-width','min-height','height','margin','padding','box-sizing','background','background-color','color','font-family','font-size','font-weight','font-style','line-height','letter-spacing','text-align','text-decoration','border','border-left','border-radius','box-shadow','grid-template-columns','gap','align-items','justify-content','object-fit','aspect-ratio','overflow'];
+    const images = $$('img', clone);
+    const profile = images.length > 24 ? { max: 320, quality: .5 } : images.length > 12 ? { max: 440, quality: .58 } : { max: 640, quality: .68 };
+    await Promise.all(images.map(async image => { image.src = await compressImageForEmail(image.src, profile.max, profile.quality); }));
+    const properties = ['display','width','max-width','margin','padding','box-sizing','background-color','color','font-family','font-size','font-weight','font-style','line-height','letter-spacing','text-align','text-decoration','border','border-left','border-radius','grid-template-columns','gap','object-fit','aspect-ratio'];
     [clone, ...clone.querySelectorAll('*')].forEach(element => {
       const computed = getComputedStyle(element);
       element.style.cssText = properties.map(property => `${property}:${computed.getPropertyValue(property)}`).join(';');
@@ -834,10 +862,12 @@
     const html = `<div style="margin:0;padding:24px 8px;background:#ffffff">${clone.outerHTML}</div>`;
     const text = clone.innerText;
     stage.remove();
-    return { html, text };
+    return { html, text, bytes: new Blob([html]).size, imageCount: images.length };
   }
   async function copyForEmail() {
-    const content = buildEmailContent();
+    showToast('Preparing a lightweight email copy...');
+    const content = await buildEmailContent();
+    if (content.bytes > 5 * 1024 * 1024) return showToast('This newsletter is still too large for safe email pasting. Try fewer photos or use PDF.');
     try {
       if (navigator.clipboard?.write && window.ClipboardItem) {
         await navigator.clipboard.write([new ClipboardItem({
