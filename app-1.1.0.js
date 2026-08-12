@@ -442,13 +442,15 @@
   }
 
   function renderFileName(block) {
-    return block.showFileName && block.fileName ? `<p class="image-file-name">${escapeHtml(block.fileName)}</p>` : '';
+    return block.showFileName && block.fileName ? `<p class="image-file-name">${escapeHtml(displayFileName(block.fileName))}</p>` : '';
   }
+
+  function displayFileName(fileName = '') { return String(fileName).replace(/\.[^.]+$/, ''); }
 
   function renderGallery(block) {
     const items = block.images.length ? block.images.map((image, index) => `<figure class="gallery-item" data-image-id="${image.id}" draggable="true">
       <img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt || '')}">
-      ${block.showFileName ? `<figcaption>${escapeHtml(image.fileName)}</figcaption>` : ''}
+      ${block.showFileName ? `<figcaption>${escapeHtml(displayFileName(image.fileName))}</figcaption>` : ''}
       <div class="gallery-item-tools" aria-label="Photo actions">
         <button data-gallery-action="left" data-index="${index}" aria-label="Move photo left">LEFT</button>
         <button data-gallery-action="right" data-index="${index}" aria-label="Move photo right">RIGHT</button>
