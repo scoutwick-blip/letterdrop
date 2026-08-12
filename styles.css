@@ -125,6 +125,7 @@ button:focus-visible, input:focus-visible, select:focus-visible, [contenteditabl
 .image-placeholder small{font:11px Inter,sans-serif;text-transform:uppercase;letter-spacing:1px}
 .image-caption { margin: 9px 0 0; font: italic 12px Georgia,serif; color: #6e706b; }
 .image-file-name { margin: 9px 0 0; font: 700 10px Inter,sans-serif; color: #626762; letter-spacing: .3px; overflow-wrap: anywhere; }
+.photo-name-edit:focus { outline:2px solid color-mix(in srgb,var(--newsletter-accent) 35%,transparent); outline-offset:3px; border-radius:2px; }
 .gallery-heading-row { display:flex; align-items:center; justify-content:space-between; gap:15px; margin-bottom:14px; }
 .gallery-heading { margin:0; font:32px/1.1 Georgia,serif; }
 .grade-header-actions{display:flex;align-items:center;gap:6px}.grade-header-actions>button:first-child{width:29px;height:29px;border:1px solid var(--line);border-radius:8px;background:white;cursor:pointer;font-size:17px}.grade-collapsed .gallery-body{display:none}.grade-collapsed .gallery-heading-row{margin-bottom:0}
