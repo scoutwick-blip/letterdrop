@@ -395,35 +395,36 @@
 
   function renderBlock(block) {
     const selected = selectedId === block.id ? ' selected' : '';
-    const common = `class="newsletter-block${block.hero ? ' hero-block' : ''}${block.hidden ? ' grade-hidden' : ''}${block.collapsed ? ' grade-collapsed' : ''}${selected}" data-id="${block.id}" data-type="${block.type}"`;
+    const blockSpacing = ({ compact: '14px', balanced: '28px', airy: '44px' })[block.spacing] || '';
+    const common = `class="newsletter-block${block.hero ? ' hero-block' : ''}${block.hidden ? ' grade-hidden' : ''}${block.collapsed ? ' grade-collapsed' : ''}${selected}" data-id="${block.id}" data-type="${block.type}"${blockSpacing ? ` style="padding-top:${blockSpacing};padding-bottom:${blockSpacing}"` : ''}`;
     let content = '';
     if (block.type === 'heading') {
       content = `${block.hero && block.kicker ? `<p class="hero-kicker editable" contenteditable="true" data-field="kicker">${escapeHtml(block.kicker)}</p>` : ''}
-        <h${block.level || 2} class="newsletter-heading editable" contenteditable="true" data-field="text" style="text-align:${block.align || 'left'}">${escapeHtml(block.text)}</h${block.level || 2}>
+        <h${block.level || 2} class="newsletter-heading editable" contenteditable="true" data-field="text" style="text-align:${block.align || 'left'};font-size:${({ small: '30px', medium: '40px', large: '52px' })[block.size] || ''}">${escapeHtml(block.text)}</h${block.level || 2}>
         ${block.hero && block.date ? `<p class="hero-date editable" contenteditable="true" data-field="date">${escapeHtml(block.date)}</p>` : ''}`;
     } else if (block.type === 'paragraph') {
-      content = `<p class="newsletter-paragraph editable" contenteditable="true" data-field="text">${escapeHtml(block.text)}</p>`;
+      content = `<p class="newsletter-paragraph editable" contenteditable="true" data-field="text" style="text-align:${block.align || 'left'};font-size:${({ small: '14px', medium: '17px', large: '21px' })[block.size] || '17px'};line-height:${({ snug: '1.45', comfortable: '1.75', relaxed: '2' })[block.lineHeight] || '1.75'}">${escapeHtml(block.text)}</p>`;
     } else if (block.type === 'image') {
       content = `${imageFrame(block)}${renderFileName(block)}<p class="image-caption editable" contenteditable="true" data-field="caption">${escapeHtml(block.caption || '')}</p>`;
     } else if (block.type === 'gallery') {
       content = renderGallery(block);
     } else if (block.type === 'imageText') {
       const image = imageFrame(block);
-      const copy = `<div class="image-text-copy"><h2 class="editable" contenteditable="true" data-field="heading">${escapeHtml(block.heading)}</h2><p class="editable" contenteditable="true" data-field="text">${escapeHtml(block.text)}</p></div>`;
+      const copy = `<div class="image-text-copy" style="text-align:${block.textAlign || 'left'}"><h2 class="editable" contenteditable="true" data-field="heading">${escapeHtml(block.heading)}</h2><p class="editable" contenteditable="true" data-field="text">${escapeHtml(block.text)}</p></div>`;
       content = `<div class="image-text-layout">${block.imageSide === 'right' ? copy + image : image + copy}</div>${renderFileName(block)}`;
     } else if (block.type === 'quote') {
-      content = `<div class="quote-block"><p class="quote-text editable" contenteditable="true" data-field="text">${escapeHtml(block.text)}</p><span class="quote-cite editable" contenteditable="true" data-field="cite">${escapeHtml(block.cite)}</span></div>`;
+      content = `<div class="quote-block" style="text-align:${block.align || 'left'}"><p class="quote-text editable" contenteditable="true" data-field="text" style="font-size:${({ small: '23px', medium: '31px', large: '39px' })[block.size] || '31px'}">${escapeHtml(block.text)}</p><span class="quote-cite editable" contenteditable="true" data-field="cite">${escapeHtml(block.cite)}</span></div>`;
     } else if (block.type === 'button') {
-      content = `<div class="button-wrap"><a class="newsletter-button editable" href="${escapeHtml(safeUrl(block.url))}" contenteditable="true" data-field="label">${escapeHtml(block.label)}</a></div>`;
+      content = `<div class="button-wrap" style="text-align:${block.align || 'center'}"><a class="newsletter-button editable" style="${block.buttonStyle === 'outline' ? 'color:var(--newsletter-accent);background:transparent;box-shadow:inset 0 0 0 2px var(--newsletter-accent)' : ''}" href="${escapeHtml(safeUrl(block.url))}" contenteditable="true" data-field="label">${escapeHtml(block.label)}</a></div>`;
     } else if (block.type === 'divider') {
-      content = '<div class="divider-line" role="separator"></div>';
+      content = `<div class="divider-line" role="separator" style="height:${block.thickness || 1}px;width:${block.width || 100}%;margin:auto"></div>`;
     }
     return `<section ${common}>${tools(block)}${content}</section>`;
   }
 
   function imageFrame(block) {
     const body = block.src
-      ? `<img src="${escapeHtml(block.src)}" alt="${escapeHtml(block.alt)}">`
+      ? `<img src="${escapeHtml(block.src)}" alt="${escapeHtml(block.alt)}" style="object-fit:${block.fit || 'cover'}">`
       : `<div class="image-placeholder"><div><span class="placeholder-image-icon" aria-hidden="true"></span><small>Click to add a photo</small></div></div>`;
     return `<div class="image-frame" data-image-upload title="Choose an image">${body}<input type="file" accept="image/jpeg,image/png,image/webp,image/gif" hidden></div>`;
   }
@@ -581,12 +582,15 @@
     $('#settings-title').textContent = block ? `${labelType(block.type)} block` : 'Newsletter style';
     $('#settings-subtitle').textContent = block ? 'Fine-tune this piece of your story.' : 'Set the look and feel for your whole story.';
     if (!block) return;
-    let fields = '';
-    if (block.type === 'heading') fields += `<label class="field-label">Alignment<select data-setting="align"><option value="left">Left</option><option value="center">Center</option><option value="right">Right</option></select></label>`;
-    if (block.type === 'image' || block.type === 'imageText') fields += `<label class="field-label">Alternative text<input data-setting="alt" value="${escapeHtml(block.alt || '')}" placeholder="Describe the image"></label><label class="check-label"><input type="checkbox" data-setting="showFileName" ${block.showFileName ? 'checked' : ''}> Display image file name</label>`;
+    let fields = `<label class="field-label">Block spacing<select data-setting="spacing"><option value="balanced">Balanced</option><option value="compact">Compact</option><option value="airy">Airy</option></select></label>`;
+    if (block.type === 'heading') fields += `<label class="field-label">Alignment<select data-setting="align"><option value="left">Left</option><option value="center">Center</option><option value="right">Right</option></select></label><label class="field-label">Text size<select data-setting="size"><option value="medium">Medium</option><option value="small">Small</option><option value="large">Large</option></select></label>`;
+    if (block.type === 'paragraph') fields += `<label class="field-label">Alignment<select data-setting="align"><option value="left">Left</option><option value="center">Center</option><option value="right">Right</option></select></label><label class="field-label">Text size<select data-setting="size"><option value="medium">Medium</option><option value="small">Small</option><option value="large">Large</option></select></label><label class="field-label">Line spacing<select data-setting="lineHeight"><option value="comfortable">Comfortable</option><option value="snug">Snug</option><option value="relaxed">Relaxed</option></select></label>`;
+    if (block.type === 'image' || block.type === 'imageText') fields += `<label class="field-label">Alternative text<input data-setting="alt" value="${escapeHtml(block.alt || '')}" placeholder="Describe the image"></label><label class="field-label">Image fit<select data-setting="fit"><option value="cover">Fill the frame</option><option value="contain">Show the whole image</option></select></label><label class="check-label"><input type="checkbox" data-setting="showFileName" ${block.showFileName ? 'checked' : ''}> Display image file name</label>`;
     if (block.type === 'gallery') fields += `<label class="field-label">Art arrangement<select data-setting="layout"><option value="grid">Equal artwork grid</option><option value="featured">Featured artwork</option><option value="process">Process sequence</option><option value="comparison">Side-by-side comparison</option><option value="wall">Gallery wall</option><option value="list">Artwork with descriptions</option></select></label><label class="field-label">Photos per row<select data-setting="columns"><option value="1">1 large photo</option><option value="2">2 photos</option><option value="3">3 photos</option><option value="4">4 photos</option></select></label><label class="field-label">Photo shape<select data-setting="crop"><option value="square">Square</option><option value="landscape">Landscape</option><option value="natural">Natural proportions</option></select></label><label class="check-label"><input type="checkbox" data-setting="showFileName" ${block.showFileName ? 'checked' : ''}> Display image file names</label><label class="check-label"><input type="checkbox" data-setting="hidden" ${block.hidden ? 'checked' : ''}> Hide this grade when exporting</label><button class="settings-add-photos" data-settings-gallery-upload>+ Add more photos</button><button class="settings-add-photos" data-duplicate-grade>Duplicate this grade</button><button class="settings-add-photos" data-clear-grade>Clear this grade's photos</button>`;
-    if (block.type === 'imageText') fields += `<label class="field-label">Image position<select data-setting="imageSide"><option value="left">Left</option><option value="right">Right</option></select></label>`;
-    if (block.type === 'button') fields += `<label class="field-label">Destination URL<input data-setting="url" value="${escapeHtml(block.url || '')}" placeholder="https://..."></label>`;
+    if (block.type === 'imageText') fields += `<label class="field-label">Image position<select data-setting="imageSide"><option value="left">Left</option><option value="right">Right</option></select></label><label class="field-label">Text alignment<select data-setting="textAlign"><option value="left">Left</option><option value="center">Center</option><option value="right">Right</option></select></label>`;
+    if (block.type === 'quote') fields += `<label class="field-label">Alignment<select data-setting="align"><option value="left">Left</option><option value="center">Center</option><option value="right">Right</option></select></label><label class="field-label">Text size<select data-setting="size"><option value="medium">Medium</option><option value="small">Small</option><option value="large">Large</option></select></label>`;
+    if (block.type === 'button') fields += `<label class="field-label">Destination URL<input data-setting="url" value="${escapeHtml(block.url || '')}" placeholder="https://..."></label><label class="field-label">Alignment<select data-setting="align"><option value="left">Left</option><option value="center">Center</option><option value="right">Right</option></select></label><label class="field-label">Button style<select data-setting="buttonStyle"><option value="filled">Filled</option><option value="outline">Outline</option></select></label>`;
+    if (block.type === 'divider') fields += `<label class="field-label">Line thickness<select data-setting="thickness"><option value="1">Thin</option><option value="2">Medium</option><option value="4">Bold</option></select></label><label class="field-label">Line width<select data-setting="width"><option value="100">Full width</option><option value="75">Three-quarter width</option><option value="50">Half width</option></select></label>`;
     $('#block-settings').innerHTML = `<section class="setting-section"><h3>Block settings</h3><div style="display:grid;gap:15px">${fields || '<p style="margin:0;color:var(--muted);font-size:11px">Edit this block directly on the canvas.</p>'}</div></section><section class="setting-section"><button class="danger-btn" data-delete-selected>Delete this block</button></section>`;
     $$('[data-setting]', $('#block-settings')).forEach(input => {
       if (input.type !== 'checkbox') input.value = block[input.dataset.setting] || input.value;
