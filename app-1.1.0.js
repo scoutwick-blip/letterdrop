@@ -771,12 +771,51 @@
     downloadBlob(html, `${slug(state.title)}.html`, 'text/html');
     showToast('Web page downloaded');
   }
+  function buildEmailContent() {
+    const stage = document.createElement('div');
+    stage.style.cssText = 'position:fixed;left:-10000px;top:0;width:720px;background:white;z-index:-1';
+    const clone = cloneForOutput();
+    stage.append(clone);
+    document.body.append(stage);
+    const properties = ['display','width','max-width','min-height','height','margin','padding','box-sizing','background','background-color','color','font-family','font-size','font-weight','font-style','line-height','letter-spacing','text-align','text-decoration','border','border-left','border-radius','box-shadow','grid-template-columns','gap','align-items','justify-content','object-fit','aspect-ratio','overflow'];
+    [clone, ...clone.querySelectorAll('*')].forEach(element => {
+      const computed = getComputedStyle(element);
+      element.style.cssText = properties.map(property => `${property}:${computed.getPropertyValue(property)}`).join(';');
+    });
+    const html = `<div style="margin:0;padding:24px 8px;background:#ffffff">${clone.outerHTML}</div>`;
+    const text = clone.innerText;
+    stage.remove();
+    return { html, text };
+  }
+  async function copyForEmail() {
+    const content = buildEmailContent();
+    try {
+      if (navigator.clipboard?.write && window.ClipboardItem) {
+        await navigator.clipboard.write([new ClipboardItem({
+          'text/html': new Blob([content.html], { type: 'text/html' }),
+          'text/plain': new Blob([content.text], { type: 'text/plain' })
+        })]);
+      } else {
+        const holder = document.createElement('div');
+        holder.contentEditable = 'true';
+        holder.style.cssText = 'position:fixed;left:-10000px;top:0';
+        holder.innerHTML = content.html;
+        document.body.append(holder);
+        const range = document.createRange(); range.selectNodeContents(holder);
+        const selection = getSelection(); selection.removeAllRanges(); selection.addRange(range);
+        document.execCommand('copy'); selection.removeAllRanges(); holder.remove();
+      }
+      showToast('Newsletter copied - paste it into a new email');
+    } catch { showToast('Copy was blocked. Try again or download the web page.'); }
+  }
   function downloadProject() { downloadBlob(JSON.stringify(state, null, 2), `${slug(state.title)}.newsletter.json`, 'application/json'); showToast('Project backup downloaded'); }
   function downloadBlob(content, name, type) { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([content], { type })); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000); }
   function slug(value) { return value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'newsletter'; }
   function printNewsletter() {
     const root = document.createElement('div'); root.id = 'print-root'; root.hidden = true; root.append(cloneForOutput()); document.body.append(root);
-    setTimeout(() => { window.print(); root.remove(); }, 50);
+    const previousTitle = document.title;
+    document.title = '';
+    setTimeout(() => { window.print(); document.title = previousTitle; root.remove(); }, 50);
   }
 
   function importProject(file) {
@@ -872,7 +911,7 @@
     $('#preview-btn').addEventListener('click', () => { const clone = cloneForOutput(); $('#preview-content').replaceChildren(clone); openModal('#preview-modal'); });
     $('#export-btn').addEventListener('click', () => { updatePrivacyAudit(); openModal('#export-modal'); });
     $$('[data-close-modal],[data-close-export]').forEach(el => el.addEventListener('click', closeModals));
-    $('#download-html').addEventListener('click', downloadHtml); $('#download-project').addEventListener('click', downloadProject); $('#print-pdf').addEventListener('click', printNewsletter);
+    $('#copy-email').addEventListener('click', copyForEmail); $('#download-html').addEventListener('click', downloadHtml); $('#download-project').addEventListener('click', downloadProject); $('#print-pdf').addEventListener('click', printNewsletter);
     $('#import-btn').addEventListener('click', () => $('#import-file').click());
     $('#restore-btn').addEventListener('click', restoreLatestSnapshot);
     $('#import-file').addEventListener('change', event => { if (event.target.files[0]) importProject(event.target.files[0]); event.target.value = ''; });
